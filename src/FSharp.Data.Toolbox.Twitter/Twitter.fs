@@ -16,13 +16,13 @@ open FSharp.WebBrowser
 
 // ----------------------------------------------------------------------------------------------
 
-module Utils = 
+module internal Utils = 
   let requestTokenURI = "https://api.twitter.com/oauth/request_token"
   let accessTokenURI = "https://api.twitter.com/oauth/access_token"
   let authorizeURI = "https://api.twitter.com/oauth/authorize"
   let appOnlyTokenURI = "https://api.twitter.com/oauth2/token"
 
-  type Response = JsonProvider<"json/bearer_token.json">
+  type Response = JsonProvider<"json/bearer_token.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,bearer_token.json">
 
   // Utilities
   let unreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
@@ -233,12 +233,12 @@ module WebRequestExtensions =
 // ----------------------------------------------------------------------------------------------
 
 module TwitterTypes = 
-  type Tweet = JsonProvider<"json/stream.json", SampleIsList=true>
-  type TimeLine = JsonProvider<"json/timeline.json">
-  type SearchTweets = JsonProvider<"json/search_tweets.json">
-  type IdsList = JsonProvider<"json/idslist.json">
-  type UsersLookup = JsonProvider<"json/users_lookup.json">
-  type FriendshipShow = JsonProvider<"json/friendship_show.json">
+  type Tweet = JsonProvider<"json/stream.json", SampleIsList=true, EmbeddedResource="FSharp.Data.Toolbox.Twitter,stream.json">
+  type TimeLine = JsonProvider<"json/timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,timeline.json">
+  type SearchTweets = JsonProvider<"json/search_tweets.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,search_tweets.json">
+  type IdsList = JsonProvider<"json/idslist.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,idslist.json">
+  type UsersLookup = JsonProvider<"json/users_lookup.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,users_lookup.json">
+  type FriendshipShow = JsonProvider<"json/friendship_show.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,friendship_show.json">
 
 type TwitterConnector =
   abstract Connect : string -> Twitter 
