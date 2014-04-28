@@ -8,7 +8,7 @@ let referenceBinaries = [ "FSharp.Data.Toolbox.Twitter.dll" ]
 // Web site location for the generated documentation
 let website = "/FSharp.Data.Toolbox"
 
-let githubLink = "http://github.com/evelinag/FSharp.Data.Toolbox"
+let githubLink = "http://github.com/fsprojects/FSharp.Data.Toolbox"
 
 // Specify more information about your project
 let info =
