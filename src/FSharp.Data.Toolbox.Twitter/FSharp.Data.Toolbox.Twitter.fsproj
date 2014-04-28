@@ -39,11 +39,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="FSharp.Data">
-      <HintPath>..\..\packages\FSharp.Data.2.0.5\lib\net40\FSharp.Data.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Data.2.0.7\lib\net40\FSharp.Data.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="FSharp.Data.DesignTime">
-      <HintPath>..\..\packages\FSharp.Data.2.0.5\lib\net40\FSharp.Data.DesignTime.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -53,13 +50,34 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="json/bearer_token.json">
+      <Link>json/bearer_token.json</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="json/stream.json">
+      <Link>json/stream.json</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="json/friendship_show.json">
+      <Link>json/friendship_show.json</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="json/idslist.json">
+      <Link>json/idslist.json</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="json/search_tweets.json">
+      <Link>json/search_tweets.json</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="json/timeline.json">
+      <Link>json/timeline.json</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="json/users_lookup.json">
+      <Link>json/users_lookup.json</Link>
+    </EmbeddedResource>
     <Compile Include="../Common/AssemblyInfo.fs">
       <Link>AssemblyInfo.fs</Link>
     </Compile>
     <Compile Include="GuiExtensions.fs" />
     <Compile Include="Twitter.fs" />
-    <None Include="packages.config" />
     <None Include="Twitter.fsx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
