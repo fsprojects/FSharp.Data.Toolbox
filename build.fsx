@@ -10,8 +10,6 @@ open Fake.ReleaseNotesHelper
 open System
 
 // --------------------------------------------------------------------------------------
-// START TODO: Provide project-specific details below
-// --------------------------------------------------------------------------------------
 
 // Information about the project are used
 //  - for version and project name in generated AssemblyInfo file
@@ -48,8 +46,6 @@ let gitHome = "https://github.com/fsprojects"
 // The name of the project on GitHub
 let gitName = "FSharp.Data.Toolbox"
 
-// --------------------------------------------------------------------------------------
-// END TODO: The rest of the file includes standard build steps 
 // --------------------------------------------------------------------------------------
 
 // Read additional information from the release notes document
