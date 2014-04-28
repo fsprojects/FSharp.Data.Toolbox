@@ -1,7 +1,7 @@
 (*** hide ***)
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
-#I "../../packages/FSharp.Data.2.0.5/lib/net40"
+#I "../../packages/FSharp.Data.2.0.7/lib/net40"
 #I "../../bin"
 
 (**
@@ -20,7 +20,7 @@ After registration, Twitter provides API key and API secret
  to authenticate the application.
 
 *)
-#r @"FSharp.Data.dll"
+#r "FSharp.Data.dll"
 #r "FSharp.Data.Toolbox.Twitter.dll"
 open FSharp.Data.Toolbox.Twitter
 
@@ -60,7 +60,7 @@ allows full access to Twitter APIs.
 let connector = Twitter.Authenticate(key, secret) 
 
 // Run this part after you obtain PIN
-let twitter = connector.Connect("3891009")
+let twitter = connector.Connect("7808652")
 
 (**
 ![Twitter login window](img/OAuthWindow.png)
