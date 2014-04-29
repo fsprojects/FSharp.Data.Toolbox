@@ -232,8 +232,8 @@ module WebRequestExtensions =
 
 // ----------------------------------------------------------------------------------------------
 
-module TwitterTypes = 
-  type Tweet = JsonProvider<"json/stream.json", SampleIsList=true, EmbeddedResource="FSharp.Data.Toolbox.Twitter,stream.json">
+module internal TwitterTypes = 
+  type Tweet = JsonProvider<"json/stream.json", SampleIsList=true>
   type TimeLine = JsonProvider<"json/timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,timeline.json">
   type SearchTweets = JsonProvider<"json/search_tweets.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,search_tweets.json">
   type IdsList = JsonProvider<"json/idslist.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,idslist.json">
