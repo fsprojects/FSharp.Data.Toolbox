@@ -21,3 +21,5 @@ let ``Can authenticate with Twitter using AppOnly mode and search for F# org twi
   let twitter = Twitter.AuthenticateAppOnly(key, secret)
   let actual = twitter.Users.Lookup ["fsharporg"] |> Seq.head
   Assert.IsTrue(actual.Id = 880772426L)
+  
+test!  
