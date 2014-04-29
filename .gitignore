@@ -5,6 +5,7 @@
 *.suo
 *.user
 *.sln.docstates
+*.bak
 
 # Xamarin Studio / monodevelop user-specific
 *.userprefs
