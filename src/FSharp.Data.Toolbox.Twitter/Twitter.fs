@@ -1,4 +1,4 @@
-﻿namespace FSharp.Data.Toolbox.Twitter
+namespace FSharp.Data.Toolbox.Twitter
 
 open System
 open System.Globalization
@@ -232,7 +232,7 @@ module WebRequestExtensions =
 
 // ----------------------------------------------------------------------------------------------
 
-module internal TwitterTypes = 
+module TwitterTypes = 
   type Tweet = JsonProvider<"json/stream.json", SampleIsList=true, EmbeddedResource="FSharp.Data.Toolbox.Twitter,stream.json">
   type TimeLine = JsonProvider<"json/timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,timeline.json">
   type SearchTweets = JsonProvider<"json/search_tweets.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,search_tweets.json">
