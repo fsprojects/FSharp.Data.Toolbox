@@ -7,14 +7,17 @@
 F# Data Toolbox
 ===================
 
-F# Data Toolbox is a library for various data access APIs based on FSharp.Data. 
+F# Data Toolbox is a library for various data access APIs based on FSharp.Data. It
+will contain individual packages for each data source.
+
+The first package for Twitter access is available through NuGet.
 
 <div class="row">
   <div class="span1"></div>
   <div class="span6">
     <div class="well well-small" id="nuget">
-      The F# Data Toolbox library can be <a href="https://nuget.org/packages/FSharp.Data.Toolbox">installed from NuGet</a>:
-      <pre>PM> Install-Package FSharp.Data.Toolbox</pre>
+      The F# Data Toolbox library can be <a href="https://nuget.org/packages/FSharp.Data.Toolbox.Twitter">installed from NuGet</a>:
+      <pre>PM> Install-Package FSharp.Data.Toolbox.Twitter</pre>
     </div>
   </div>
   <div class="span1"></div>
