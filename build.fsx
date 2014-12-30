@@ -50,9 +50,6 @@ let nugetPackages =
      "F# Data-based library for accessing Twitter data",
      "nuget/FSharp.Data.Toolbox.Twitter.nuspec") ]
 
-// File system information 
-// (<solutionFile>.sln is built during the building process)
-let solutionFile  = "FSharp.Data.Toolbox*.sln"
 // Pattern specifying assemblies to be tested using NUnit
 let testAssemblies = "tests/**/bin/Release/*Tests*.dll"
 
@@ -119,7 +116,11 @@ Target "CleanDocs" (fun _ ->
 // Build library & test project
 
 Target "Build" (fun _ ->
-    !! solutionFile
+    !! "FSharp.Data.Toolbox.sln"
+    |> MSBuildRelease "" "Rebuild"
+    |> ignore
+
+    !! "FSharp.Data.Toolbox.Tests.sln"
     |> MSBuildRelease "" "Rebuild"
     |> ignore
 )
