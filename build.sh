@@ -1,14 +1,38 @@
 #!/bin/bash
-if [ ! -f packages/FAKE/tools/FAKE.exe ]; then
-  mono .nuget/NuGet.exe install FAKE -OutputDirectory packages -ExcludeVersion
+if test "$OS" = "Windows_NT"
+then
+  # use .Net
+
+  .paket/paket.bootstrapper.exe
+  exit_code=$?
+  if [ $exit_code -ne 0 ]; then
+  	exit $exit_code
+  fi
+
+  .paket/paket.exe restore
+  exit_code=$?
+  if [ $exit_code -ne 0 ]; then
+  	exit $exit_code
+  fi
+  
+  [ ! -e build.fsx ] && .paket/paket.exe update
+  [ ! -e build.fsx ] && packages/FAKE/tools/FAKE.exe init.fsx
+  packages/FAKE/tools/FAKE.exe $@ --fsiargs -d:MONO build.fsx 
+else
+  # use mono
+  mono .paket/paket.bootstrapper.exe
+  exit_code=$?
+  if [ $exit_code -ne 0 ]; then
+  	exit $exit_code
+  fi
+
+  mono .paket/paket.exe restore
+  exit_code=$?
+  if [ $exit_code -ne 0 ]; then
+  	exit $exit_code
+  fi
+
+  [ ! -e build.fsx ] && mono .paket/paket.exe update
+  [ ! -e build.fsx ] && mono packages/FAKE/tools/FAKE.exe init.fsx
+  mono packages/FAKE/tools/FAKE.exe $@ --fsiargs -d:MONO build.fsx 
 fi
-#workaround assembly resolution issues in build.fsx
-export FSHARPI=`which fsharpi`
-cat - > fsharpi <<"EOF"
-#!/bin/bash
-libdir=$PWD/packages/FAKE/tools/
-$FSHARPI --lib:$libdir $@
-EOF
-chmod +x fsharpi
-mono packages/FAKE/tools/FAKE.exe build.fsx $@
-rm fsharpi
