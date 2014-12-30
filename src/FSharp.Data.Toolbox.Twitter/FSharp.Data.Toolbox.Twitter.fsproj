@@ -67,9 +67,7 @@
     <EmbeddedResource Include="json/users_lookup.json">
       <Link>json/users_lookup.json</Link>
     </EmbeddedResource>
-    <Compile Include="../Common/AssemblyInfo.fs">
-      <Link>AssemblyInfo.fs</Link>
-    </Compile>
+    <Compile Include="AssemblyInfo.fs" />
     <Compile Include="GuiExtensions.fs" />
     <Compile Include="Twitter.fs" />
     <None Include="Twitter.fsx" />
