@@ -18,8 +18,9 @@ to its API. You have to register your application at
 [Twitter Apps](https://apps.twitter.com/). 
 After registration, Twitter provides API key and API secret
  to authenticate the application.
-
 *)
+// The Twitter reference needs to come before FSharp.Data.dll
+// (see the big warning box below for more!)
 #r "FSharp.Data.Toolbox.Twitter.dll"
 #r "FSharp.Data.dll"
 open FSharp.Data.Toolbox.Twitter
@@ -28,6 +29,19 @@ let key = "mKQL29XNemjQbLlQ8t0pBg"
 let secret = "T27HLDve1lumQykBUgYAbcEkbDrjBe6gwbu0gqi4saM"
 
 (**
+<div class="well well-small" style="margin:0px 70px 0px 20px;">
+
+**WARNING**: To make the Twitter type provider work correctly in F# Interactive,
+you need to reference `FSharp.Data.Toolbox.Twitter.dll` *before* referencing `FSharp.Data.dll` 
+as on the first two lines above. 
+
+This is required so that the JSON type provider (used in F# Data Toolbox) can locate sample
+JSON files from the embedded metadata of the `FSharp.Data.Toolbox.Twitter.dll` assembly. An
+alternative is to copy the [sample JSON files](https://github.com/fsprojects/FSharp.Data.Toolbox/tree/master/src/FSharp.Data.Toolbox.Twitter/json)
+together with the assembly.
+
+</p></div>
+
 There are two types of possible connections to Twitter,
 application-only and full OAuth authentication. They provide 
 different access rights and different number of [allowed requests
