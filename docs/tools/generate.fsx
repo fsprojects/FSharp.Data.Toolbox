@@ -86,7 +86,7 @@ let buildReference () =
       parameters = ("root", root)::info,
       sourceRepo = githubLink @@ "tree/master",
       sourceFolder = __SOURCE_DIRECTORY__ @@ ".." @@ "..",
-      publicOnly = true, libDirs = [bin] )
+      publicOnly = true, libDirs = [bin; bin @@ "../packages/FSharp.Data/lib/net40" ] )
 
 // Build documentation from `fsx` and `md` files in `docs/content`
 let buildDocumentation () =
@@ -111,5 +111,6 @@ copyFiles()
 buildDocumentation()
 #endif
 #if REFERENCE
-buildReference()
+// TODO: Does not work
+// buildReference()
 #endif
