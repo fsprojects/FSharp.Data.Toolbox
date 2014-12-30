@@ -1,7 +1,7 @@
 (*** hide ***)
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
-#I "../../packages/FSharp.Data.2.0.7/lib/net40"
+#I "../../packages/FSharp.Data/lib/net40"
 #I "../../bin"
 
 (**
@@ -20,8 +20,8 @@ After registration, Twitter provides API key and API secret
  to authenticate the application.
 
 *)
-#r "FSharp.Data.dll"
 #r "FSharp.Data.Toolbox.Twitter.dll"
+#r "FSharp.Data.dll"
 open FSharp.Data.Toolbox.Twitter
 
 let key = "mKQL29XNemjQbLlQ8t0pBg"
