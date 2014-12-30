@@ -34,6 +34,13 @@ let authors = [ "Evelina Gabasova"; "Tomas Petricek" ]
 // Tags for your project (for NuGet package)
 let tags = "F# fsharp data typeprovider twitter api toolbox"
 
+// List of NuGet pacakges to be published...
+let nugetPackages = 
+  [ ("FSharp.Data.Toolbox.Twitter",
+     "F# Data-based library for accessing Twitter data",
+     "F# Data-based library for accessing Twitter data",
+     "nuget/FSharp.Data.Toolbox.Twitter.nuspec") ]
+
 // File system information 
 // (<solutionFile>.sln is built during the building process)
 let solutionFile  = "FSharp.Data.Toolbox"
@@ -42,7 +49,7 @@ let testAssemblies = "tests/**/bin/Release/*Tests*.dll"
 
 // Git configuration (used for publishing documentation in gh-pages branch)
 // The profile where the project is posted 
-let gitHome = "https://github.com/evelinag"
+let gitHome = "https://github.com/fsprojects"
 // The name of the project on GitHub
 let gitName = "FSharp.Data.Toolbox"
 
@@ -104,20 +111,21 @@ Target "RunTests" (fun _ ->
 // Build a NuGet package
 
 Target "NuGet" (fun _ ->
-    NuGet (fun p -> 
-        { p with   
-            Authors = authors
-            Project = project
-            Summary = summary
-            Description = description
-            Version = release.NugetVersion
-            ReleaseNotes = String.Join(Environment.NewLine, release.Notes)
-            Tags = tags
-            OutputPath = "bin"
-            AccessKey = getBuildParamOrDefault "nugetkey" ""
-            Publish = hasBuildParam "nugetkey"
-            Dependencies = [] })
-        ("nuget/" + project + ".nuspec")
+    for project, summary, description, nuspec in nugetPackages do
+        NuGet (fun p -> 
+            { p with   
+                Authors = authors
+                Project = project
+                Summary = summary
+                Description = description
+                Version = release.NugetVersion
+                ReleaseNotes = String.Join(Environment.NewLine, release.Notes)
+                Tags = tags
+                OutputPath = "bin"
+                AccessKey = getBuildParamOrDefault "nugetkey" ""
+                Publish = hasBuildParam "nugetkey"
+                Dependencies = [] })
+            (nuspec)
 )
 
 // --------------------------------------------------------------------------------------
