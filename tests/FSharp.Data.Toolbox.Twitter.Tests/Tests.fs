@@ -1,4 +1,4 @@
-﻿#if INTERACTIVE
+#if INTERACTIVE
 #I "../../packages/FSharp.Data.2.0.7/lib/net40"
 #I "../../bin"
 #I "../../packages/NUnit.2.6.3/lib"
