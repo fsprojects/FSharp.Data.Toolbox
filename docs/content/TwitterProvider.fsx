@@ -1,6 +1,7 @@
 (*** hide ***)
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
+#nowarn "211"
 #I "../../packages/FSharp.Data/lib/net40"
 #I "../../bin"
 
@@ -19,6 +20,11 @@ to its API. You have to register your application at
 After registration, Twitter provides API key and API secret
  to authenticate the application.
 *)
+// First, reference the locations where F# Data and 
+// F# Data Toolbox are located (using '#I' is required here!)
+#I @"packages/FSharp.Data.Toolbox.Twitter.0.3/lib/net40"
+#I @"packages/FSharp.Data.2.1.1/lib/net40"
+
 // The Twitter reference needs to come before FSharp.Data.dll
 // (see the big warning box below for more!)
 #r "FSharp.Data.Toolbox.Twitter.dll"
@@ -31,12 +37,18 @@ let secret = "T27HLDve1lumQykBUgYAbcEkbDrjBe6gwbu0gqi4saM"
 (**
 <div class="well well-small" style="margin:0px 70px 0px 20px;">
 
-**WARNING**: To make the Twitter type provider work correctly in F# Interactive,
-you need to reference `FSharp.Data.Toolbox.Twitter.dll` *before* referencing `FSharp.Data.dll` 
-as on the first two lines above. 
+**WARNING**: Unfortunately, F# Interactive is quite sensitive to how you
+reference the packages when using F# Data Toolbox. To make the Twitter type provider work 
+correctly in F# Interactive, you need to:
 
-This is required so that the JSON type provider (used in F# Data Toolbox) can locate sample
-JSON files from the embedded metadata of the `FSharp.Data.Toolbox.Twitter.dll` assembly. An
+ - Use the `#I` directive to reference the path where the two libraries are located
+   (rather than usign `#r` with a full relative path)
+
+ - Reference `FSharp.Data.Toolbox.Twitter.dll` *before* referencing `FSharp.Data.dll` 
+   as on the first two lines above. 
+
+This second point is required so that the JSON type provider (used in F# Data Toolbox) can locate 
+sample JSON files from the embedded metadata of the `FSharp.Data.Toolbox.Twitter.dll` assembly. An
 alternative is to copy the [sample JSON files](https://github.com/fsprojects/FSharp.Data.Toolbox/tree/master/src/FSharp.Data.Toolbox.Twitter/json)
 together with the assembly.
 
