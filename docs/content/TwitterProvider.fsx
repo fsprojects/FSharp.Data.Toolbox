@@ -47,6 +47,9 @@ correctly in F# Interactive, you need to:
  - Reference `FSharp.Data.Toolbox.Twitter.dll` *before* referencing `FSharp.Data.dll` 
    as on the first two lines above. 
 
+ - If you are using the Twitter provider in a compiled project, you will also need
+   to add reference to `System.Windows.Forms`.
+   
 This second point is required so that the JSON type provider (used in F# Data Toolbox) can locate 
 sample JSON files from the embedded metadata of the `FSharp.Data.Toolbox.Twitter.dll` assembly. An
 alternative is to copy the [sample JSON files](https://github.com/fsprojects/FSharp.Data.Toolbox/tree/master/src/FSharp.Data.Toolbox.Twitter/json)
