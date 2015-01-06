@@ -1,7 +1,8 @@
 (*** hide ***)
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
-#I "../../packages/FSharp.Data.2.0.7/lib/net40"
+#nowarn "211"
+#I "../../packages/FSharp.Data/lib/net40"
 #I "../../bin"
 
 (**
@@ -18,16 +19,44 @@ to its API. You have to register your application at
 [Twitter Apps](https://apps.twitter.com/). 
 After registration, Twitter provides API key and API secret
  to authenticate the application.
-
 *)
-#r "FSharp.Data.dll"
+// First, reference the locations where F# Data and 
+// F# Data Toolbox are located (using '#I' is required here!)
+#I @"packages/FSharp.Data.Toolbox.Twitter.0.3/lib/net40"
+#I @"packages/FSharp.Data.2.1.1/lib/net40"
+
+// The Twitter reference needs to come before FSharp.Data.dll
+// (see the big warning box below for more!)
 #r "FSharp.Data.Toolbox.Twitter.dll"
+#r "FSharp.Data.dll"
 open FSharp.Data.Toolbox.Twitter
 
 let key = "mKQL29XNemjQbLlQ8t0pBg"
 let secret = "T27HLDve1lumQykBUgYAbcEkbDrjBe6gwbu0gqi4saM"
 
 (**
+<div class="well well-small" style="margin:0px 70px 0px 20px;">
+
+**WARNING**: Unfortunately, F# Interactive is quite sensitive to how you
+reference the packages when using F# Data Toolbox. To make the Twitter type provider work 
+correctly in F# Interactive, you need to:
+
+ - Use the `#I` directive to reference the path where the two libraries are located
+   (rather than usign `#r` with a full relative path)
+
+ - Reference `FSharp.Data.Toolbox.Twitter.dll` *before* referencing `FSharp.Data.dll` 
+   as on the first two lines above. 
+
+ - If you are using the Twitter provider in a compiled project, you will also need
+   to add reference to `System.Windows.Forms`.
+   
+This second point is required so that the JSON type provider (used in F# Data Toolbox) can locate 
+sample JSON files from the embedded metadata of the `FSharp.Data.Toolbox.Twitter.dll` assembly. An
+alternative is to copy the [sample JSON files](https://github.com/fsprojects/FSharp.Data.Toolbox/tree/master/src/FSharp.Data.Toolbox.Twitter/json)
+together with the assembly.
+
+</p></div>
+
 There are two types of possible connections to Twitter,
 application-only and full OAuth authentication. They provide 
 different access rights and different number of [allowed requests

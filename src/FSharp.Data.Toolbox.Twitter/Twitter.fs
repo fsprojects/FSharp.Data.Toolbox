@@ -1,4 +1,4 @@
-﻿namespace FSharp.Data.Toolbox.Twitter
+namespace FSharp.Data.Toolbox.Twitter
 
 open System
 open System.Globalization
