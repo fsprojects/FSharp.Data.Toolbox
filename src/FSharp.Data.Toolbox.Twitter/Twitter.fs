@@ -321,6 +321,18 @@ and Timelines(context:TwitterContext) =
       let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/user_timeline.json", args)
       TwitterTypes.TimeLine.Parse(res)
 
+    member tl.MentionTimeline (?count:int, ?sinceId:int64, ?maxId:int64, ?trimUser:bool, ?contributorDetails:bool, ?includeEntities:bool) = 
+      let args = 
+        [ Utils.optional "count" count; 
+          Utils.optional "since_id" sinceId; 
+          Utils.optional "max_id" maxId; 
+          Utils.optional "trim_user" trimUser;
+          Utils.optional "contributor_details" contributorDetails;
+          Utils.optional "include_entities" includeEntities]
+          |> Utils.makeParams
+      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/mentions_timeline.json", args)
+      TwitterTypes.MentionsTimeLine.Parse(res)
+
 and Search (context:TwitterContext) =
     member s.Tweets (query:string, ?lang:string, ?geocode:string, ?locale:string, 
                           ?count:int, ?sinceId:int64, ?maxId:int64, ?until:string) = 
@@ -336,20 +348,6 @@ and Search (context:TwitterContext) =
           |> Utils.makeParams
       let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/search/tweets.json", args)
       TwitterTypes.SearchTweets.Parse(res)
-
-and Mentions (context:TwitterContext) =
-    member s.TimeLine (?count:int, ?sinceId:int64, ?maxId:int64, 
-                        ?trimUser:bool, ?contributorDetails:bool, ?includeEntities:bool) = 
-      let args = 
-        [ Utils.optional "count" count; 
-          Utils.optional "since_id" sinceId; 
-          Utils.optional "max_id" maxId; 
-          Utils.optional "trim_user" trimUser;
-          Utils.optional "contributor_details" contributorDetails;
-          Utils.optional "include_entities" includeEntities]
-          |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/mentions_timeline.json", args)
-      TwitterTypes.MentionsTimeLine.Parse(res)
 
 and Connections (context:TwitterContext) = 
     member f.FriendsIds (?userId:int64, ?screenName:string, ?cursor:int64, ?count:int) =
@@ -443,5 +441,4 @@ and Twitter(context:TwitterContext) =
   member twitter.Connections = Connections(context)
   member twitter.Users = Users(context)
   member twitter.RequestRawData(url:string, query) = TwitterRequest(context).RequestRawData(url, query)
-  member twitter.Mentions = Mentions(context)
       

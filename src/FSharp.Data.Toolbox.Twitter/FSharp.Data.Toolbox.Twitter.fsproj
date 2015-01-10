@@ -67,12 +67,14 @@
     <EmbeddedResource Include="json/users_lookup.json">
       <Link>json/users_lookup.json</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="json/mentions_timeline.json">
+      <Link>json/mentions_timeline.json</Link>
+    </EmbeddedResource>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="GuiExtensions.fs" />
     <Compile Include="Twitter.fs" />
     <None Include="Twitter.fsx" />
     <None Include="paket.references" />
-    <None Include="json\mentions_timeline.json" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
