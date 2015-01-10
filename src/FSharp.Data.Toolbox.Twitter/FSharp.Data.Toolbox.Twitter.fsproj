@@ -72,6 +72,7 @@
     <Compile Include="Twitter.fs" />
     <None Include="Twitter.fsx" />
     <None Include="paket.references" />
+    <None Include="json\mentions_timeline.json" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
