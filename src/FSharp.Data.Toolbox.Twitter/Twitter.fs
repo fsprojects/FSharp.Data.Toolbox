@@ -239,6 +239,7 @@ module TwitterTypes =
   type IdsList = JsonProvider<"json/idslist.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,idslist.json">
   type UsersLookup = JsonProvider<"json/users_lookup.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,users_lookup.json">
   type FriendshipShow = JsonProvider<"json/friendship_show.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,friendship_show.json">
+  type MentionsTimeLine = JsonProvider<"json/mentions_timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,mentions_timeline.json">
 
 type TwitterConnector =
   abstract Connect : string -> Twitter 
@@ -319,6 +320,18 @@ and Timelines(context:TwitterContext) =
                  |> Utils.makeParams
       let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/user_timeline.json", args)
       TwitterTypes.TimeLine.Parse(res)
+
+    member tl.MentionTimeline (?count:int, ?sinceId:int64, ?maxId:int64, ?trimUser:bool, ?contributorDetails:bool, ?includeEntities:bool) = 
+      let args = 
+        [ Utils.optional "count" count; 
+          Utils.optional "since_id" sinceId; 
+          Utils.optional "max_id" maxId; 
+          Utils.optional "trim_user" trimUser;
+          Utils.optional "contributor_details" contributorDetails;
+          Utils.optional "include_entities" includeEntities]
+          |> Utils.makeParams
+      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/mentions_timeline.json", args)
+      TwitterTypes.MentionsTimeLine.Parse(res)
 
 and Search (context:TwitterContext) =
     member s.Tweets (query:string, ?lang:string, ?geocode:string, ?locale:string, 
