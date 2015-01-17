@@ -188,6 +188,13 @@ let timeline = twitter.Timelines.Timeline("fsharporg")
 for tweet in timeline do
     web.Output.AddItem "<strong>%s</strong>: %s" tweet.User.Name tweet.Text
 
+
+// Access mentions timeline
+// (requires full user authentication)
+let mention = twitter.Timelines.MentionTimeline()
+for tweet in mention do
+    web.Output.AddItem "<strong>%s</strong>: %s" tweet.User.Name tweet.Text
+
 (** 
 ![Twitter timeline](img/timeline.png)
 
