@@ -349,15 +349,22 @@ and Search (context:TwitterContext) =
       let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/search/tweets.json", args)
       TwitterTypes.SearchTweets.Parse(res)
 
-and Connections (context:TwitterContext) = 
+and Connections (context : TwitterContext) = 
+
     member f.FriendsIds (?userId:int64, ?screenName:string, ?cursor:int64, ?count:int) =
+
+      let twitterHandle = 
+        match context with
+          | TwitterAppContext when userId.IsNone && screenName.IsNone -> failwith "A user_id or screen_name must be specified when using Application based authentication."
+          | _ -> [Utils.optional "user_id" userId ; Utils.optional "screen_name" screenName] |> Utils.makeParams
+
       let args = 
-        [ Utils.optional "user_id" userId;
-          Utils.optional "screen_name" screenName
-          Utils.optional "cursor" cursor; 
+        [ Utils.optional "cursor" cursor; 
           Utils.optional "count" count ] 
           |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/friends/ids.json", args)
+
+      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/friends/ids.json", twitterHandle @ args)
+
       TwitterTypes.IdsList.Parse(res)
 
     member f.FollowerIds (?userId:int64, ?screenName:string, ?cursor:int64, ?count:int) =
