@@ -415,17 +415,12 @@ and TwitterRequest (context:TwitterContext) =
 
 and Twitter(context:TwitterContext) =
 
-  static member TwitterWeb () =
-    let frm = new Form(TopMost = true, Visible = true, Width = 500, Height = 400)
-    let web = new WebBrowser(Dock = DockStyle.Fill)
-    frm.Controls.Add(web)
-    web
-  
   static member Authenticate(consumer_key, consumer_secret) =
-    let web = Twitter.TwitterWeb()
     let request_token, request_secret, _ = Utils.requestToken consumer_key consumer_secret
     let url = Utils.authorizeURI + "?oauth_token=" + request_token
-    web.Navigate(url)
+    
+    System.Diagnostics.Process.Start(url) |> ignore
+
     { new TwitterConnector with 
         member x.Connect(number) =
           let access_token, access_secret = 
