@@ -266,7 +266,7 @@ module MetaData =
     let  generateTypeCode (fileName:string) =      
     
         let (header, p) = fileHeaderAndPages fileName
-        let pages = p |> Seq.toList
+        let pages = p |> metapages |> Seq.toList
 
         let (columns, rowSize) = getColumnsAndRowsize pages
 
