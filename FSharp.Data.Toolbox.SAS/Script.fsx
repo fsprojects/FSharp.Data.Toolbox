@@ -1,6 +1,6 @@
 ﻿// How to get started 
 // look in the file SAS Files.csv (I use Excel) and download one or more files into the directory specified on the next line
-let folder = @"D:\SAS Files"
+let folder = @"D:\SAS Files 3"
 
 #load "SAS.MetaData.fs"
 open SAS.MetaData

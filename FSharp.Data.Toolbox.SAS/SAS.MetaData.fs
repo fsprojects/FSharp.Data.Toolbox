@@ -71,8 +71,17 @@ module MetaData =
             FilePath    = filePath
             DateCreated = sasDate raw (164+a1)
             DateModified = sasDate raw (172+a1)
-            Endianness  = if raw.[37] = 00uy then Endianness.Big else Endianness.Little
-            OSType      = if raw.[39] = 01uy then OSType.UNIX else OSType.Windows
+            Endianness  = match raw.[37] with
+                            | 00uy -> Endianness.Big 
+                            | 01uy -> Endianness.Little
+                            | _ -> failwith "unknown Endianness"                                
+            OSType      = match char raw.[39] with
+                            | '1' -> OSType.UNIX
+                            | '2' -> OSType.Windows
+                            | _ ->
+                                let b = char raw.[39]
+                                let msg = sprintf "unknown OSType: %c in file %s" b filePath    
+                                failwith msg
        }  
          
 
