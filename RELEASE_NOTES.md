@@ -19,3 +19,6 @@
 
 #### 0.6 - January 17 2015
 * Added function to access timeline mentions (Thanks @teramonagi!)
+
+#### 0.7 - June 26 2015
+* Update F# Data dependency to fix resource resolution issues
