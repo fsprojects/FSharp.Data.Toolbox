@@ -307,16 +307,18 @@ and Timelines(context:TwitterContext) =
           TwitterTypes.TimeLine.Parse(res)
       | _ -> failwith "Full user authentication is required to access Twitter Timelines."
     
-    member tl.Timeline (userId: int64, ?count:int) = 
+    member tl.Timeline (userId: int64, ?count:int, ?maxId:int64) = 
       let args = [ Utils.required "user_id" userId;
-                   Utils.optional "count" count ]
+                   Utils.optional "count" count;
+                   Utils.optional "max_id" maxId ]
                  |> Utils.makeParams
       let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/user_timeline.json", args)
       TwitterTypes.TimeLine.Parse(res)
 
-    member tl.Timeline (screenName: string, ?count:int) = 
+    member tl.Timeline (screenName: string, ?count:int, ?maxId:int64) = 
       let args = [ Utils.required "screen_name" screenName;
-                   Utils.optional "count" count ]
+                   Utils.optional "count" count;
+                   Utils.optional "max_id" maxId ]
                  |> Utils.makeParams
       let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/user_timeline.json", args)
       TwitterTypes.TimeLine.Parse(res)
