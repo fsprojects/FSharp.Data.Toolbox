@@ -22,3 +22,6 @@
 
 #### 0.7 - June 26 2015
 * Update F# Data dependency to fix resource resolution issues
+
+#### 0.8 - August 5 2015
+* Inclusion of maxId in timeline requests (#29)
