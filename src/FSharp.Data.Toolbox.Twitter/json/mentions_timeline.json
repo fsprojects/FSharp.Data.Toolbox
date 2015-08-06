@@ -4,7 +4,7 @@
     "favorited": false,
     "truncated": false,
     "created_at": "Mon Sep 03 13:24:14 +0000 2012",
-    "id_str": "242613977966850048",
+    "id_str": "263269086455275520",
     "entities": {
       "urls": [
  
@@ -15,8 +15,8 @@
       "user_mentions": [
         {
           "name": "Jason Costa",
-          "id_str": "14927800",
-          "id": 14927800,
+          "id_str": "263269086455275520",
+          "id": 263269086455275520,
           "indices": [
             0,
             11
@@ -25,8 +25,8 @@
         },
         {
           "name": "Matt Harris",
-          "id_str": "777925",
-          "id": 777925,
+          "id_str": "263269086455275520",
+          "id": 263269086455275520,
           "indices": [
             12,
             26
@@ -35,8 +35,8 @@
         },
         {
           "name": "ThinkWall",
-          "id_str": "117426578",
-          "id": 117426578,
+          "id_str": "263269086455275520",
+          "id": 263269086455275520,
           "indices": [
             109,
             119
@@ -50,7 +50,7 @@
     "text": "@jasoncosta @themattharris Hey! Going to be in Frisco in October. Was hoping to have a meeting to talk about @thinkwall if you're around?",
     "retweet_count": 0,
     "in_reply_to_status_id_str": null,
-    "id": 242613977966850048,
+    "id": 263269086455275520,
     "geo": null,
     "retweeted": false,
     "in_reply_to_user_id": 14927800,
@@ -66,7 +66,7 @@
       "follow_request_sent": false,
       "profile_link_color": "F31B52",
       "is_translator": false,
-      "id_str": "16402947",
+      "id_str": "263269086455275520",
       "entities": {
         "url": {
           "urls": [
@@ -92,7 +92,7 @@
       "url": "http://www.linkedin.com/in/spode",
       "profile_image_url_https": "https://si0.twimg.com/profile_images/1227466231/spode-balloon-medium_normal.jpg",
       "utc_offset": 0,
-      "id": 16402947,
+      "id": 263269086455275520,
       "profile_use_background_image": false,
       "listed_count": 129,
       "profile_text_color": "262626",
@@ -129,7 +129,7 @@
     "favorited": false,
     "truncated": false,
     "created_at": "Mon Sep 03 08:08:02 +0000 2012",
-    "id_str": "242534402280783873",
+    "id_str": "263269086455275520",
     "entities": {
       "urls": [
  
@@ -146,8 +146,8 @@
       "user_mentions": [
         {
           "name": "Jason Costa",
-          "id_str": "14927800",
-          "id": 14927800,
+          "id_str": "263269086455275520",
+          "id": 263269086455275520,
           "indices": [
             14,
             25
@@ -161,7 +161,7 @@
     "text": "Got the shirt @jasoncosta thanks man! Loving the #twitter bird on the shirt :-)",
     "retweet_count": 0,
     "in_reply_to_status_id_str": null,
-    "id": 242534402280783873,
+    "id": 263269086455275520,
     "geo": {
       "coordinates": [
         14.5191613,
@@ -183,7 +183,7 @@
       "follow_request_sent": false,
       "profile_link_color": "009999",
       "is_translator": false,
-      "id_str": "15181205",
+      "id_str": "263269086455275520",
       "entities": {
         "url": {
           "urls": [
@@ -209,7 +209,7 @@
       "url": "http://about.me/michaelangelo",
       "profile_image_url_https": "https://si0.twimg.com/profile_images/1305509670/chatMikeTwitter_normal.png",
       "utc_offset": 28800,
-      "id": 15181205,
+      "id": 263269086455275520,
       "profile_use_background_image": true,
       "listed_count": 61,
       "profile_text_color": "333333",
