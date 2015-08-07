@@ -25,3 +25,6 @@
 
 #### 0.8 - August 5 2015
 * Inclusion of maxId in timeline requests (#29)
+
+#### 0.9 - August 7 2015
+* Fix sample JSON files to always expose user_id as int64 (#30)
