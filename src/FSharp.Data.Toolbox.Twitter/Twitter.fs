@@ -351,15 +351,22 @@ and Search (context:TwitterContext) =
       let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/search/tweets.json", args)
       TwitterTypes.SearchTweets.Parse(res)
 
-and Connections (context:TwitterContext) = 
+and Connections (context : TwitterContext) = 
+
     member f.FriendsIds (?userId:int64, ?screenName:string, ?cursor:int64, ?count:int) =
+
+      let twitterHandle = 
+        match context with
+          | TwitterAppContext when userId.IsNone && screenName.IsNone -> failwith "A user_id or screen_name must be specified when using Application based authentication."
+          | _ -> [Utils.optional "user_id" userId ; Utils.optional "screen_name" screenName] |> Utils.makeParams
+
       let args = 
-        [ Utils.optional "user_id" userId;
-          Utils.optional "screen_name" screenName
-          Utils.optional "cursor" cursor; 
+        [ Utils.optional "cursor" cursor; 
           Utils.optional "count" count ] 
           |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/friends/ids.json", args)
+
+      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/friends/ids.json", twitterHandle @ args)
+
       TwitterTypes.IdsList.Parse(res)
 
     member f.FollowerIds (?userId:int64, ?screenName:string, ?cursor:int64, ?count:int) =
@@ -410,17 +417,12 @@ and TwitterRequest (context:TwitterContext) =
 
 and Twitter(context:TwitterContext) =
 
-  static member TwitterWeb () =
-    let frm = new Form(TopMost = true, Visible = true, Width = 500, Height = 400)
-    let web = new WebBrowser(Dock = DockStyle.Fill)
-    frm.Controls.Add(web)
-    web
-  
   static member Authenticate(consumer_key, consumer_secret) =
-    let web = Twitter.TwitterWeb()
     let request_token, request_secret, _ = Utils.requestToken consumer_key consumer_secret
     let url = Utils.authorizeURI + "?oauth_token=" + request_token
-    web.Navigate(url)
+    
+    System.Diagnostics.Process.Start(url) |> ignore
+
     { new TwitterConnector with 
         member x.Connect(number) =
           let access_token, access_secret = 
