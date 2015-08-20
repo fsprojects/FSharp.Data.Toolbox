@@ -1,15 +1,20 @@
-﻿namespace FSharp.Data.Toolbox.Sas
+﻿#I @"..\..\bin"
+#r "FSharp.Data.Toolbox.Sas"
 
-module SasFile =
+module Exploratory =
+        open System
+        open System.IO
+        open System.Diagnostics
 
-    open System
-    open System.Diagnostics
-    open System.IO
+        open FSharp.Data.Toolbox.Sas.Core
+        open FSharp.Data.Toolbox.Sas.SasSignatures
+        open FSharp.Data.Toolbox.Sas.SasFile
 
-    open SasSignatures
+        let path = 
+            Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, 
+                          @"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
 
-    type SasFile (path) = 
-
+    ///////////////////////////////////////////
         let reader = 
             if not <| File.Exists path then
                 failwith "File '%s' not found" path
@@ -338,32 +343,29 @@ module SasFile =
                     failwith "Couldn't read page"
                 yield readPage page
 
-            reader.Close()
+            //reader.Close()
         }
         
         // collect subheaders from all pages into one list
         let readMeta () =
-            // helper function to only get pages that contain metadata (skip rest, big speedup for large files) 
-            let metaPages pages =  
+            // collect subheaders from all pages with metadata
+            let subHeaders = 
                 pages
+                // only get pages that contain metadata (skip rest, big speedup for large files) 
                 |> Seq.takeWhile (fun page -> 
                     match page with 
                     | Meta _ 
                     | Mix _ 
                     | AMD _ -> true 
-                    | _ -> false
-                )
-
-            // collect subheaders from all pages with metadata
-            let subHeaders = 
-                seq {    
-                for mp in metaPages pages do
+                    | _ -> false )
+                |> Seq.map (fun mp ->
                     match mp with 
-                    | Meta subHeaders -> yield! subHeaders
-                    | Mix  (subHeaders, _, _) -> yield! subHeaders
-                    | AMD  (subHeaders, _, _) -> yield! subHeaders
-                    | _ -> failwith "There should only be Meta or Mix here"                
-                } |> Seq.toList
+                    | Meta subHeaders
+                    | Mix (subHeaders, _, _)
+                    | AMD (subHeaders, _, _) -> subHeaders
+                    | _ -> failwith "There should only be Meta or Mix here" )
+                |> Seq.concat
+                |> Seq.toList
                        
             // only one of these                
             let rowSize, rowCount =
@@ -433,7 +435,7 @@ module SasFile =
                     Label = 
                         slice 
                             (List.nth textHeaders (int name.TextIndex) )
-                            (int format.ColumnFormatOffset, int format.ColumnLabelLength) 
+                            (int format.ColumnLabelOffset, int format.ColumnLabelLength) 
                         |> ToStr
                     Offset = attr.ColumnAttrOffset
                 })
@@ -441,18 +443,4 @@ module SasFile =
             {   RowCount = rowCount
                 RowSize  = rowSize
                 Columns  = columns   } // return collected metadata
-
-        interface System.IDisposable with 
-            member x.Dispose() = 
-                reader.Close()
-
-        member x.Path = path
-        member x.Header = header
-
-        
-        member x.ReadLines() =
-            let meta = readMeta ()
-            pages
-
-
 

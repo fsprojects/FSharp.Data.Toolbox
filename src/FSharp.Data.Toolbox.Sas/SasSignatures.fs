@@ -93,37 +93,37 @@ module SasSignatures =
     let COMPRESSED_SUBHEADER_TYPE = 1uy
 
     // Subheader signatures, 32 and 64 bit, little and big endian
-    let SignatureToHeaderColumn = 
+    let SignatureToHeaderColumn =
         dict [
-            FromHex "F7F7F7F7",         RowSize
-            FromHex "00000000F7F7F7F7", RowSize
-            FromHex "F7F7F7F700000000", RowSize
-            FromHex "F6F6F6F6",         ColumnSize
-            FromHex "00000000F6F6F6F6", ColumnSize
-            FromHex "F6F6F6F600000000", ColumnSize
-            FromHex "00FCFFFF",         SubheaderCounts
-            FromHex "FFFFFC00",         SubheaderCounts
-            FromHex "00FCFFFFFFFFFFFF", SubheaderCounts
-            FromHex "FFFFFFFFFFFFFC00", SubheaderCounts
-            FromHex "FDFFFFFF",         ColumnText
-            FromHex "FFFFFFFD",         ColumnText
-            FromHex "FDFFFFFFFFFFFFFF", ColumnText
-            FromHex "FFFFFFFFFFFFFFFD", ColumnText
-            FromHex "FFFFFFFF",         ColumnName
-            FromHex "FFFFFFFFFFFFFFFF", ColumnName
-            FromHex "FCFFFFFF",         ColumnAttributes
-            FromHex "FFFFFFFC",         ColumnAttributes
-            FromHex "FCFFFFFFFFFFFFFF", ColumnAttributes
-            FromHex "FFFFFFFFFFFFFFFC", ColumnAttributes
-            FromHex "FEFBFFFF",         FormatAndLabel
-            FromHex "FFFFFBFE",         FormatAndLabel
-            FromHex "FEFBFFFFFFFFFFFF", FormatAndLabel
-            FromHex "FFFFFFFFFFFFFBFE", FormatAndLabel
-            FromHex "FEFFFFFF",         ColumnList
-            FromHex "FFFFFFFE",         ColumnList
-            FromHex "FEFFFFFFFFFFFFFF", ColumnList
-            FromHex "FFFFFFFFFFFFFFFE", ColumnList
-        ]
+            FromHex "F7F7F7F7",         SubHeaderType.Rows 
+            FromHex "00000000F7F7F7F7", SubHeaderType.Rows 
+            FromHex "F7F7F7F700000000", SubHeaderType.Rows 
+            FromHex "F6F6F6F6",         SubHeaderType.ColumnCount
+            FromHex "00000000F6F6F6F6", SubHeaderType.ColumnCount
+            FromHex "F6F6F6F600000000", SubHeaderType.ColumnCount
+            FromHex "00FCFFFF",         SubHeaderType.SubHeaderCount
+            FromHex "FFFFFC00",         SubHeaderType.SubHeaderCount
+            FromHex "00FCFFFFFFFFFFFF", SubHeaderType.SubHeaderCount
+            FromHex "FFFFFFFFFFFFFC00", SubHeaderType.SubHeaderCount
+            FromHex "FDFFFFFF",         SubHeaderType.ColumnText
+            FromHex "FFFFFFFD",         SubHeaderType.ColumnText
+            FromHex "FDFFFFFFFFFFFFFF", SubHeaderType.ColumnText
+            FromHex "FFFFFFFFFFFFFFFD", SubHeaderType.ColumnText
+            FromHex "FFFFFFFF",         SubHeaderType.ColumnName
+            FromHex "FFFFFFFFFFFFFFFF", SubHeaderType.ColumnName
+            FromHex "FCFFFFFF",         SubHeaderType.ColumnAttributes
+            FromHex "FFFFFFFC",         SubHeaderType.ColumnAttributes
+            FromHex "FCFFFFFFFFFFFFFF", SubHeaderType.ColumnAttributes
+            FromHex "FFFFFFFFFFFFFFFC", SubHeaderType.ColumnAttributes
+            FromHex "FEFBFFFF",         SubHeaderType.ColumnFormatLabel
+            FromHex "FFFFFBFE",         SubHeaderType.ColumnFormatLabel
+            FromHex "FEFBFFFFFFFFFFFF", SubHeaderType.ColumnFormatLabel
+            FromHex "FFFFFFFFFFFFFBFE", SubHeaderType.ColumnFormatLabel
+            FromHex "FEFFFFFF",         SubHeaderType.ColumnList
+            FromHex "FFFFFFFE",         SubHeaderType.ColumnList
+            FromHex "FEFFFFFFFFFFFFFF", SubHeaderType.ColumnList
+            FromHex "FFFFFFFFFFFFFFFE", SubHeaderType.ColumnList
+        ] 
 
 
     //[<Literal>]

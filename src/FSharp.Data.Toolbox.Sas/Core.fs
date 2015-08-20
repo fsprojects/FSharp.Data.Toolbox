@@ -1,9 +1,9 @@
 ﻿namespace FSharp.Data.Toolbox.Sas
 
+open System
+
 [<AutoOpen>]
 module Core =
-
-    open System
 
     type Bits = 
         | X86
@@ -16,7 +16,7 @@ module Core =
     type Platform = 
         | Windows
         | Unix
-        | Unknown
+        | UnknownPlatform
 
     type Encoding = 
         | ASCII
@@ -53,53 +53,85 @@ module Core =
     } 
 
     type SubHeaderPointer = {
-         Offset : int
-         Length : int
+         Offset      : int
+         Length      : int
          Compression : byte
-         Type : byte
-     }
+         Type        : byte
+    }
 
-    type SubHeader = 
-        | Truncated
-        | RowSize
-        | ColumnSize
-        | SubheaderCounts
-        | ColumnText
-        | ColumnName
-        | ColumnAttributes
-        | FormatAndLabel
-        | ColumnList
-        | Data
+    type SubHeaderType = 
+        | Truncated         
+        | Rows              
+        | ColumnCount       
+        | SubHeaderCount
+        | ColumnText        
+        | ColumnName        
+        | ColumnAttributes  
+        | ColumnFormatLabel 
+        | ColumnList        
+        | Unknown           
 
-     type ColumnName = {
-        ColNameOffset             : int
-        ColNameLength             : int
-        TextIndex          : int
+    type ColumnName = {
+        ColumnNameOffset : int16
+        ColumnNameLength : int16
+        TextIndex        : int16
     }
 
     type ColumnAttribute = {
-        ColAttrOffset        : int
-        ColAttrWidth         : int
-        ColumnType    : byte
+        ColumnAttrOffset : int
+        ColumnAttrWidth  : int
+        ColumnType       : byte
     }
 
-    //type SubHeader =
-    //    | RowSize          of int * int // size * count
-    //    | ColumnSize       of int // count
-    //    | SubHeaderCounts
-    //    | ColumnText       of byte array
-    //    | ColumnNames      of ColumnName array
-    //    | ColumnAttributes of ColumnAttribute array
-    //    | ColumnFormatLabel
-    //    | ColumnList
-    //    | UnknownSubHeader of byte array
+    type ColumnFormatLabel = {
+        TextSubHeaderFormat: int16
+        TextSubHeaderLabel : int16
+        ColumnFormatOffset : int16
+        ColumnFormatLength : int16
+        ColumnLabelOffset  : int16
+        ColumnLabelLength  : int16
+    }
 
-    //type Page = 
-    //    | Meta of SubHeader list
-    //    | Data of int * byte array // block count * data
-    //    | Mix  of SubHeader list * int * byte array
-    //    | AMD  of SubHeader list * int * byte array
+    type SubHeader = 
+        | Truncated
+        | Rows              of int * int // length * count
+        | ColumnCount       of int
+        | SubHeaderCounts 
+        | ColumnText        of byte array
+        | ColumnName        of ColumnName list
+        | ColumnAttributes  of ColumnAttribute list
+        | ColumnFormatLabel of ColumnFormatLabel
+        | ColumnList 
+        | UnknownSubHeader  of byte array
 
+    type Page = 
+        | Meta of SubHeader list
+        | Data of int * byte array // block count * data
+        | Mix  of SubHeader list * int * byte array
+        | AMD  of SubHeader list * int * byte array
+
+    type ColumnType = 
+        | Numeric 
+        | Date
+        | Text 
+
+    type Column = {
+        Ordinal  : int
+        Name     : string
+        Type     : ColumnType
+        Length   : int
+        Format   : string
+        //Informat : string
+        Label    : string
+        Offset   : int
+    }
+
+    // metadata of SAS file
+    type MetaData = {
+        RowCount : int
+        RowSize  : int
+        Columns  : Column list
+    }
 
     //type EncodingErrorsAction = 
     //    | Ignore
@@ -107,14 +139,15 @@ module Core =
     //type AlignErrorAction = 
     //    | Ignore
 
-    type Values =
-        | AByte            of byte
-        | Int              of int
-        | Long             of int64
-        | Float            of float
-        | Date             of DateTime
-        | Str              of string * int
+//    type Values =
+//        | AByte            of byte
+//        | Int              of int
+//        | Long             of int64
+//        | Float            of float
+//        | Date             of DateTime
+//        | Str              of string * int
 
+    // byte array conversions
     let ToInt bytes = 
         BitConverter.ToInt32(bytes, 0)
 
@@ -123,6 +156,9 @@ module Core =
 
     let ToLong bytes = 
         BitConverter.ToInt64(bytes, 0)
+
+    let ToByte (bytes: byte array) = 
+        bytes.[0]
 
     let ToStr bytes = 
         let chars = 
@@ -154,3 +190,6 @@ module Core =
         Set.intersect (set [ elem ]) set' 
         |> Set.isEmpty 
 
+    /// Python-like array slicing
+    let inline slice (arr: ^a array) (start, len) = 
+        arr.[start .. start + len - 1]
