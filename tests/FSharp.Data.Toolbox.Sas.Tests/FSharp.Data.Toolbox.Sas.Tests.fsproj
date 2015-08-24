@@ -50,11 +50,13 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
-    <Compile Include="Integration.fs" />
+    <None Include="Exploratory.fsx" />
+    <None Include="SasTypeProviderTest.fsx" />
     <None Include="paket.references" />
     <Content Include="app.config" />
     <Content Include="packages.config" />
-    <None Include="Exploratory.fsx" />
+    <None Include="Integration.fsx" />
+    <Compile Include="Integration.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data.Toolbox.Sas">

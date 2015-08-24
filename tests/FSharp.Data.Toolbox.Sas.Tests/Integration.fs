@@ -9,7 +9,7 @@ module FSharp.ProjectScaffold.Tests
 #endif
 
 open FSharp.Data
-open FSharp.Data.Toolbox.Sas.SasFile
+open FSharp.Data.Toolbox.SasFile
 
 open NUnit.Framework
 open FsUnit

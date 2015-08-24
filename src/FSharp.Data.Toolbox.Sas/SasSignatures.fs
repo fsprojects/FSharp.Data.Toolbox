@@ -1,5 +1,6 @@
-﻿namespace FSharp.Data.Toolbox.Sas
+﻿namespace FSharp.Data.Toolbox.SasFile
 
+[<AutoOpen>]
 module SasSignatures =
 
     /// SAS7BDAT file signature

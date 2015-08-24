@@ -1,4 +1,4 @@
-﻿namespace FSharp.Data.Toolbox.Sas
+﻿namespace FSharp.Data.Toolbox.SasFile
 
 open System
 
@@ -111,9 +111,8 @@ module Core =
         | AMD  of SubHeader list * int * byte array
 
     type ColumnType = 
-        | Numeric 
-        | Date
-        | Text 
+        | Numeric
+        | Text
 
     type Column = {
         Ordinal  : int
@@ -133,19 +132,23 @@ module Core =
         Columns  : Column list
     }
 
+    type Value = 
+        | Long of int64
+        | Integer of int
+        | Number of double
+        | DateAndTime of DateTime
+        | Date of DateTime
+        | Time of DateTime
+        | Character of string * int
+        
+    type Row = Value list
+
     //type EncodingErrorsAction = 
     //    | Ignore
     //
     //type AlignErrorAction = 
     //    | Ignore
 
-//    type Values =
-//        | AByte            of byte
-//        | Int              of int
-//        | Long             of int64
-//        | Float            of float
-//        | Date             of DateTime
-//        | Str              of string * int
 
     // byte array conversions
     let ToInt bytes = 

@@ -6,15 +6,14 @@ module Exploratory =
         open System.IO
         open System.Diagnostics
 
-        open FSharp.Data.Toolbox.Sas.Core
-        open FSharp.Data.Toolbox.Sas.SasSignatures
-        open FSharp.Data.Toolbox.Sas.SasFile
+        open FSharp.Data.Toolbox.SasFile
 
         let path = 
             Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, 
                           @"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
 
     ///////////////////////////////////////////
+
         let reader = 
             if not <| File.Exists path then
                 failwith "File '%s' not found" path
@@ -334,38 +333,37 @@ module Exploratory =
             | _ -> failwith "Unknown page type"
 
 
-        let pages = seq {
-            // skip rest of header (header itself says how big it is)
-            reader.BaseStream.Position <- int64 header.HeaderSize 
-            for n in [1..header.PageCount] do
-                let page = reader.ReadBytes header.PageSize
-                if page.Length < header.PageSize then
-                    failwith "Couldn't read page"
-                yield readPage page
-
-            //reader.Close()
-        }
-        
         // collect subheaders from all pages into one list
-        let readMeta () =
-            // collect subheaders from all pages with metadata
-            let subHeaders = 
-                pages
-                // only get pages that contain metadata (skip rest, big speedup for large files) 
+        let meta =
+            // helper function to only get pages that contain metadata (skip rest, big speedup for large files) 
+            let metaPages =  
+                seq {
+                    // skip rest of header (header itself says how big it is)
+                    reader.BaseStream.Position <- int64 header.HeaderSize 
+                    for n in [1..header.PageCount] do
+                        let page = reader.ReadBytes header.PageSize
+                        if page.Length < header.PageSize then
+                            failwith "Couldn't read page"
+                        yield readPage page
+                }
                 |> Seq.takeWhile (fun page -> 
                     match page with 
                     | Meta _ 
                     | Mix _ 
                     | AMD _ -> true 
-                    | _ -> false )
-                |> Seq.map (fun mp ->
+                    | _ -> false
+                )
+
+            // collect subheaders from all pages with metadata
+            let subHeaders = 
+                seq {    
+                for mp in metaPages do
                     match mp with 
-                    | Meta subHeaders
-                    | Mix (subHeaders, _, _)
-                    | AMD (subHeaders, _, _) -> subHeaders
-                    | _ -> failwith "There should only be Meta or Mix here" )
-                |> Seq.concat
-                |> Seq.toList
+                    | Meta subHeaders -> yield! subHeaders
+                    | Mix  (subHeaders, _, _) -> yield! subHeaders
+                    | AMD  (subHeaders, _, _) -> yield! subHeaders
+                    | _ -> failwith "There should only be Meta or Mix here"                
+                } |> Seq.toList
                        
             // only one of these                
             let rowSize, rowCount =
@@ -443,4 +441,36 @@ module Exploratory =
             {   RowCount = rowCount
                 RowSize  = rowSize
                 Columns  = columns   } // return collected metadata
+
+
+        let pages = seq {
+            // skip header (header itself says how big it is)
+            reader.BaseStream.Position <- int64 header.HeaderSize 
+            for n in [1..header.PageCount] do
+                let page = reader.ReadBytes header.PageSize
+                if page.Length < header.PageSize then
+                    failwith "Couldn't read page"
+                yield readPage page
+        }
+
+        pages
+        |> Seq.skipWhile (fun page ->
+            match page with | Meta _ -> true | _ -> false)
+        |> Seq.map (fun page ->
+            match page with
+            | Mix (subHeaders, blockCount, data)
+            | AMD (subHeaders, blockCount, data) ->
+                let subCount = List.length subHeaders
+                let align = 
+                    (header.PageBitOffset + 
+                     SUBHEADER_POINTERS_OFFSET + subCount*header.SubHeaderPointerLength
+                     ) % 8
+                let offset = 
+                    header.PageBitOffset + 
+                    SUBHEADER_POINTERS_OFFSET + align + 
+                    subCount*header.SubHeaderPointerLength + 
+                    0(*rowNumber*) *meta.RowSize
+                ()
+
+                )
 
