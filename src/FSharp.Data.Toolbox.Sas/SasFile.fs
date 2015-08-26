@@ -1,7 +1,5 @@
 ﻿namespace FSharp.Data.Toolbox.SasFile
 
-//module SasFile =
-
 open System
 open System.Diagnostics
 open System.IO
@@ -11,7 +9,8 @@ type SasFile (filename) =
     let reader = 
         if not <| File.Exists filename then
             failwith "File '%s' not found" filename
-        new BinaryReader(File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+        new BinaryReader(File.Open
+            (filename, FileMode.Open, FileAccess.Read, FileShare.Read))
 
     let header = 
         let headerBytes = 
@@ -21,7 +20,6 @@ type SasFile (filename) =
             // Check magic number
             if header.[..Magic.Length - 1] <> Magic then
                 Trace.WriteLine "Magic number mismatch"
-                //failwith "Magic number mismatch"
             header
 
         let readHeader offset len = 
@@ -70,11 +68,11 @@ type SasFile (filename) =
         // Timestamp is epoch 01/01/1960
         let dateCreated = 
             let dateCreatedBytes = readHeader (DATE_CREATED_OFFSET + alignment1) DATE_CREATED_LENGTH
-            ToDate dateCreatedBytes
+            ToDateTime dateCreatedBytes
             
         let dateModified = 
             let dateModifiedBytes = readHeader (DATE_MODIFIED_OFFSET + alignment1) DATE_MODIFIED_LENGTH
-            ToDate dateModifiedBytes
+            ToDateTime dateModifiedBytes
 
         let headerSize = 
             let headerSizeBytes = readHeader (HEADER_SIZE_OFFSET + alignment1) HEADER_SIZE_LENGTH
@@ -150,15 +148,6 @@ type SasFile (filename) =
             let bytes = pageBytes BLOCK_COUNT_OFFSET BLOCK_COUNT_LENGTH
             ToShort bytes |> int
 
-
-//        let (|Meta|Data|Mix|) pageType = 
-//            if pageType = PAGE_META_TYPE then
-//                Meta 
-//            elif pageType = PAGE_DATA_TYPE then
-//                Data 
-//            elif pageType = PAGE_MIX_TYPE1 || pageType = PAGE_MIX_TYPE2 || pageType = PAGE_AMD_TYPE then
-//                Mix 
-
         /// Process page metadata
         let readSubHeaders () =
 
@@ -201,15 +190,15 @@ type SasFile (filename) =
                 let offset = subHeaderPointer.Offset
                 let word = header.WordLength
 
-                let lcsOffset = offset + if header.Bits = X64 then 682 else 354
-                let lcpOffset = offset + if header.Bits = X64 then 706 else 378
-                let rowCountMix = 
-                    slice page (offset + ROW_COUNT_ON_MIX_PAGE_OFFSET_MULTIPLIER*word, word)
-                    |> ToInt
-
-
-                let lcs = slice page (lcsOffset, 2) |> ToShort
-                let lcp = slice page (lcpOffset, 2) |> ToShort
+//                let lcsOffset = offset + if header.Bits = X64 then 682 else 354
+//                let lcpOffset = offset + if header.Bits = X64 then 706 else 378
+//                let rowCountMix = 
+//                    slice page (offset + ROW_COUNT_ON_MIX_PAGE_OFFSET_MULTIPLIER*word, word)
+//                    |> ToInt
+//
+//
+//                let lcs = slice page (lcsOffset, 2) |> ToShort
+//                let lcp = slice page (lcpOffset, 2) |> ToShort
 
                 match subHeaderType with
                 | SubHeaderType.Truncated-> Truncated
@@ -314,12 +303,10 @@ type SasFile (filename) =
             [0..subHeaderCount - 1] 
             |> List.map readSubHeaderPointerBytes 
             |> List.map readSubHeaderPointer
-            |> List.map readSubHeader 
-            
-
+            |> List.map readSubHeader
         
         match pageType with
-        | PAGE_META_TYPE -> readSubHeaders() |> Meta
+        | PAGE_META_TYPE -> Meta <| readSubHeaders() 
         | PAGE_DATA_TYPE -> Data (blockCount, page)
         | PAGE_MIX_TYPE1
         | PAGE_MIX_TYPE2 -> Mix (readSubHeaders(), blockCount, page)
@@ -327,7 +314,7 @@ type SasFile (filename) =
         | _ -> failwith "Unknown page type"
 
 
-    // collect subheaders from all pages into one list
+    // collect subheaders from all pages and generate MetaData
     let meta =
         // helper function to only get pages that contain metadata (skip rest, big speedup for large files) 
         let metaPages =  
@@ -353,9 +340,9 @@ type SasFile (filename) =
             seq {    
             for mp in metaPages do
                 match mp with 
-                | Meta subHeaders -> yield! subHeaders
-                | Mix  (subHeaders, _, _) -> yield! subHeaders
-                | AMD  (subHeaders, _, _) -> yield! subHeaders
+                | Meta subHeaders
+                | Mix (subHeaders, _, _)
+                | AMD (subHeaders, _, _) -> yield! subHeaders
                 | _ -> failwith "There should only be Meta or Mix here"                
             } |> Seq.toList
                    
@@ -365,7 +352,7 @@ type SasFile (filename) =
             |> List.pick (fun h ->
                 match h with 
                 | Rows (rowSize, rowCount) -> Some (rowSize, rowCount)
-                | _-> None
+                | _ -> None
             )        
 
         // collect all headers of type ColumnText
@@ -382,7 +369,7 @@ type SasFile (filename) =
             |> List.choose (
                 fun h -> 
                 match h with 
-                | ColumnName n  -> Some n
+                | ColumnName name  -> Some name
                 | _ -> None)
             |> List.concat 
 
@@ -403,8 +390,9 @@ type SasFile (filename) =
                 | ColumnFormatLabel format -> Some format
                 | _ -> None)
 
+        // reconstruct column info from the pieces that once must have been so close together o_O
         let columns = 
-            (names, attributes, formats) // reconstruct column info from the pieces that once must have been so close together o_O
+            (names, attributes, formats) 
             |||> List.zip3
             |> List.mapi (fun i (name, attr, format) -> 
             {
@@ -443,45 +431,64 @@ type SasFile (filename) =
 
     member x.FileName = filename
     member x.Header = header
-    member x.MetaData = meta
-
+    member x.MetaData = meta 
     
-    member x.ReadLines() =
+    member x.Rows() =
         seq {
-            // skip header (header itself says how big it is)
+            // skip page header (header itself says how big it is)
             reader.BaseStream.Position <- int64 header.HeaderSize 
-            for n in [1..header.PageCount] do
+            for n in [1 .. header.PageCount] do
                 let page = reader.ReadBytes header.PageSize
                 if page.Length < header.PageSize then
                     failwith "Couldn't read page"
                 yield readPage page
         }
+        // skip Meta page
         |> Seq.skipWhile (fun page ->
             match page with | Meta _ -> true | _ -> false)
         |> Seq.map (fun page ->
+
+            let readPageRows blocks offset data =
+                let readRow offset = 
+                    let rowBytes = slice data (offset, meta.RowSize)
+                    //>> decompress
+                    seq {
+                    for n = 0 to List.length meta.Columns - 1 do
+                        let col = meta.Columns.[n]
+                        let colBytes = slice rowBytes (col.Offset, col.Length)
+                        yield 
+                            match col.Type, col.Length, col.Format with
+                            | Numeric, _, "" -> colBytes |> ToDouble |> Number
+                            | Numeric, _, TIME_FORMAT_STRINGS -> colBytes |> ToDateTime |> Time
+                            | Numeric, _, DATE_TIME_FORMAT_STRINGS -> colBytes |> ToDateTime |> DateAndTime
+                            | Numeric, _, dt when List.exists
+                                (fun fmt -> fmt = dt) 
+                                DATE_FORMAT_STRINGS  -> colBytes |> ToDate |> Date 
+                            | Text, len, _ -> colBytes |> ToStr |> Character
+                            | _ -> failwith "Couldn't parse value" 
+                    }
+                Seq.init blocks (fun block -> offset + block*meta.RowSize)
+                |> Seq.map (fun offset -> readRow offset )
+
             match page with
             | Mix (subHeaders, blockCount, data)
             | AMD (subHeaders, blockCount, data) ->
                 let subCount = List.length subHeaders
                 let align = 
-                    (header.PageBitOffset + 
-                     SUBHEADER_POINTERS_OFFSET + subCount*header.SubHeaderPointerLength
-                     ) % 8
-                let offset = 
-                    header.PageBitOffset + 
-                    SUBHEADER_POINTERS_OFFSET + align + 
-                    subCount*header.SubHeaderPointerLength + 
-                    1(*rowNumber*) *meta.RowSize
-                ()
+                    ( header.PageBitOffset + 
+                      SUBHEADER_POINTERS_OFFSET + 
+                      subCount*header.SubHeaderPointerLength
+                    ) % 8
+                readPageRows (blockCount - subCount) 
+                    ( align + 
+                      header.PageBitOffset + 
+                      SUBHEADER_POINTERS_OFFSET + 
+                      subCount*header.SubHeaderPointerLength ) 
+                    data
 
-                )
-
-
-
-//            [1 .. meta.RowCount]
-//            |> List.map (fun n -> 
-//                
-//                )
-
-
+            | Data (blockCount, data) ->
+                readPageRows blockCount (header.PageBitOffset + SUBHEADER_POINTERS_OFFSET) data
+                      
+            )
+            |> Seq.concat
 

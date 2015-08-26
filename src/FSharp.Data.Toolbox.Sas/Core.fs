@@ -133,13 +133,11 @@ module Core =
     }
 
     type Value = 
-        | Long of int64
-        | Integer of int
         | Number of double
         | DateAndTime of DateTime
         | Date of DateTime
         | Time of DateTime
-        | Character of string * int
+        | Character of string
         
     type Row = Value list
 
@@ -160,6 +158,9 @@ module Core =
     let ToLong bytes = 
         BitConverter.ToInt64(bytes, 0)
 
+    let ToDouble bytes = 
+        BitConverter.ToDouble(bytes, 0)
+
     let ToByte (bytes: byte array) = 
         bytes.[0]
 
@@ -168,12 +169,15 @@ module Core =
             bytes
             |> Array.filter (fun b -> b <> 0uy)
             |> Array.map char
-        let s = new string(chars)
-        s.Trim()
+        new string(chars)
 
-    let ToDate bytes = 
+    let ToDateTime bytes = 
         let seconds = BitConverter.ToDouble(bytes, 0)
         DateTime(1960, 1, 1).AddSeconds seconds
+
+    let ToDate bytes = 
+        let days = BitConverter.ToDouble(bytes, 0)
+        DateTime(1960, 1, 1).AddDays days
 
     /// Split a string to two-char substrings and convert to byte array
     let FromHex str = 

@@ -10,6 +10,7 @@ module Exploratory =
 
         let path = 
             Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, 
+                          //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\rduschedule.sas7bdat")
                           @"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
 
     ///////////////////////////////////////////
@@ -417,7 +418,7 @@ module Exploratory =
                     Ordinal = i
                     Name = 
                         slice 
-                            (List.nth textHeaders (int name.TextIndex) )
+                            (List.item (int name.TextIndex) textHeaders )
                             (int name.ColumnNameOffset, int name.ColumnNameLength) 
                         |> ToStr
                     Type =  match attr.ColumnType with 
@@ -427,12 +428,12 @@ module Exploratory =
                     Length = attr.ColumnAttrWidth
                     Format = 
                         slice 
-                            (List.nth textHeaders (int name.TextIndex) )
+                            (List.item (int name.TextIndex) textHeaders )
                             (int format.ColumnFormatOffset, int format.ColumnFormatLength) 
                         |> ToStr
                     Label = 
                         slice 
-                            (List.nth textHeaders (int name.TextIndex) )
+                            (List.item (int name.TextIndex) textHeaders )
                             (int format.ColumnLabelOffset, int format.ColumnLabelLength) 
                         |> ToStr
                     Offset = attr.ColumnAttrOffset
@@ -442,8 +443,10 @@ module Exploratory =
                 RowSize  = rowSize
                 Columns  = columns   } // return collected metadata
 
+                
 
-        let pages = seq {
+        let pages = 
+            seq {
             // skip header (header itself says how big it is)
             reader.BaseStream.Position <- int64 header.HeaderSize 
             for n in [1..header.PageCount] do
@@ -451,26 +454,57 @@ module Exploratory =
                 if page.Length < header.PageSize then
                     failwith "Couldn't read page"
                 yield readPage page
-        }
+            } 
+            |> Seq.skipWhile (fun page ->
+                match page with | Meta _ -> true | _ -> false)
 
-        pages
-        |> Seq.skipWhile (fun page ->
-            match page with | Meta _ -> true | _ -> false)
-        |> Seq.map (fun page ->
-            match page with
-            | Mix (subHeaders, blockCount, data)
-            | AMD (subHeaders, blockCount, data) ->
-                let subCount = List.length subHeaders
-                let align = 
-                    (header.PageBitOffset + 
-                     SUBHEADER_POINTERS_OFFSET + subCount*header.SubHeaderPointerLength
-                     ) % 8
-                let offset = 
-                    header.PageBitOffset + 
-                    SUBHEADER_POINTERS_OFFSET + align + 
-                    subCount*header.SubHeaderPointerLength + 
-                    0(*rowNumber*) *meta.RowSize
-                ()
 
-                )
 
+
+        let readPageRows blocks offset data =
+            let readRow offset = 
+                let rowBytes = slice data (offset, meta.RowSize)
+                //>> decompress
+                seq {
+                for n = 0 to List.length meta.Columns - 1 do
+                    let col = meta.Columns.[n]
+                    let colBytes = slice rowBytes (col.Offset, col.Length)
+                    yield 
+                        match col.Type, col.Length, col.Format with
+                        | Numeric, _, "" -> colBytes |> ToDouble |> Number
+                        | Numeric, _, TIME_FORMAT_STRINGS -> colBytes |> ToDateTime |> Time
+                        | Numeric, _, DATE_TIME_FORMAT_STRINGS -> colBytes |> ToDateTime |> DateAndTime
+                        | Numeric, _, dt when List.exists
+                            (fun fmt -> fmt = dt) 
+                            DATE_FORMAT_STRINGS  -> colBytes |> ToDate |> Date 
+                        | Text, len, _ -> colBytes |> ToStr |> Character
+                        | _ -> failwith "Couldn't parse value" 
+                }
+            Seq.init blocks (fun block -> offset + block*meta.RowSize)
+            |> Seq.map (fun offset -> readRow offset )
+
+
+
+
+
+
+
+        let subHeaders, blockCount, data = 
+            pages |> 
+            Seq.skip 1 |>
+            Seq.pick (
+                fun page -> 
+                    match page with
+                    | Mix (subHeaders, blockCount, data)
+                    | AMD (subHeaders, blockCount, data) ->
+                        Some ( subHeaders, blockCount, data)
+                    | Data (blockCount, data) ->
+                        Some ([], blockCount, data)
+            )
+
+
+
+            let rows = 
+                readPageRows blockCount (header.PageBitOffset + SUBHEADER_POINTERS_OFFSET) data
+
+            let row1 = rows |> Seq.toList

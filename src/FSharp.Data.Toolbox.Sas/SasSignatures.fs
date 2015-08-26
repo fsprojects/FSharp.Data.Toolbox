@@ -164,3 +164,9 @@ module SasSignatures =
     let COLUMN_LABEL_OFFSET_LENGTH = 2
     let COLUMN_LABEL_LENGTH_OFFSET = 32
     let COLUMN_LABEL_LENGTH_LENGTH = 2
+
+    [<Literal>]
+    let TIME_FORMAT_STRINGS = "TIME"
+    [<Literal>]
+    let DATE_TIME_FORMAT_STRINGS = "DATETIME"
+    let DATE_FORMAT_STRINGS = ["YYMMDD"; "MMDDYY"; "DDMMYY"; "DATE"; "JULIAN"; "MONYY"]
