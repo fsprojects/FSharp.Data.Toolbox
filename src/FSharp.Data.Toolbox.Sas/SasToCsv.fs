@@ -5,34 +5,40 @@ open System.IO
 
 module SasToCsv =
     let Convert filename =
-        let csvFilename = 
+        let csvFilename =
             Path.Combine(
-                Path.GetDirectoryName filename, 
+                Path.GetDirectoryName filename,
                 Path.GetFileNameWithoutExtension filename + ".csv")
 
         use sasFile = new SasFile(filename)
         use writer = File.CreateText csvFilename
 
         // write header
-        sasFile.MetaData.Columns 
+        sasFile.MetaData.Columns
         |> List.map (fun col -> col.Name)
-        |> String.concat "," 
+        |> String.concat ","
         |> writer.WriteLine
 
         // write lines
         sasFile.Rows()
         |> Seq.iter (fun row ->
-            let line = 
+            let line =
                 row
-                |> Seq.map (fun value -> 
+                |> Seq.map (fun value ->
                     match value with
                     | Number n -> n.ToString()
-                    | Character s -> s
+                    | Character s -> 
+                        let s = s.TrimEnd().Replace("\"", "\"\"")
+                        if s.Contains(",") then
+                            "\"" + s + "\""
+                        else s
                     | Time t -> t.ToString("HH:mm:ss")
                     | Date d -> d.ToString()
                     | DateAndTime dt -> dt.ToString() //String.Format(format, value)
+                    | Empty -> ""
                     )
-                |> String.concat "," 
-            writer.WriteLine line
+                |> String.concat ","
+            if not <| String.IsNullOrEmpty line then
+                writer.WriteLine line
             )
 

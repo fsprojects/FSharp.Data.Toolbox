@@ -5,26 +5,26 @@ open System
 [<AutoOpen>]
 module Core =
 
-    type Bits = 
+    type Bits =
         | X86
         | X64
 
-    type Endianness = 
+    type Endianness =
         | Little
         | Big
 
-    type Platform = 
+    type Platform =
         | Windows
         | Unix
         | UnknownPlatform
 
-    type Encoding = 
+    type Encoding =
         | ASCII
         | UTF8
 
-    type Compression = 
-        | NotCompressed
-        | RLE
+    type Compression =
+        | NotCompressed of string // creator_proc
+        | RLE of string     // creator_proc
         | RDC
 
     type Header = {
@@ -49,8 +49,7 @@ module Core =
         ServerType            : string
         OsVersion             : string
         OsName                : string
-        Compression           : Compression
-    } 
+    }
 
     type SubHeaderPointer = {
          Offset      : int
@@ -59,17 +58,18 @@ module Core =
          Type        : byte
     }
 
-    type SubHeaderType = 
-        | Truncated         
-        | Rows              
-        | ColumnCount       
+    type SubHeaderType =
+        | Truncated
+        | Rows
+        | ColumnCount
         | SubHeaderCount
-        | ColumnText        
-        | ColumnName        
-        | ColumnAttributes  
-        | ColumnFormatLabel 
-        | ColumnList        
-        | Unknown           
+        | ColumnText
+        | ColumnName
+        | ColumnAttributes
+        | ColumnFormatLabel
+        | ColumnList
+        | Data
+        | Unknown
 
     type ColumnName = {
         ColumnNameOffset : int16
@@ -92,25 +92,26 @@ module Core =
         ColumnLabelLength  : int16
     }
 
-    type SubHeader = 
+    type SubHeader =
         | Truncated
-        | Rows              of int * int // length * count
+        | Rows              of int * int * int16 * int16 // length * count * lcs * lcp
         | ColumnCount       of int
-        | SubHeaderCounts 
+        | SubHeaderCounts
         | ColumnText        of byte array
         | ColumnName        of ColumnName list
         | ColumnAttributes  of ColumnAttribute list
         | ColumnFormatLabel of ColumnFormatLabel
-        | ColumnList 
+        | ColumnList
+        | DataPointer       of SubHeaderPointer * byte array
         | UnknownSubHeader  of byte array
 
-    type Page = 
+    type Page =
         | Meta of SubHeader list
         | Data of int * byte array // block count * data
         | Mix  of SubHeader list * int * byte array
-        | AMD  of SubHeader list * int * byte array
+        | EmptyPage
 
-    type ColumnType = 
+    type ColumnType =
         | Numeric
         | Text
 
@@ -127,76 +128,207 @@ module Core =
 
     // metadata of SAS file
     type MetaData = {
-        RowCount : int
-        RowSize  : int
-        Columns  : Column list
+        RowCount        : int
+        RowSize         : int
+        Columns         : Column list
+        CompressionInfo : Compression
     }
 
-    type Value = 
+    type Value =
         | Number of double
         | DateAndTime of DateTime
         | Date of DateTime
         | Time of DateTime
         | Character of string
-        
+        | Empty
+
     type Row = Value list
 
-    //type EncodingErrorsAction = 
+    //type EncodingErrorsAction =
     //    | Ignore
     //
-    //type AlignErrorAction = 
+    //type AlignErrorAction =
     //    | Ignore
 
+    let inline decompress meta offset len (data: _ array) =
+        match meta.CompressionInfo with
+        | NotCompressed _ -> data.[offset .. meta.RowSize + offset - 1]
+        // unpack run-length encoded data
+        | Compression.RLE _ ->
+            let off = offset
+            let mutable resultIndex = 0
+            let mutable srcIndex = 0
+            let result = Array.zeroCreate meta.RowSize
 
-    // byte array conversions
-    let ToInt bytes = 
-        BitConverter.ToInt32(bytes, 0)
+            for i = 0 to len - 1 do
+                if i = srcIndex then
+                    let marker = data.[off + srcIndex]  &&& 0xF0uy
+                    let firstByteEnd = data.[off + srcIndex]  &&& 0x0Fuy |> int
+                    let copyOffset =
+                        if marker < 0x80uy then data.[off + srcIndex + 1] &&& 0xFFuy |> int
+                        else 0 // not used for big markers, gives out of range error
+                    try
+                    match marker with
+                    | 0x00uy ->
+                        if srcIndex <> len - 1 then
+                            let bytesToCopy = copyOffset + 64 + firstByteEnd*256
+                            Array.blit
+                                data (off + srcIndex + 2)
+                                result resultIndex
+                                bytesToCopy
+                            srcIndex    <- srcIndex + bytesToCopy + 1
+                            resultIndex <- resultIndex + bytesToCopy
+                    | 0x40uy ->
+                        let bytesToCopy = copyOffset + firstByteEnd*16
+                        for z = 0 to bytesToCopy + 17 do
+                            result.[resultIndex] <- data.[off + srcIndex + 2]
+                            resultIndex <- resultIndex + 1
+                        srcIndex <- srcIndex + 2
+                    | 0x60uy ->
+                        for z = 0 to firstByteEnd*256 +
+                            copyOffset + 16 do
+                            result.[resultIndex] <- 0x20uy
+                            resultIndex <- resultIndex + 1
+                        srcIndex <- srcIndex + 1
+                    | 0x70uy ->
+                        for z = 0 to copyOffset + 16 do
+                            result.[resultIndex] <- 0uy
+                            resultIndex <- resultIndex + 1
+                        srcIndex <- srcIndex + 1
+                    | 0x80uy ->
+                        let bytesToCopy = min (firstByteEnd + 1) (len - srcIndex - 1)
+                        Array.blit
+                            data (off + srcIndex + 1)
+                            result resultIndex
+                            bytesToCopy
+                        srcIndex <- srcIndex + bytesToCopy
+                        resultIndex <- resultIndex + bytesToCopy
+                    | 0x90uy ->
+                        let bytesToCopy = min (firstByteEnd + 17) (len - srcIndex - 1)
+                        Array.blit
+                            data (off + srcIndex + 1)
+                            result resultIndex
+                            bytesToCopy
+                        srcIndex <- srcIndex + bytesToCopy
+                        resultIndex <- resultIndex + bytesToCopy
+                    | 0xA0uy ->
+                        let bytesToCopy = min (firstByteEnd + 33) (len - srcIndex - 1)
+                        Array.blit
+                            data (off + srcIndex + 1)
+                            result resultIndex
+                            bytesToCopy
+                        srcIndex <- srcIndex + bytesToCopy
+                        resultIndex <- resultIndex + bytesToCopy
+                    | 0xB0uy ->
+                        let bytesToCopy = min (firstByteEnd + 49) (len - srcIndex - 1)
+                        Array.blit
+                            data (off + srcIndex + 1)
+                            result resultIndex
+                            bytesToCopy
+                        srcIndex <- srcIndex + bytesToCopy
+                        resultIndex <- resultIndex + bytesToCopy
+                    | 0xC0uy ->
+                        for z = 0 to firstByteEnd + 2 do
+                            result.[resultIndex] <- data.[off + srcIndex + 1]
+                            resultIndex <- resultIndex + 1
+                        srcIndex <- srcIndex + 1
+                    | 0xD0uy ->
+                        for z = 0 to firstByteEnd + 1 do
+                            result.[resultIndex] <- 0x40uy
+                            resultIndex <- resultIndex + 1
+                    | 0xE0uy ->
+                        for z = 0 to firstByteEnd + 1 do
+                            result.[resultIndex] <- 0x20uy
+                            resultIndex <- resultIndex + 1
+                    | 0xF0uy ->
+                        for z = 0 to firstByteEnd + 1 do
+                            result.[resultIndex] <- 0uy
+                            resultIndex <- resultIndex + 1
+                    | _ -> failwithf "Cannot decompress. Unknown marker: %i" marker
 
-    let ToShort bytes = 
-        BitConverter.ToInt16(bytes, 0)
+                    srcIndex <- srcIndex + 1
+                    with
+                    | _ -> failwithf "Exception at srcIndex: %i, resultIndex: %i" srcIndex resultIndex
+            result
+        // remote differential compression
+        | Compression.RDC -> data
 
-    let ToLong bytes = 
-        BitConverter.ToInt64(bytes, 0)
+    [<AutoOpen>]
+    module Helpers =
+        open System.Diagnostics
 
-    let ToDouble bytes = 
-        BitConverter.ToDouble(bytes, 0)
+        // byte array conversions
+        let ToInt bytes =
+            BitConverter.ToInt32(bytes, 0)
 
-    let ToByte (bytes: byte array) = 
-        bytes.[0]
+        let ToShort bytes =
+            BitConverter.ToInt16(bytes, 0)
 
-    let ToStr bytes = 
-        let chars = 
-            bytes
-            |> Array.filter (fun b -> b <> 0uy)
-            |> Array.map char
-        new string(chars)
+        let ToLong bytes =
+            BitConverter.ToInt64(bytes, 0)
 
-    let ToDateTime bytes = 
-        let seconds = BitConverter.ToDouble(bytes, 0)
-        DateTime(1960, 1, 1).AddSeconds seconds
+        let ToDouble bytes =
+            let maybeNumber = 
+                if Array.length bytes % 8 <> 0 then
+                    let len = (Array.length bytes + 7) / 8 * 8
+                    let bytes' = Array.zeroCreate len
+                    Array.blit bytes 0 bytes' (len - bytes.Length) bytes.Length
+                    BitConverter.ToDouble(bytes', 0)
+                else
+                    BitConverter.ToDouble(bytes, 0)
+            if Double.IsNaN maybeNumber then
+                None
+            else
+                Some maybeNumber 
 
-    let ToDate bytes = 
-        let days = BitConverter.ToDouble(bytes, 0)
-        DateTime(1960, 1, 1).AddDays days
+        let ToByte (bytes: byte array) =
+            bytes.[0]
 
-    /// Split a string to two-char substrings and convert to byte array
-    let FromHex str = 
-        str
-        |> Seq.map Char.ToUpper 
-        |> Seq.filter (fun c -> c >= '0' && c <= '9' || c >= 'A' && c <= 'F') // only hex digits
-        |> Seq.windowed 2 // split by two
-        |> Seq.mapi (fun index value -> index, value) // index
-        |> Seq.filter (fun (index, value) -> index % 2 = 0)
-        |> Seq.map (fun (_, value) -> new string(value)) // two-char strings
-        |> Seq.map (fun hex -> Convert.ToByte(hex, 16)) // to bytes
-        |> Array.ofSeq 
+        let ToStr bytes =
+            let chars =
+                bytes
+                |> Array.filter (fun b -> b <> 0uy)
+                |> Array.map char
+            new string(chars)
+
+        let ToDateTime bytes =
+            let seconds = BitConverter.ToDouble(bytes, 0)
+            if Double.IsNaN seconds || seconds < 0. then
+                None
+            else 
+                Some <| DateTime(1960, 1, 1).AddSeconds seconds
+
+        let ToDate bytes =
+            let days = BitConverter.ToDouble(bytes, 0)
+            if Double.IsNaN days || days < 0. then
+                None
+            else 
+                Some <| DateTime(1960, 1, 1).AddDays days
+
+        /// Split a string to two-char substrings and convert to byte array
+        let FromHex str =
+            str
+            |> Seq.map Char.ToUpper
+            |> Seq.filter (fun c -> c >= '0' && c <= '9' || c >= 'A' && c <= 'F') // only hex digits
+            |> Seq.windowed 2 // split by two
+            |> Seq.mapi (fun index value -> index, value) // index
+            |> Seq.filter (fun (index, value) -> index % 2 = 0)
+            |> Seq.map (fun (_, value) -> new string(value)) // two-char strings
+            |> Seq.map (fun hex -> Convert.ToByte(hex, 16)) // to bytes
+            |> Array.ofSeq
 
 
-    /// Check if element is in a set
-    let InSet elem set' = 
-        Set.intersect (set [ elem ]) set' 
-        |> Set.isEmpty 
+        /// Check if element is in a set
+    //    let InSet elem set' =
+    //        Set.intersect (set [ elem ]) set'
+    //        |> Set.isEmpty
 
-    /// Python-like array slicing
-    let inline slice (arr: ^a array) (start, len) = 
-        arr.[start .. start + len - 1]
+        /// Python-like array slicing
+        let inline slice (arr: _ array) (start, len) =
+            arr.[start .. start + len - 1]
+
+        let inline dprintfn fmt =
+            Printf.ksprintf Debug.WriteLine fmt
+
+
+

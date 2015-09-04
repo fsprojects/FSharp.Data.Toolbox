@@ -31,6 +31,7 @@ type ``Integration tests`` () =
     member x.``Writing CSV works``() =
         let filename = Path.Combine(path, "rduschedule.sas7bdat")
         let filename = Path.Combine(path, "acadindx.sas7bdat")
+        let filename = Path.Combine(path, "redbook.sas7bdat")
         SasToCsv.Convert filename
         
 //    [<Test>]

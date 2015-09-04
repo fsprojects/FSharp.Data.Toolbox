@@ -12,7 +12,7 @@ module SasSignatures =
         BD-92-08-00-09
         C7-31-8C-18-1F
         10-11"""
-            
+
     let META_LENGTH = 288
     let ALIGN_1_CHECKER_VALUE = "3"B
     let ALIGN_1_OFFSET = 32
@@ -70,23 +70,24 @@ module SasSignatures =
     //let PAGE_METC_TYPE = set [ 16384s ]
     //let PAGE_COMP_TYPE = set [ -28672s ]
     //let PAGE_MIX_DATA_TYPE = PAGE_DATA_TYPE + PAGE_MIX_TYPE
-    //let PAGE_META_MIX_AMD = PAGE_META_TYPE + PAGE_AMD_TYPE + PAGE_MIX_TYPE 
-    //let PAGE_ANY = PAGE_DATA_TYPE + PAGE_METC_TYPE + PAGE_COMP_TYPE + PAGE_META_MIX_AMD 
+    //let PAGE_META_MIX_AMD = PAGE_META_TYPE + PAGE_AMD_TYPE + PAGE_MIX_TYPE
+    //let PAGE_ANY = PAGE_DATA_TYPE + PAGE_METC_TYPE + PAGE_COMP_TYPE + PAGE_META_MIX_AMD
 
-    [<Literal>] 
-    let PAGE_META_TYPE = 0s 
-    [<Literal>] 
-    let PAGE_DATA_TYPE = 256s 
-    [<Literal>] 
+    [<Literal>]
+    let PAGE_META_TYPE = 0s
+    [<Literal>]
+    let PAGE_DATA_TYPE = 256s
+    [<Literal>]
     let PAGE_MIX_TYPE1 = 512s
-    [<Literal>] 
+    [<Literal>]
     let PAGE_MIX_TYPE2 = 640s
-    [<Literal>] 
-    let PAGE_AMD_TYPE  = 1024s 
-    [<Literal>] 
-    let PAGE_METC_TYPE = 16384s 
-    [<Literal>] 
-    let PAGE_COMP_TYPE = -28672s 
+    [<Literal>]
+    let PAGE_AMD_TYPE  = 1024s
+    [<Literal>]
+    let PAGE_METC_TYPE = 16384s
+    [<Literal>]
+    let PAGE_COMP_TYPE = -28672s
+    //let ??? = -32768s
 
     let SUBHEADER_POINTERS_OFFSET = 8
     let TRUNCATED_SUBHEADER_ID = 1uy
@@ -96,9 +97,9 @@ module SasSignatures =
     // Subheader signatures, 32 and 64 bit, little and big endian
     let SignatureToHeaderColumn =
         dict [
-            FromHex "F7F7F7F7",         SubHeaderType.Rows 
-            FromHex "00000000F7F7F7F7", SubHeaderType.Rows 
-            FromHex "F7F7F7F700000000", SubHeaderType.Rows 
+            FromHex "F7F7F7F7",         SubHeaderType.Rows
+            FromHex "00000000F7F7F7F7", SubHeaderType.Rows
+            FromHex "F7F7F7F700000000", SubHeaderType.Rows
             FromHex "F6F6F6F6",         SubHeaderType.ColumnCount
             FromHex "00000000F6F6F6F6", SubHeaderType.ColumnCount
             FromHex "F6F6F6F600000000", SubHeaderType.ColumnCount
@@ -124,7 +125,7 @@ module SasSignatures =
             FromHex "FFFFFFFE",         SubHeaderType.ColumnList
             FromHex "FEFFFFFFFFFFFFFF", SubHeaderType.ColumnList
             FromHex "FFFFFFFFFFFFFFFE", SubHeaderType.ColumnList
-        ] 
+        ]
 
 
     //[<Literal>]
@@ -139,7 +140,7 @@ module SasSignatures =
     let ROW_COUNT_OFFSET_MULTIPLIER = 6
     let COL_COUNT_P1_MULTIPLIER = 9
     let COL_COUNT_P2_MULTIPLIER = 10
-    let ROW_COUNT_ON_MIX_PAGE_OFFSET_MULTIPLIER = 15  
+    let ROW_COUNT_ON_MIX_PAGE_OFFSET_MULTIPLIER = 15
     let COLUMN_NAME_POINTER_LENGTH = 8
     let COLUMN_NAME_TEXT_SUBHEADER_OFFSET = 0
     let COLUMN_NAME_TEXT_SUBHEADER_LENGTH = 2
@@ -170,3 +171,8 @@ module SasSignatures =
     [<Literal>]
     let DATE_TIME_FORMAT_STRINGS = "DATETIME"
     let DATE_FORMAT_STRINGS = ["YYMMDD"; "MMDDYY"; "DDMMYY"; "DATE"; "JULIAN"; "MONYY"]
+
+    [<Literal>]
+    let RLE_COMPRESSION = "SASYZCRL"
+    [<Literal>]
+    let RDC_COMPRESSION = "SASYZCR2"
