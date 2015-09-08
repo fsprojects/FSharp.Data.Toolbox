@@ -1,4 +1,4 @@
-﻿namespace FSharp.Data.Toolbox.SasFile 
+﻿namespace FSharp.Data.Toolbox.SasFile
 
 open ProviderImplementation.ProvidedTypes
 open Microsoft.FSharp.Core.CompilerServices
@@ -12,7 +12,7 @@ type public SasProvider (config : TypeProviderConfig) as this =
     let asm = Assembly.GetExecutingAssembly()
 
     // Create the main provided type
-    let tySasFile = ProvidedTypeDefinition(asm, ns, "SasFile", Some typeof<obj>) 
+    let tySasFile = ProvidedTypeDefinition(asm, ns, "SasFile", Some typeof<obj>)
 
     // Parameterize the type by the file to use as a template
     let filename = ProvidedStaticParameter("filename", typeof<string>)
@@ -21,14 +21,14 @@ type public SasProvider (config : TypeProviderConfig) as this =
         tySasFile.DefineStaticParameters(
             [filename], fun tyName [| :? string as filename |] ->
 
-        let filename = 
+        let filename =
             if not <| System.IO.File.Exists filename then
                 // resolve the filename relative to the resolution folder
                 let resolvedFilename = System.IO.Path.Combine(config.ResolutionFolder, filename)
                 if not <| System.IO.File.Exists resolvedFilename then
-                    failwithf "File '%s' not found" resolvedFilename 
-                resolvedFilename 
-            else 
+                    failwithf "File '%s' not found" resolvedFilename
+                resolvedFilename
+            else
                 filename
 
         // read SAS schema
@@ -39,7 +39,7 @@ type public SasProvider (config : TypeProviderConfig) as this =
         tySasFile.AddMember(
             ProvidedProperty("Header", typeof<Header>,
                 GetterCode = fun args -> <@@ (%%(args.[0]) :> obj) :?> Header @@>) )
-        
+       
         tySasFile.AddMember(
             ProvidedProperty("MetaData", typeof<MetaData>,
                 GetterCode = fun args -> <@@ (%%(args.[0]) :> obj) :?> MetaData @@>) )
@@ -50,7 +50,7 @@ type public SasProvider (config : TypeProviderConfig) as this =
 
         // define a provided type for each row, erasing to a SasFile.Core.Value list
         let tyRow = ProvidedTypeDefinition("Row", Some(typeof<Value list>))
-        
+       
         let columns = meta.Columns
 
         // add one property per SAS variable
@@ -78,7 +78,7 @@ type public SasProvider (config : TypeProviderConfig) as this =
 
         // add a new, more strongly typed Data property (which uses the existing property at runtime)
         ty.AddMember(ProvidedProperty(
-                        "MetaData", typeof<MetaData>, //typedefof<seq<_>>.MakeGenericType(rowTy), 
+                        "MetaData", typeof<MetaData>, //typedefof<seq<_>>.MakeGenericType(rowTy),
                         GetterCode = fun [sasFile] -> <@@ (%%sasFile: SasFile).MetaData @@>))
 
         // add the row type as a nested type

@@ -127,14 +127,6 @@ module SasSignatures =
             FromHex "FFFFFFFFFFFFFFFE", SubHeaderType.ColumnList
         ]
 
-
-    //[<Literal>]
-    //let ROW_SIZE    = FromHex "F7F7F7F7"
-    //[<Literal>]
-    //let ROW_SIZE_LE = FromHex "00000000F7F7F7F7"
-    //[<Literal>]
-    //let ROW_SIZE_BE = FromHex "F7F7F7F700000000"
-
     let TEXT_BLOCK_SIZE_LENGTH = 2
     let ROW_LENGTH_OFFSET_MULTIPLIER = 5
     let ROW_COUNT_OFFSET_MULTIPLIER = 6

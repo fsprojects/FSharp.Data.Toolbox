@@ -27,14 +27,14 @@ module SasToCsv =
                 |> Seq.map (fun value ->
                     match value with
                     | Number n -> n.ToString()
-                    | Character s -> 
-                        let s = s.TrimEnd().Replace("\"", "\"\"")
+                    | Character s ->
+                        let s = s.TrimEnd()
                         if s.Contains(",") then
-                            "\"" + s + "\""
+                            "\"" + s.Replace("\"", "\"\"") + "\""
                         else s
                     | Time t -> t.ToString("HH:mm:ss")
-                    | Date d -> d.ToString()
-                    | DateAndTime dt -> dt.ToString() //String.Format(format, value)
+                    | Date d -> d.ToString("yyyy-MM-dd")
+                    | DateAndTime dt -> dt.ToString("O")
                     | Empty -> ""
                     )
                 |> String.concat ","

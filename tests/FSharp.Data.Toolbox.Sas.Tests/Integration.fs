@@ -27,22 +27,21 @@ type ``Integration tests`` () =
         |> Seq.map (fun path -> new SasFile(path))
         |> Seq.map (fun sasFile -> sasFile.Header.SasRelease )
         |> Seq.toList
+        |> ignore
 
+    [<Test>]
     member x.``Writing CSV works``() =
-        let filename = Path.Combine(path, "rduschedule.sas7bdat")
-        let filename = Path.Combine(path, "acadindx.sas7bdat")
-        let filename = Path.Combine(path, "redbook.sas7bdat")
+        let filename = Path.Combine(path, "texas.sas7bdat")
         SasToCsv.Convert filename
         
-//    [<Test>]
-//    member x.``Reading magic number from SAS is success``() =
-//        let file = Path.Combine(path, "agents.sas7bdat")
-//        (SasFile file |> ignore)
-        //|> should not' throw typeof<MatchFailureException> 
+    [<Test>]
+    member x.``Reading magic number from SAS is success``() =
+        let file = Path.Combine(path, "agents.sas7bdat")
+        new SasFile(file) |> ignore
 
-//    [<Test>]
-//    member x.``Reading magic number from CSV is failure``() =
-//        let file = Path.Combine(path, "acadindx.csv")
-//        (SasFile file |> ignore)
-//        |> should throw typeof<MatchFailureException>
+    [<Test>]
+    member x.``Reading magic number from CSV is failure``() =
+        let file = Path.Combine(path, "acadindx.csv")
+        (fun () -> new SasFile(file) |> ignore )
+        |> should throw typeof<Exception>
 

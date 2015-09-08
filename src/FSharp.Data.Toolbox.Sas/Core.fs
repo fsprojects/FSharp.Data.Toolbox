@@ -30,12 +30,10 @@ module Core =
     type Header = {
         Alignment1            : int
         Alignment2            : int
-
         Bits                  : Bits
         PageBitOffset         : int
         WordLength            : int
         SubHeaderPointerLength: int
-
         Endianness            : Endianness
         Platform              : Platform
         DataSet               : string
@@ -52,10 +50,10 @@ module Core =
     }
 
     type SubHeaderPointer = {
-         Offset      : int
-         Length      : int
-         Compression : byte
-         Type        : byte
+        Offset      : int
+        Length      : int
+        Compression : byte
+        Type        : byte
     }
 
     type SubHeaderType =
@@ -94,7 +92,7 @@ module Core =
 
     type SubHeader =
         | Truncated
-        | Rows              of int * int * int16 * int16 // length * count * lcs * lcp
+        | Rows              of int * int * int * int * int16 * int16 // length * row count * column count 1 * column count 2 * lcs * lcp
         | ColumnCount       of int
         | SubHeaderCounts
         | ColumnText        of byte array
@@ -135,7 +133,7 @@ module Core =
     }
 
     type Value =
-        | Number of double
+        | Number of float
         | DateAndTime of DateTime
         | Date of DateTime
         | Time of DateTime
@@ -268,7 +266,7 @@ module Core =
             BitConverter.ToInt64(bytes, 0)
 
         let ToDouble bytes =
-            let maybeNumber = 
+            let maybeNumber =
                 if Array.length bytes % 8 <> 0 then
                     let len = (Array.length bytes + 7) / 8 * 8
                     let bytes' = Array.zeroCreate len
@@ -279,7 +277,7 @@ module Core =
             if Double.IsNaN maybeNumber then
                 None
             else
-                Some maybeNumber 
+                Some maybeNumber
 
         let ToByte (bytes: byte array) =
             bytes.[0]
@@ -293,16 +291,16 @@ module Core =
 
         let ToDateTime bytes =
             let seconds = BitConverter.ToDouble(bytes, 0)
-            if Double.IsNaN seconds || seconds < 0. then
+            if Double.IsNaN seconds then
                 None
-            else 
+            else
                 Some <| DateTime(1960, 1, 1).AddSeconds seconds
 
         let ToDate bytes =
             let days = BitConverter.ToDouble(bytes, 0)
-            if Double.IsNaN days || days < 0. then
+            if Double.IsNaN days then
                 None
-            else 
+            else
                 Some <| DateTime(1960, 1, 1).AddDays days
 
         /// Split a string to two-char substrings and convert to byte array
@@ -318,6 +316,10 @@ module Core =
             |> Array.ofSeq
 
 
+        let endian bytes = function
+        | Big    -> Array.rev bytes
+        | Little -> bytes
+
         /// Check if element is in a set
     //    let InSet elem set' =
     //        Set.intersect (set [ elem ]) set'
@@ -326,6 +328,9 @@ module Core =
         /// Python-like array slicing
         let inline slice (arr: _ array) (start, len) =
             arr.[start .. start + len - 1]
+
+        let inline sliceEndian (arr: _ array) (start, len) =
+            endian arr.[start .. start + len - 1]
 
         let inline dprintfn fmt =
             Printf.ksprintf Debug.WriteLine fmt

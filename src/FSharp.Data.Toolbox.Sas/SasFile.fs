@@ -9,6 +9,7 @@ type SasFile (filename) =
     let reader =
         if not <| File.Exists filename then
             failwith "File '%s' not found" filename
+        dprintfn "Reading SAS file '%s'" filename
         new BinaryReader(File.Open
             (filename, FileMode.Open, FileAccess.Read, FileShare.Read))
 
@@ -51,6 +52,9 @@ type SasFile (filename) =
             | [| 01uy |] -> Little
             | _    -> failwith "Unknown endianness"
 
+        let readHeader' offset len =
+            sliceEndian headerBytes (offset, len) endianness
+
         let platform =
             let platformBytes = readHeader PLATFORM_OFFSET PLATFORM_LENGTH
             match platformBytes with
@@ -68,30 +72,30 @@ type SasFile (filename) =
 
         // Timestamp is epoch 01/01/1960
         let dateCreated =
-            let dateCreatedBytes = readHeader (DATE_CREATED_OFFSET + alignment1) DATE_CREATED_LENGTH
+            let dateCreatedBytes = readHeader' (DATE_CREATED_OFFSET + alignment1) DATE_CREATED_LENGTH
             match ToDateTime dateCreatedBytes with
             | Some date -> date
             | None -> new DateTime(1960, 1, 1)
 
         let dateModified =
-            let dateModifiedBytes = readHeader (DATE_MODIFIED_OFFSET + alignment1) DATE_MODIFIED_LENGTH
+            let dateModifiedBytes = readHeader' (DATE_MODIFIED_OFFSET + alignment1) DATE_MODIFIED_LENGTH
             match ToDateTime dateModifiedBytes with
             | Some date -> date
             | None -> new DateTime(1960, 1, 1)
 
         let headerSize =
-            let headerSizeBytes = readHeader (HEADER_SIZE_OFFSET + alignment1) HEADER_SIZE_LENGTH
+            let headerSizeBytes = readHeader' (HEADER_SIZE_OFFSET + alignment1) HEADER_SIZE_LENGTH
             let headerSize = ToInt headerSizeBytes
             if bits = X64 && headerSize <> 8*1024 then
                 dprintfn "Header size (%d) doesn't match word length (X64)" headerSize
             headerSize
 
         let pageSize =
-            let pageSizeBytes = readHeader (PAGE_SIZE_OFFSET + alignment1) PAGE_SIZE_LENGTH
+            let pageSizeBytes = readHeader' (PAGE_SIZE_OFFSET + alignment1) PAGE_SIZE_LENGTH
             ToInt pageSizeBytes
 
         let pageCount =
-            let pageCountBytes = readHeader (PAGE_COUNT_OFFSET + alignment1) PAGE_COUNT_LENGTH
+            let pageCountBytes = readHeader' <| PAGE_COUNT_OFFSET + alignment1 <| PAGE_COUNT_LENGTH + alignment2
             ToInt pageCountBytes
 
         let sasRelease =
@@ -112,17 +116,18 @@ type SasFile (filename) =
                     OS_NAME_OFFSET  + totalAlignment, OS_NAME_LENGTH
                 else
                     OS_MAKER_OFFSET + totalAlignment, OS_MAKER_LENGTH
-            let osNameBytes = readHeader osNameOffset osNameLen
+            let osNameBytes =
+                readHeader
+                <| min osNameOffset (headerBytes.Length - osNameLen)
+                <| osNameLen
             ToStr osNameBytes
 
         {   Alignment1             =  alignment1
             Alignment2             =  alignment2
-
             Bits                   =  bits
             PageBitOffset          =  pageBitOffset
             WordLength             =  wordLength
             SubHeaderPointerLength =  subheaderPointerLength
-
             Endianness             =  endianness
             Platform               =  platform
             DataSet                =  dataSet
@@ -139,10 +144,12 @@ type SasFile (filename) =
 
 
     let readPage (page: byte array) =
+        let slice' bytes (offset, len) =
+            sliceEndian bytes (offset, len) header.Endianness
 
         let pageBytes offset len =
             let offset = offset + header.PageBitOffset
-            slice page (offset, len)
+            slice' page (offset, len)
 
         let pageType =
             let bytes = pageBytes PAGE_TYPE_OFFSET PAGE_TYPE_LENGTH
@@ -167,10 +174,10 @@ type SasFile (filename) =
             // process_subheader_pointers
             let readSubHeaderPointer (subBytes: byte array) =
                 let word = header.WordLength
-                { Offset      = slice subBytes (0,          word) |> ToInt
-                  Length      = slice subBytes (word,       word) |> ToInt
-                  Compression = slice subBytes (2*word,     1)    |> ToByte
-                  Type        = slice subBytes (2*word + 1, 1)    |> ToByte }
+                { Offset      = slice' subBytes (0,    word)    |> ToInt
+                  Length      = slice' subBytes (word, word)    |> ToInt
+                  Compression = slice  subBytes (2*word,     1) |> ToByte
+                  Type        = slice  subBytes (2*word + 1, 1) |> ToByte }
 
             let readSubHeader subHeaderPointer =
                 let subHeaderType =
@@ -181,8 +188,7 @@ type SasFile (filename) =
                         let subSignature = pageBytes (subHeaderPointer.Offset - header.PageBitOffset) header.WordLength
                         // get_subheader_class
                         let subHeaderMatched, subHeader = SignatureToHeaderColumn.TryGetValue subSignature
-                        if //header.Compression <> NotCompressed "" &&
-                            not subHeaderMatched &&
+                        if not subHeaderMatched &&
                             (subHeaderPointer.Compression = COMPRESSED_SUBHEADER_ID ||
                              subHeaderPointer.Compression = 0uy) &&
                              subHeaderPointer.Type = COMPRESSED_SUBHEADER_TYPE then
@@ -193,15 +199,14 @@ type SasFile (filename) =
                 let offset = subHeaderPointer.Offset
                 let word = header.WordLength
 
-
                 match subHeaderType with
                 | SubHeaderType.Truncated-> Truncated
                 | SubHeaderType.Rows ->
                     let rowLength =
-                        slice page (offset + ROW_LENGTH_OFFSET_MULTIPLIER*word, word)
+                        slice' page (offset + ROW_LENGTH_OFFSET_MULTIPLIER*word, word)
                         |> ToInt
                     let rowCount =
-                        slice page (offset + ROW_COUNT_OFFSET_MULTIPLIER*word, word)
+                        slice' page (offset + ROW_COUNT_OFFSET_MULTIPLIER*word, word)
                         |> ToInt
 
                     let lcsOffset = offset + if header.Bits = X64 then 682 else 354
@@ -209,32 +214,28 @@ type SasFile (filename) =
 //                    let rowCountMix =
 //                        slice page (offset + ROW_COUNT_ON_MIX_PAGE_OFFSET_MULTIPLIER*word, word)
 //                        |> ToInt
-                    let lcs = slice page (lcsOffset, 2) |> ToShort
-                    let lcp = slice page (lcpOffset, 2) |> ToShort
+                    let lcs = slice' page (lcsOffset, 2) |> ToShort
+                    let lcp = slice' page (lcpOffset, 2) |> ToShort
                     if lcs > 0s then
                         let creator = slice page (offset + (if header.Bits = X86 then 16 else 20), int lcs)
                                         |> ToStr
                         ()
-
-                    Rows (rowLength, rowCount, lcs, lcp)
-                | SubHeaderType.ColumnCount ->
                     let colCountP1 =
-                        slice page (offset + COL_COUNT_P1_MULTIPLIER*word, word)
+                        slice' page (offset + COL_COUNT_P1_MULTIPLIER*word, word)
                         |> ToInt
-
                     let colCountP2 =
-                        slice page (offset + COL_COUNT_P2_MULTIPLIER*word, word)
+                        slice' page (offset + COL_COUNT_P2_MULTIPLIER*word, word)
                         |> ToInt
 
+                    Rows (rowLength, rowCount, colCountP1, colCountP2, lcs, lcp)
+                | SubHeaderType.ColumnCount ->
                     let offset = offset + word
-                    let colCount = slice page (offset, word) |> ToInt
-                    if colCount <> colCountP1 + colCountP2 then
-                        dprintfn "Column count mismatch"
+                    let colCount = slice' page (offset, word) |> ToInt
                     ColumnCount colCount
                 | SubHeaderType.SubHeaderCount ->
                     SubHeaderCounts // Not sure what to do here yet
                 | SubHeaderType.ColumnText ->
-                    let textBlockSize = slice page (offset + word, TEXT_BLOCK_SIZE_LENGTH) |> ToShort
+                    let textBlockSize = slice' page (offset + word, TEXT_BLOCK_SIZE_LENGTH) |> ToShort
                     let columnNames = slice page (offset, int textBlockSize + word)
                     ColumnText columnNames
                 | SubHeaderType.ColumnName ->
@@ -245,13 +246,13 @@ type SasFile (filename) =
                         |> List.map (fun n ->
                             let offset = offset + COLUMN_NAME_POINTER_LENGTH*n
                             {
-                            TextIndex        = slice page (offset +
+                            TextIndex        = slice' page (offset +
                                                 COLUMN_NAME_TEXT_SUBHEADER_OFFSET,
                                                 COLUMN_NAME_TEXT_SUBHEADER_LENGTH) |> ToShort
-                            ColumnNameOffset = slice page (offset +
+                            ColumnNameOffset = slice' page (offset +
                                                 COLUMN_NAME_OFFSET_OFFSET,
                                                 COLUMN_NAME_OFFSET_LENGTH) |> ToShort
-                            ColumnNameLength = slice page (offset +
+                            ColumnNameLength = slice' page (offset +
                                                 COLUMN_NAME_LENGTH_OFFSET,
                                                 COLUMN_NAME_LENGTH_LENGTH) |> ToShort
                             })
@@ -266,14 +267,11 @@ type SasFile (filename) =
                         |> List.map (fun n ->
                             let offset = offset + (word + 8)*n
                             {
-                            ColumnAttrOffset = slice page (offset +
-                                                COLUMN_DATA_OFFSET_OFFSET,
+                            ColumnAttrOffset = slice' page (offset + COLUMN_DATA_OFFSET_OFFSET,
                                                 word) |> ToInt
-                            ColumnAttrWidth  = slice page (offset +
-                                                word + COLUMN_DATA_LENGTH_OFFSET,
+                            ColumnAttrWidth  = slice' page (offset + word + COLUMN_DATA_LENGTH_OFFSET,
                                                 COLUMN_DATA_LENGTH_LENGTH) |> ToInt
-                            ColumnType       = slice page (offset +
-                                                word + COLUMN_TYPE_OFFSET,
+                            ColumnType       = slice' page (offset + word + COLUMN_TYPE_OFFSET,
                                                 COLUMN_TYPE_LENGTH) |> ToByte
                             })
                     ColumnAttributes attributes
@@ -281,22 +279,22 @@ type SasFile (filename) =
                     let offset = subHeaderPointer.Offset + 3*word
                     let colFormatLabel =
                         {
-                        TextSubHeaderFormat = slice page (offset +
+                        TextSubHeaderFormat = slice' page (offset +
                                                 COLUMN_FORMAT_TEXT_SUBHEADER_INDEX_OFFSET,
                                                 COLUMN_FORMAT_TEXT_SUBHEADER_INDEX_LENGTH) |> ToShort
-                        TextSubHeaderLabel  = slice page (offset +
+                        TextSubHeaderLabel  = slice' page (offset +
                                                 COLUMN_LABEL_TEXT_SUBHEADER_INDEX_OFFSET,
                                                 COLUMN_LABEL_TEXT_SUBHEADER_INDEX_LENGTH) |> ToShort
-                        ColumnFormatOffset  =  slice page (offset +
+                        ColumnFormatOffset  =  slice' page (offset +
                                                 COLUMN_FORMAT_OFFSET_OFFSET,
                                                 COLUMN_FORMAT_OFFSET_LENGTH) |> ToShort
-                        ColumnFormatLength  = slice page (offset +
+                        ColumnFormatLength  = slice' page (offset +
                                                 COLUMN_FORMAT_LENGTH_OFFSET,
                                                 COLUMN_FORMAT_LENGTH_LENGTH) |> ToShort
-                        ColumnLabelOffset   = slice page (offset +
+                        ColumnLabelOffset   = slice' page (offset +
                                                 COLUMN_LABEL_OFFSET_OFFSET,
                                                 COLUMN_LABEL_OFFSET_LENGTH) |> ToShort
-                        ColumnLabelLength   = slice page (offset +
+                        ColumnLabelLength   = slice' page (offset +
                                                 COLUMN_LABEL_LENGTH_OFFSET,
                                                 COLUMN_LABEL_LENGTH_LENGTH) |> ToShort
                        }
@@ -351,13 +349,23 @@ type SasFile (filename) =
             |> Seq.cache
 
         // only one of these
-        let rowSize, rowCount, lcs, lcp =
+        let rowSize, rowCount, columnCount1, columnCount2, lcs, lcp =
             subHeaders
             |> Seq.pick (fun h ->
                 match h with
-                | Rows (rowSize, rowCount, lcs, lcp) -> Some (rowSize, rowCount, lcs, lcp)
+                | Rows (rowSize, rowCount, col1, col2, lcs, lcp) ->
+                    Some (rowSize, rowCount, col1, col2, lcs, lcp)
                 | _ -> None
             )
+        let columnCount =
+            subHeaders
+            |> Seq.pick (fun h ->
+                match h with
+                | ColumnCount n -> Some n
+                | _ -> None
+            )
+        if columnCount <> columnCount1 + columnCount2 then
+            dprintfn "Column count mismatch"
 
         // collect all headers of type ColumnText
         let textHeaders  =
@@ -419,12 +427,12 @@ type SasFile (filename) =
             let textHeader = textHeader.[header.WordLength - 1 ..]
 
             // min used to prevent incorrect data which appear in some files
-            let formatLen = 
-                min 
+            let formatLen =
+                min
                 <| int format.ColumnFormatLength
                 <| textHeader.Length - int format.ColumnFormatOffset - 1
-            let labelLen = 
-                min 
+            let labelLen =
+                min
                 <| int format.ColumnLabelLength
                 <| textHeader.Length - int format.ColumnLabelOffset - 1
             {
@@ -469,7 +477,6 @@ type SasFile (filename) =
 
     member x.Rows() =
         seq {
-            // skip page header (header itself says how big it is)
             reader.BaseStream.Seek(int64 header.HeaderSize , SeekOrigin.Begin) |> ignore
             for n in [1 .. header.PageCount] do
                 let page = reader.ReadBytes header.PageSize
@@ -484,15 +491,14 @@ type SasFile (filename) =
                     seq {
                     for n = 0 to List.length meta.Columns - 1 do
                         let col = meta.Columns.[n]
-                        let colBytes = slice rowBytes (col.Offset, col.Length)
+                        let colBytes = sliceEndian rowBytes (col.Offset, col.Length) header.Endianness
                         yield
                             match col.Type, col.Length, col.Format with
                             | Numeric, _, "" ->
                                     match ToDouble colBytes with
                                     | Some number -> Number number
                                     | None -> Empty
-                            //| Numeric, _, _ -> colBytes |> ToDouble |> Number //todo: handle formats
-                            | Numeric, _, TIME_FORMAT_STRINGS -> 
+                            | Numeric, _, TIME_FORMAT_STRINGS ->
                                     match ToDateTime colBytes with
                                     | Some time -> Time time
                                     | None -> Empty
@@ -502,9 +508,13 @@ type SasFile (filename) =
                                     | None -> Empty
                             | Numeric, _, dt when List.exists
                                 (fun fmt -> fmt = dt)
-                                DATE_FORMAT_STRINGS -> 
+                                DATE_FORMAT_STRINGS ->
                                     match ToDate colBytes with
                                     | Some date -> Date date
+                                    | None -> Empty
+                            | Numeric, _, _ -> //todo: handle formats
+                                    match ToDouble colBytes with
+                                    | Some number -> Number number
                                     | None -> Empty
                             | Text, len, _ -> colBytes |> ToStr |> Character
                             | _ -> failwith "Couldn't parse value"

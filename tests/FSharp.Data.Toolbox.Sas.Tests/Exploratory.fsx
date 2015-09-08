@@ -2,164 +2,168 @@
 #r "FSharp.Data.Toolbox.Sas"
 
 module Exploratory =
-        open System
-        open System.IO
-        open System.Diagnostics
+    open System
+    open System.IO
+    open System.Diagnostics
 
-        open FSharp.Data.Toolbox.SasFile
+    open FSharp.Data.Toolbox.SasFile
 
-        let filename = 
-            Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, 
-                          @"tests\FSharp.Data.Toolbox.Sas.Tests\files\ccaep140.sas7bdat")
-                          //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
-                          //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\redbook.sas7bdat")
+    let filename = 
+        Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, 
+                      //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\ccaep140.sas7bdat")
+                      //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
+                      @"tests\FSharp.Data.Toolbox.Sas.Tests\files\redbook.sas7bdat")
 
-    ///////////////////////////////////////////
+///////////////////////////////////////////
 
-        let reader = 
-            if not <| File.Exists filename then
-                failwith "File '%s' not found" filename
-            new BinaryReader(File.Open
-                (filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+    let reader = 
+        if not <| File.Exists filename then
+            failwith "File '%s' not found" filename
+        new BinaryReader(File.Open
+            (filename, FileMode.Open, FileAccess.Read, FileShare.Read))
 
-        let header = 
-            let headerBytes = 
-                reader.BaseStream.Seek(0L, SeekOrigin.Begin) |> ignore
-                let header = reader.ReadBytes META_LENGTH
-                if header.Length < META_LENGTH then
-                    failwith "File is not SAS7BDAT (too short)"
-                // Check magic number
-                if header.[..Magic.Length - 1] <> Magic then
-                    Trace.WriteLine "Magic number mismatch"
-                    //failwith "Magic number mismatch"
-                header
+    let header =
+        let headerBytes =
+            reader.BaseStream.Seek(0L, SeekOrigin.Begin) |> ignore
+            let header = reader.ReadBytes META_LENGTH
+            if header.Length < META_LENGTH then
+                failwith "File is not SAS7BDAT (too short)"
+            // Check magic number
+            if header.[..Magic.Length - 1] <> Magic then
+                dprintfn "Magic number mismatch"
+            header
 
-            let readHeader offset len = 
-                slice headerBytes (offset, len)
+        let readHeader offset len =
+            slice headerBytes (offset, len)
 
-            let bits, alignment2 = 
-                let align1bytes = readHeader ALIGN_1_OFFSET ALIGN_1_LENGTH
-                if align1bytes = U64_BYTE_CHECKER_VALUE then 
-                    X64, ALIGN_2_VALUE 
-                else X86, 0
-            let alignment1 = 
-                let align2bytes = readHeader ALIGN_2_OFFSET ALIGN_2_LENGTH
-                if align2bytes = ALIGN_1_CHECKER_VALUE then 
-                    ALIGN_1_VALUE 
-                else 0
+        let bits, alignment2 =
+            let align1bytes = readHeader ALIGN_1_OFFSET ALIGN_1_LENGTH
+            if align1bytes = U64_BYTE_CHECKER_VALUE then
+                X64, ALIGN_2_VALUE
+            else X86, 0
+        let alignment1 =
+            let align2bytes = readHeader ALIGN_2_OFFSET ALIGN_2_LENGTH
+            if align2bytes = ALIGN_1_CHECKER_VALUE then
+                ALIGN_1_VALUE
+            else 0
 
-            let pageBitOffset, wordLength, subheaderPointerLength = 
-                match bits with
-                | X86 -> PAGE_BIT_OFFSET_X86, WORD_LENGTH_X86, SUBHEADER_POINTER_LENGTH_X86
-                | X64 -> PAGE_BIT_OFFSET_X64, WORD_LENGTH_X64, SUBHEADER_POINTER_LENGTH_X64
+        let pageBitOffset, wordLength, subheaderPointerLength =
+            match bits with
+            | X86 -> PAGE_BIT_OFFSET_X86, WORD_LENGTH_X86, SUBHEADER_POINTER_LENGTH_X86
+            | X64 -> PAGE_BIT_OFFSET_X64, WORD_LENGTH_X64, SUBHEADER_POINTER_LENGTH_X64
 
-            let totalAlignment = alignment1 + alignment2
+        let totalAlignment = alignment1 + alignment2
 
-            let endianness = 
-                let endianByte = readHeader ENDIANNESS_OFFSET ENDIANNESS_LENGTH
-                match endianByte with
-                | [| 00uy |] -> Big
-                | [| 01uy |] -> Little
-                | _    -> failwith "Unknown endianness"
+        let endianness =
+            let endianByte = readHeader ENDIANNESS_OFFSET ENDIANNESS_LENGTH
+            match endianByte with
+            | [| 00uy |] -> Big
+            | [| 01uy |] -> Little
+            | _    -> failwith "Unknown endianness"
 
-            let platform = 
-                let platformBytes = readHeader PLATFORM_OFFSET PLATFORM_LENGTH
-                match platformBytes with
-                | "1"B -> Unix
-                | "2"B -> Windows
-                | _    -> UnknownPlatform
+        let readHeader' offset len =
+            sliceEndian headerBytes (offset, len) endianness
 
-            let dataSet = 
-                let datasetBytes = readHeader DATASET_OFFSET DATASET_LENGTH
-                ToStr datasetBytes
+        let platform =
+            let platformBytes = readHeader PLATFORM_OFFSET PLATFORM_LENGTH
+            match platformBytes with
+            | "1"B -> Unix
+            | "2"B -> Windows
+            | _    -> UnknownPlatform
 
-            let fileType = 
-                let fileTypeBytes = readHeader FILE_TYPE_OFFSET FILE_TYPE_LENGTH
-                ToStr fileTypeBytes
+        let dataSet =
+            let datasetBytes = readHeader DATASET_OFFSET DATASET_LENGTH
+            let dataset = ToStr datasetBytes
+            dataset.Trim()
 
-            // Timestamp is epoch 01/01/1960
-            let dateCreated =
-                let dateCreatedBytes = readHeader (DATE_CREATED_OFFSET + alignment1) DATE_CREATED_LENGTH
-                match ToDateTime dateCreatedBytes with
-                | Some date -> date
-                | None -> new DateTime(1960, 1, 1)
+        let fileType =
+            let fileTypeBytes = readHeader FILE_TYPE_OFFSET FILE_TYPE_LENGTH
+            let filetype = ToStr fileTypeBytes
+            filetype.Trim()
 
-            let dateModified =
-                let dateModifiedBytes = readHeader (DATE_MODIFIED_OFFSET + alignment1) DATE_MODIFIED_LENGTH
-                match ToDateTime dateModifiedBytes with
-                | Some date -> date
-                | None -> new DateTime(1960, 1, 1)
+        // Timestamp is epoch 01/01/1960
+        let dateCreated =
+            let dateCreatedBytes = readHeader' (DATE_CREATED_OFFSET + alignment1) DATE_CREATED_LENGTH
+            match ToDateTime dateCreatedBytes with
+            | Some date -> date
+            | None -> new DateTime(1960, 1, 1)
 
-            let headerSize = 
-                let headerSizeBytes = readHeader (HEADER_SIZE_OFFSET + alignment1) HEADER_SIZE_LENGTH
-                let headerSize = ToInt headerSizeBytes
-                if bits = X64 && headerSize <> 8*1024 then
-                    failwith "Header size (%d) doesn't match word length (X64)" headerSize
-                headerSize
+        let dateModified =
+            let dateModifiedBytes = readHeader' (DATE_MODIFIED_OFFSET + alignment1) DATE_MODIFIED_LENGTH 
+            match ToDateTime dateModifiedBytes with
+            | Some date -> date
+            | None -> new DateTime(1960, 1, 1)
 
-            let pageSize = 
-                let pageSizeBytes = readHeader (PAGE_SIZE_OFFSET + alignment1) PAGE_SIZE_LENGTH
-                ToInt pageSizeBytes
+        let headerSize = 
+            let headerSizeBytes = readHeader' (HEADER_SIZE_OFFSET + alignment1) HEADER_SIZE_LENGTH
+            let headerSize = ToInt headerSizeBytes
+            if bits = X64 && headerSize <> 8*1024 then
+                dprintfn "Header size (%d) doesn't match word length (X64)" headerSize
+            headerSize
 
-            let pageCount = 
-                let pageCountBytes = readHeader (PAGE_COUNT_OFFSET + alignment1) PAGE_COUNT_LENGTH
-                ToInt pageCountBytes
+        let pageSize = 
+            let pageSizeBytes = readHeader' (PAGE_SIZE_OFFSET + alignment1) PAGE_SIZE_LENGTH
+            ToInt pageSizeBytes
 
-            let sasRelease = 
-                let sasReleaseBytes = readHeader (SAS_RELEASE_OFFSET + totalAlignment) SAS_RELEASE_LENGTH
-                ToStr sasReleaseBytes
+        let pageCount = 
+            let pageCountBytes = readHeader' <| PAGE_COUNT_OFFSET + alignment1 <| PAGE_COUNT_LENGTH + alignment2
+            ToInt pageCountBytes
 
-            let serverType = 
-                let serverTypeBytes = readHeader (SAS_SERVER_TYPE_OFFSET + totalAlignment) SAS_SERVER_TYPE_LENGTH
-                ToStr serverTypeBytes
+        let sasRelease = 
+            let sasReleaseBytes = readHeader (SAS_RELEASE_OFFSET + totalAlignment) SAS_RELEASE_LENGTH
+            ToStr sasReleaseBytes
 
-            let osVersion = 
-                let osVersionBytes = readHeader (OS_VERSION_NUMBER_OFFSET + totalAlignment) OS_VERSION_NUMBER_LENGTH
-                ToStr osVersionBytes
+        let serverType = 
+            let serverTypeBytes = readHeader (SAS_SERVER_TYPE_OFFSET + totalAlignment) SAS_SERVER_TYPE_LENGTH
+            ToStr serverTypeBytes
 
-            let osName = 
-                let osNameOffset, osNameLen = 
-                    if OS_NAME_OFFSET + totalAlignment <> 0 then 
-                        OS_NAME_OFFSET  + totalAlignment, OS_NAME_LENGTH
-                    else 
-                        OS_MAKER_OFFSET + totalAlignment, OS_MAKER_LENGTH
-                let osNameBytes = readHeader osNameOffset osNameLen
-                ToStr osNameBytes
-            
-            {   Alignment1             =  alignment1
-                Alignment2             =  alignment2
+        let osVersion = 
+            let osVersionBytes = readHeader (OS_VERSION_NUMBER_OFFSET + totalAlignment) OS_VERSION_NUMBER_LENGTH
+            ToStr osVersionBytes
 
-                Bits                   =  bits              
-                PageBitOffset          =  pageBitOffset
-                WordLength             =  wordLength
-                SubHeaderPointerLength =  subheaderPointerLength
+        let osName = 
+            let osNameOffset, osNameLen = 
+                if OS_NAME_OFFSET + totalAlignment <> 0 then 
+                    OS_NAME_OFFSET  + totalAlignment, OS_NAME_LENGTH
+                else 
+                    OS_MAKER_OFFSET + totalAlignment, OS_MAKER_LENGTH
+            let osNameBytes = 
+                readHeader 
+                <| min osNameOffset (headerBytes.Length - osNameLen)
+                <| osNameLen
+            ToStr osNameBytes
 
-                Endianness             =  endianness      
-                Platform               =  platform         
-                DataSet                =  dataSet.Trim()
-                FileType               =  fileType.Trim()
-                DateCreated            =  dateCreated       
-                DateModified           =  dateModified      
-                HeaderSize             =  headerSize         
-                PageSize               =  pageSize           
-                PageCount              =  pageCount          
-                SasRelease             =  sasRelease         
-                ServerType             =  serverType         
-                OsVersion              =  osVersion          
-                OsName                 =  osName        
-                }
+        {   Alignment1             =  alignment1
+            Alignment2             =  alignment2
+
+            Bits                   =  bits
+            PageBitOffset          =  pageBitOffset
+            WordLength             =  wordLength
+            SubHeaderPointerLength =  subheaderPointerLength
+
+            Endianness             =  endianness
+            Platform               =  platform
+            DataSet                =  dataSet
+            FileType               =  fileType
+            DateCreated            =  dateCreated
+            DateModified           =  dateModified
+            HeaderSize             =  headerSize
+            PageSize               =  pageSize
+            PageCount              =  pageCount
+            SasRelease             =  sasRelease
+            ServerType             =  serverType
+            OsVersion              =  osVersion
+            OsName                 =  osName }
 
 
-
-        reader.BaseStream.Seek(int64 header.HeaderSize , SeekOrigin.Begin) |> ignore
-        let page0 = reader.ReadBytes header.PageSize
-        //let page1 = reader.ReadBytes header.PageSize
+    let slice' bytes (offset, len) =
+        sliceEndian bytes (offset, len) header.Endianness
 
     let readPage (page: byte array) = 
 
-        let pageBytes offset len = 
+        let pageBytes offset len =
             let offset = offset + header.PageBitOffset
-            slice page (offset, len)
+            slice' page (offset, len)
 
         let pageType = 
             let bytes = pageBytes PAGE_TYPE_OFFSET PAGE_TYPE_LENGTH
@@ -173,22 +177,24 @@ module Exploratory =
         let readSubHeaders () =
 
             let subHeaderCount = 
-                let bytes = pageBytes SUBHEADER_COUNT_OFFSET SUBHEADER_COUNT_LENGTH
+                let bytes = pageBytes SUBHEADER_COUNT_OFFSET SUBHEADER_COUNT_LENGTH 
                 ToShort bytes |> int
 
             let readSubHeaderPointerBytes n = 
                 let subHeaderPointerOffset = SUBHEADER_POINTERS_OFFSET + header.PageBitOffset
                 let totalOffset = subHeaderPointerOffset + n*header.SubHeaderPointerLength
                 slice page (totalOffset, 2*header.WordLength + 2)
+//let subBytes = readSubHeaderPointerBytes 6
 
             // process_subheader_pointers
             let readSubHeaderPointer (subBytes: byte array) =
                 let word = header.WordLength
-                { Offset      = slice subBytes (0,          word) |> ToInt 
-                  Length      = slice subBytes (word,       word) |> ToInt 
-                  Compression = slice subBytes (2*word,     1)    |> ToByte
-                  Type        = slice subBytes (2*word + 1, 1)    |> ToByte }
+                { Offset      = slice' subBytes (0,    word)    |> ToInt 
+                  Length      = slice' subBytes (word, word)    |> ToInt 
+                  Compression = slice  subBytes (2*word,     1) |> ToByte
+                  Type        = slice  subBytes (2*word + 1, 1) |> ToByte }
 
+//let subHeaderPointer = readSubHeaderPointer subBytes
             let readSubHeader subHeaderPointer =
                 let subHeaderType =
                     if subHeaderPointer.Compression = TRUNCATED_SUBHEADER_ID ||
@@ -214,45 +220,43 @@ module Exploratory =
                 match subHeaderType with
                 | SubHeaderType.Truncated-> Truncated
                 | SubHeaderType.Rows ->
-                    let rowLength = 
-                        slice page (offset + ROW_LENGTH_OFFSET_MULTIPLIER*word, word)
+                    let rowLength =
+                        slice' page (offset + ROW_LENGTH_OFFSET_MULTIPLIER*word, word)
                         |> ToInt
-                    let rowCount = 
-                        slice page (offset + ROW_COUNT_OFFSET_MULTIPLIER*word, word)
+                    let rowCount =
+                        slice' page (offset + ROW_COUNT_OFFSET_MULTIPLIER*word, word)
                         |> ToInt
 
                     let lcsOffset = offset + if header.Bits = X64 then 682 else 354
                     let lcpOffset = offset + if header.Bits = X64 then 706 else 378
 //                    let rowCountMix = 
-//                        slice page (offset + ROW_COUNT_ON_MIX_PAGE_OFFSET_MULTIPLIER*word, word)
+//                        pageBytes <| offset + ROW_COUNT_ON_MIX_PAGE_OFFSET_MULTIPLIER*word <| word
 //                        |> ToInt 
-                    let lcs = slice page (lcsOffset, 2) |> ToShort
-                    let lcp = slice page (lcpOffset, 2) |> ToShort
+                    let lcs = slice' page (lcsOffset, 2) |> ToShort
+                    let lcp = slice' page (lcpOffset, 2) |> ToShort
                     if lcs > 0s then
                         let creator = slice page (offset + (if header.Bits = X86 then 16 else 20), int lcs)
                                         |> ToStr
                         ()
 
-                    Rows (rowLength, rowCount, lcs, lcp) 
-                | SubHeaderType.ColumnCount -> 
                     let colCountP1 = 
-                        slice page (offset + COL_COUNT_P1_MULTIPLIER*word, word)
+                        slice' page (offset + COL_COUNT_P1_MULTIPLIER*word, word)
                         |> ToInt
 
                     let colCountP2 = 
-                        slice page (offset + COL_COUNT_P2_MULTIPLIER*word, word)
+                        slice' page (offset + COL_COUNT_P2_MULTIPLIER*word, word)
                         |> ToInt
 
+                    Rows (rowLength, rowCount, colCountP1, colCountP2, lcs, lcp) 
+                | SubHeaderType.ColumnCount ->
                     let offset = offset + word
-                    let colCount = slice page (offset, word) |> ToInt
-                    if colCount <> colCountP1 + colCountP2 then
-                        Trace.WriteLine "Column count mismatch"
+                    let colCount = slice' page (offset, word) |> ToInt
                     ColumnCount colCount
                 | SubHeaderType.SubHeaderCount ->
                     SubHeaderCounts // Not sure what to do here yet
                 | SubHeaderType.ColumnText ->
                     //let textOffset = offset + word
-                    let textBlockSize = slice page (offset + word, TEXT_BLOCK_SIZE_LENGTH) |> ToShort
+                    let textBlockSize = slice' page (offset + word, TEXT_BLOCK_SIZE_LENGTH) |> ToShort
                     let columnNames = slice page (offset, int textBlockSize + word)
                     ColumnText columnNames
                 | SubHeaderType.ColumnName ->
@@ -263,13 +267,13 @@ module Exploratory =
                         |> List.map (fun n -> 
                             let offset = offset + COLUMN_NAME_POINTER_LENGTH*n 
                             {
-                            TextIndex        = slice page (offset + 
+                            TextIndex        = slice' page (offset + 
                                                 COLUMN_NAME_TEXT_SUBHEADER_OFFSET, 
                                                 COLUMN_NAME_TEXT_SUBHEADER_LENGTH) |> ToShort
-                            ColumnNameOffset = slice page (offset + 
+                            ColumnNameOffset = slice' page (offset + 
                                                 COLUMN_NAME_OFFSET_OFFSET,
                                                 COLUMN_NAME_OFFSET_LENGTH) |> ToShort 
-                            ColumnNameLength = slice page (offset + 
+                            ColumnNameLength = slice' page (offset + 
                                                 COLUMN_NAME_LENGTH_OFFSET,
                                                 COLUMN_NAME_LENGTH_LENGTH) |> ToShort
                             })               
@@ -284,13 +288,13 @@ module Exploratory =
                         |> List.map (fun n -> 
                             let offset = offset + (word + 8)*n
                             {
-                            ColumnAttrOffset = slice page (offset + 
+                            ColumnAttrOffset = slice' page (offset + 
                                                 COLUMN_DATA_OFFSET_OFFSET, 
                                                 word) |> ToInt
-                            ColumnAttrWidth  = slice page (offset + 
+                            ColumnAttrWidth  = slice' page (offset + 
                                                 word + COLUMN_DATA_LENGTH_OFFSET,
                                                 COLUMN_DATA_LENGTH_LENGTH) |> ToInt 
-                            ColumnType       = slice page (offset + 
+                            ColumnType       = slice' page (offset + 
                                                 word + COLUMN_TYPE_OFFSET,
                                                 COLUMN_TYPE_LENGTH) |> ToByte
                             })               
@@ -299,22 +303,22 @@ module Exploratory =
                     let offset = subHeaderPointer.Offset + 3*word
                     let colFormatLabel = 
                         {
-                        TextSubHeaderFormat = slice page (offset + 
+                        TextSubHeaderFormat = slice' page (offset + 
                                                 COLUMN_FORMAT_TEXT_SUBHEADER_INDEX_OFFSET,
                                                 COLUMN_FORMAT_TEXT_SUBHEADER_INDEX_LENGTH) |> ToShort
-                        TextSubHeaderLabel  = slice page (offset + 
+                        TextSubHeaderLabel  = slice' page (offset + 
                                                 COLUMN_LABEL_TEXT_SUBHEADER_INDEX_OFFSET,
                                                 COLUMN_LABEL_TEXT_SUBHEADER_INDEX_LENGTH) |> ToShort
-                        ColumnFormatOffset  =  slice page (offset + 
+                        ColumnFormatOffset  =  slice' page (offset + 
                                                 COLUMN_FORMAT_OFFSET_OFFSET,
                                                 COLUMN_FORMAT_OFFSET_LENGTH) |> ToShort
-                        ColumnFormatLength  = slice page (offset + 
+                        ColumnFormatLength  = slice' page (offset + 
                                                 COLUMN_FORMAT_LENGTH_OFFSET,
                                                 COLUMN_FORMAT_LENGTH_LENGTH) |> ToShort
-                        ColumnLabelOffset   = slice page (offset + 
+                        ColumnLabelOffset   = slice' page (offset + 
                                                 COLUMN_LABEL_OFFSET_OFFSET,
                                                 COLUMN_LABEL_OFFSET_LENGTH) |> ToShort
-                        ColumnLabelLength   = slice page (offset + 
+                        ColumnLabelLength   = slice' page (offset + 
                                                 COLUMN_LABEL_LENGTH_OFFSET,
                                                 COLUMN_LABEL_LENGTH_LENGTH) |> ToShort
                        }
@@ -343,8 +347,7 @@ module Exploratory =
             printfn "Unknown page type: %i" pageType
             EmptyPage
 
-
-
+//let page = readPage page0
     let meta =
         // helper function to only get pages that contain metadata (skip rest, big speedup for large files)
         let subHeaders =
@@ -369,13 +372,22 @@ module Exploratory =
             |> Seq.cache
 
         // only one of these
-        let rowSize, rowCount, lcs, lcp =
+        let rowSize, rowCount, columnCount1, columnCount2, lcs, lcp =
             subHeaders
             |> Seq.pick (fun h ->
                 match h with
-                | Rows (rowSize, rowCount, lcs, lcp) -> Some (rowSize, rowCount, lcs, lcp)
+                | Rows (rowSize, rowCount, col1, col2, lcs, lcp) -> Some (rowSize, rowCount, col1, col2, lcs, lcp)
                 | _ -> None
             )
+        let columnCount =
+            subHeaders
+            |> Seq.pick (fun h ->
+                match h with
+                | ColumnCount n -> Some n
+                | _ -> None
+            )
+        if columnCount <> columnCount1 + columnCount2 then
+            dprintfn "Column count mismatch"
 
         // collect all headers of type ColumnText
         let textHeaders  =
@@ -612,7 +624,7 @@ let rows: seq<seq<Value>> =
                 yield readPage page
         }
         |> Seq.map (fun page ->
-//let subHeaders, blockCount, data = Seq.pick (fun page -> match page with | Mix (subs, blocks, data)  -> Some (subs, blocks, data) | _ -> None ) <| seq {yield readPage page}
+//let subHeaders, blocks, data = Seq.pick (fun page -> match page with | Mix (subs, blocks, data)  -> Some (subs, blocks, data) | _ -> None ) <| seq {yield readPage page}
 
 //let subHeaders = Seq.pick (fun page -> match page with | Meta subs  -> Some subs | _ -> None ) <| seq {yield readPage page}
 //let pointer, data = Seq.pick (fun sh -> match sh with DataPointer (p,d) -> Some (p,d) |_->None) subHeaders
@@ -620,22 +632,21 @@ let rows: seq<seq<Value>> =
 //let offset = pointer.Offset
 //let len  = pointer.Length
             let readPageRows blocks offset len data =
-//let blocks, offset, len = 1, 13458, 74
+//let blocks, offset, len = 1, 97, 48
                 let readRow offset len = 
                     let rowBytes = decompress meta offset len data
                     seq {
                     for n = 0 to List.length meta.Columns - 1 do
-//let n =8
+//let n =10
                         printfn "Column: %i" n
                         let col = meta.Columns.[n]
-                        let colBytes = slice rowBytes (col.Offset, col.Length)
+                        let colBytes = slice' rowBytes (col.Offset, col.Length)
                         yield 
                             match col.Type, col.Length, col.Format with
                             | Numeric, _, "" ->
                                     match ToDouble colBytes with
                                     | Some number -> Number number
                                     | None -> Empty
-                            //| Numeric, _, _ -> colBytes |> ToDouble |> Number //todo: handle formats
                             | Numeric, _, TIME_FORMAT_STRINGS -> 
                                     match ToDateTime colBytes with
                                     | Some time -> Time time
@@ -649,6 +660,10 @@ let rows: seq<seq<Value>> =
                                 DATE_FORMAT_STRINGS -> 
                                     match ToDate colBytes with
                                     | Some date -> Date date
+                                    | None -> Empty
+                            | Numeric, _, _ -> //todo: handle formats 
+                                    match ToDouble colBytes with
+                                    | Some number -> Number number
                                     | None -> Empty
                             | Text, len, _ -> colBytes |> ToStr |> Character
                             | _ -> failwith "Couldn't parse value"
@@ -705,25 +720,28 @@ meta.Columns
 |> String.concat "," 
 |> writer.WriteLine
 
-rows 
-|> Seq.iteri (fun i row ->
-    printfn "Row: %i" i
-    let line =
-        row
-        |> Seq.map (fun value ->
-            match value with
-            | Number n -> n.ToString()
-            | Character s -> s.Trim()
-            | Time t -> t.ToString("HH:mm:ss")
-            | Date d -> d.ToString()
-            | DateAndTime dt -> dt.ToString() //String.Format(format, value)
-            | Empty -> ""
-            )
-        |> String.concat ","
-    if not <| String.IsNullOrEmpty line then
-        writer.WriteLine line
-    )
-writer.Close()
+try
+    rows 
+    //|> Seq.take 1000
+    |> Seq.iteri (fun i row ->
+        printfn "Row: %i" i
+        let line =
+            row
+            |> Seq.map (fun value ->
+                match value with
+                | Number n -> n.ToString()
+                | Character s -> s.Trim()
+                | Time t -> t.ToString("HH:mm:ss")
+                | Date d -> d.ToString()
+                | DateAndTime dt -> dt.ToString() //String.Format(format, value)
+                | Empty -> ""
+                )
+            |> String.concat ","
+        if not <| String.IsNullOrEmpty line then
+            writer.WriteLine line
+        )
+finally 
+    writer.Close()
 
 
 let sasFile = new SasFile(filename)
