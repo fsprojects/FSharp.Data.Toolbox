@@ -11,7 +11,7 @@ open FSharp.Data
 open FSharp.Data.Toolbox.SasFile
 
 open NUnit.Framework
-open FsUnit
+//open FsUnit
 
 open System
 open System.IO
@@ -55,12 +55,13 @@ type ``Integration tests`` () =
         new SasFile(file) |> ignore
 
     [<Test>]
+    [<ExpectedException("System.Exception")>]
     member x.``Reading magic number from non-SAS file is failure``() =
         let file = Path.Combine(path, "test.csv")
         if not <| File.Exists file then
             File.WriteAllText(file, "1,2,3")
-        (fun () -> new SasFile(file) |> ignore )
-        |> should throw typeof<Exception> 
+        new SasFile(file) |> ignore
+        //|> should throw typeof<Exception> 
 
     [<Test>]
     member x.``Writing CSV works``() =
