@@ -51,7 +51,6 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <None Include="SAS Files.csv" />
-    <None Include="Integration.fsx" />
     <Compile Include="Integration.fs" />
     <None Include="Exploratory.fsx" />
     <None Include="SasTypeProviderTest.fsx" />
