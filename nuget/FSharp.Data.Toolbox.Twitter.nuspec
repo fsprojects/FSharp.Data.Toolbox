@@ -16,7 +16,7 @@
     <copyright>Copyright 2014</copyright>
     <tags>@tags@</tags>
     <dependencies>
-      <dependency id="FSharp.Data" version="2.1.1" />
+      <dependency id="FSharp.Data" version="2.2.3" />
     </dependencies>
   </metadata>
   <files>

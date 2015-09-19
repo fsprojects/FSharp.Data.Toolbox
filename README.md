@@ -12,4 +12,4 @@ F# Data Toolbox is a library for various data access APIs based on FSharp.Data. 
 - [@evelinag](https://github.com/evelinag)
 - [@tpetricek](https://github.com/tpetricek)
 
-The default maintainer account for projects under "fsprojects" is [@fsgit](https://github.com/fsgit) - F# Community Project Incubation Space (repo management)
+The default maintainer account for projects under "fsprojects" is [@fsprojectsgit](https://github.com/fsprojectsgit) - F# Community Project Incubation Space (repo management)
