@@ -68,9 +68,9 @@
     <Compile Include="SasSignatures.fs" />
     <Compile Include="SasFile.fs" />
     <Compile Include="SasToCsv.fs" />
-    <Compile Include="ProvidedTypes.fsi" />
-    <Compile Include="ProvidedTypes.fs" />
-    <Compile Include="DebugProvidedTypes.fs" />
+    <Compile Include="..\..\paket-files\fsprojects\FSharp.TypeProviders.StarterPack\src\ProvidedTypes.fsi" />
+    <Compile Include="..\..\paket-files\fsprojects\FSharp.TypeProviders.StarterPack\src\ProvidedTypes.fs" />
+    <Compile Include="..\..\paket-files\fsprojects\FSharp.TypeProviders.StarterPack\src\DebugProvidedTypes.fs" />
     <Compile Include="SasTypeProvider.fs" />
     <None Include="paket.references" />
     <Content Include="packages.config" />
