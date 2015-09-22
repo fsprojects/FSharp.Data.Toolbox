@@ -11,7 +11,13 @@ sasFile.Header.Alignment1
 sasFile.MetaData.RowCount
 sasFile.FileName
 
-let rows = sasFile.Rows()
+// 'Data' property gives strongly-typed access to columns:
+let row = sasFile.Data |> Seq.skip 5 |> Seq.head
+row.acadindx
+row.female
+
+// 'Rows' gives generic access to data
+let rows = sasFile.Rows
 rows
 |> Seq.take 100
 |> Seq.iter (fun row ->

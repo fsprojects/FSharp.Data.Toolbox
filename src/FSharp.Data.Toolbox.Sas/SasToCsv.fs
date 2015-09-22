@@ -20,7 +20,7 @@ module SasToCsv =
         |> writer.WriteLine
 
         // write lines
-        sasFile.Rows()
+        sasFile.Rows
         |> Seq.iter (fun row ->
             let line =
                 row

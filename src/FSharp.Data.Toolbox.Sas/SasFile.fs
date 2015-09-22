@@ -475,7 +475,7 @@ type SasFile (filename) =
     member x.Header = header
     member x.MetaData = meta
 
-    member x.Rows() =
+    member x.Rows =
         seq {
             reader.BaseStream.Seek(int64 header.HeaderSize , SeekOrigin.Begin) |> ignore
             for n in [1 .. header.PageCount] do
