@@ -45,7 +45,7 @@ correctly in F# Interactive, you need to:
 
 ### Open SAS dataset by passing file name to SasFile type
 *)
-let sasFile = new SasFile<"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/acadindx.sas7bdat">()
+let sasFile = new SasFile<"files/acadindx.sas7bdat">()
 
 (**
 After openning the dataset, you can call methods to access 

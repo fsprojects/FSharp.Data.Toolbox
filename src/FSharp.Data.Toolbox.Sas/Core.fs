@@ -315,15 +315,9 @@ module Core =
             |> Seq.map (fun hex -> Convert.ToByte(hex, 16)) // to bytes
             |> Array.ofSeq
 
-
         let endian bytes = function
         | Big    -> Array.rev bytes
         | Little -> bytes
-
-        /// Check if element is in a set
-    //    let InSet elem set' =
-    //        Set.intersect (set [ elem ]) set'
-    //        |> Set.isEmpty
 
         /// Python-like array slicing
         let inline slice (arr: _ array) (start, len) =
@@ -334,6 +328,3 @@ module Core =
 
         let inline dprintfn fmt =
             Printf.ksprintf Debug.WriteLine fmt
-
-
-
