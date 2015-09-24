@@ -4,6 +4,8 @@ open ProviderImplementation.ProvidedTypes
 open Microsoft.FSharp.Core.CompilerServices
 open System.Reflection
 
+#nowarn "25"
+
 [<TypeProvider>]
 type public SasProvider (config : TypeProviderConfig) as this =
     inherit TypeProviderForNamespaces ()
