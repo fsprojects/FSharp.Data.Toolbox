@@ -4,14 +4,13 @@
 #r "FSharp.Data.Toolbox.Sas.dll"
 open FSharp.Data.Toolbox.SasFile
 #else
-module FSharp.ProjectScaffold.Tests
+module FSharp.Data.Toolbox.Sas.IntegrationTests
 #endif
 
 open FSharp.Data
 open FSharp.Data.Toolbox.SasFile
 
 open NUnit.Framework
-//open FsUnit
 
 open System
 open System.IO
@@ -72,4 +71,11 @@ type ``Integration tests`` () =
     member x.``Converting all SAS7BDAT files works``() =
         Directory.EnumerateFiles(path, "*.sas7bdat")
         |> Seq.iter (fun filename -> SasToCsv.Convert filename)
-        
+
+    [<Test>]
+    member x.``Reading all SAS7BDAT metadata works``() =
+        Directory.EnumerateFiles(path, "*.sas7bdat")
+        |> Seq.iter (fun filename -> 
+            let sasFile = new SasFile(filename)
+            dprintfn "%A" sasFile.MetaData 
+            )

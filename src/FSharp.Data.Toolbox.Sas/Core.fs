@@ -139,14 +139,89 @@ module Core =
         | Time of DateTime
         | Character of string
         | Empty
-
-    type Row = Value list
-
-    //type EncodingErrorsAction =
-    //    | Ignore
-    //
-    //type AlignErrorAction =
-    //    | Ignore
+        // todo: must be a way to do operations without boilerplate
+        // addition
+        static member inline (+) (value1, value2) =
+            match value1, value2 with 
+            | Empty, Empty -> Empty
+            | Empty, x -> x
+            | x, Empty -> x
+            | Number v1, Number v2 -> Number (v1 + v2)
+            | Character v1, Character v2 -> Character (v1 + v2)
+            | x, y -> sprintf "Cannot add %A and %A" x y |> InvalidOperationException |> raise 
+        static member inline (+) (value, x) =
+            match value with
+            | Empty -> Number (float x)
+            | Number n -> Number (n + float x)
+            | Character s -> Character (s + string x)
+            | y -> sprintf "Cannot add %A and %A" x y |> InvalidOperationException |> raise 
+        static member inline (+) (x, value) =
+            match value with
+            | Empty -> Number (float x)
+            | Number n -> Number (n + float x)
+            | Character s -> Character (string x + s)
+            | y -> sprintf "Cannot add %A and %A" x y |> InvalidOperationException |> raise 
+        // substraction
+        static member inline (-) (value1, value2) =
+            match value1, value2 with 
+            | Empty, Empty -> Empty
+            | Empty, Number x -> Number -x
+            | x, Empty -> x
+            | Number v1, Number v2 -> Number (v1 - v2)
+            | x, y -> sprintf "Cannot substract %A from %A" x y |> InvalidOperationException |> raise 
+        static member inline (-) (value, x) =
+            match value with
+            | Empty -> Number (float -x)
+            | Number n -> Number (n - float x)
+            | y -> sprintf "Cannot substract %A from %A" y x |> InvalidOperationException |> raise
+        static member inline (-) (x, value) =
+            match value with
+            | Empty -> Number (float x)
+            | Number n -> Number (float x - n)
+            | y -> sprintf "Cannot substract %A from %A" x y |> InvalidOperationException |> raise 
+        // multiplication
+        static member inline (*) (value1, value2) =
+            match value1, value2 with 
+            | Empty, Empty -> Empty
+            | Empty, x -> Empty
+            | x, Empty -> Empty
+            | Number v1, Number v2 -> Number (v1 * v2)
+            | Character v1, Number v2 -> Character (String.replicate (int v2) v1 )
+            | Number v2, Character v1 -> Character (String.replicate (int v2) v1 )
+            | x, y -> sprintf "Cannot multiply %A by %A" x y |> InvalidOperationException |> raise 
+        static member inline (*) (value, x) =
+            match value with
+            | Empty -> Empty
+            | Number n -> Number (n * float x)
+            | Character s -> Character (String.replicate (int x) s)
+            | y -> sprintf "Cannot multiply %A by %A" x y |> InvalidOperationException |> raise 
+        static member inline (*) (x, value) =
+            match value with
+            | Empty -> Empty
+            | Number n -> Number (n * float x)
+            | Character s -> Character (String.replicate (int x) s)
+            | y -> sprintf "Cannot multiply %A by %A" x y |> InvalidOperationException |> raise 
+        // division
+        static member inline (/) (value1, value2) =
+            match value1, value2 with 
+            | Empty, x -> Empty
+            | Empty, Empty -> "Cannot divide by Empty value" |> DivideByZeroException |> raise 
+            | x, Empty -> "Cannot divide by Empty value" |> DivideByZeroException |> raise 
+            | Number v1, Number v2 when v2 <> 0. -> Number (v1 / v2)
+            | Number v1, Number v2 -> "Cannot divide by zero Number" |> DivideByZeroException |> raise 
+            | x, y -> sprintf "Cannot divide %A by %A" x y |> InvalidOperationException |> raise 
+        static member inline (/) (value, x) =
+            match value with
+            | Empty -> Empty
+            | Number n when float x <> 0. -> Number (n / float x)
+            | Number n -> "Cannot divide by zero" |> DivideByZeroException |> raise 
+            | y -> sprintf "Cannot divide %A by %A" x y |> InvalidOperationException |> raise 
+        static member inline (/) (x, value) =
+            match value with
+            | Empty -> "Cannot divide by Empty value" |> DivideByZeroException |> raise 
+            | Number n when n <> 0. -> Number (n / float x)
+            | Number n -> "Cannot divide by zero Number" |> DivideByZeroException |> raise 
+            | y -> sprintf "Cannot divide %A by %A" x y |> InvalidOperationException |> raise 
 
     let inline decompress meta offset len (data: _ array) =
         match meta.CompressionInfo with

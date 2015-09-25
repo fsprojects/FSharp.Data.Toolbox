@@ -8,6 +8,7 @@
 
 # Xamarin Studio / monodevelop user-specific
 *.userprefs
+.vs/
 
 # Build results
 

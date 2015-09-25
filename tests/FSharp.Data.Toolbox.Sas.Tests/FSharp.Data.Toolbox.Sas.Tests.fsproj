@@ -8,7 +8,7 @@
     <ProjectGuid>f3eb7d46-eda3-4d6c-a173-d5692579172e</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>SasReader.Tests</RootNamespace>
-    <AssemblyName>SasReader.Tests</AssemblyName>
+    <AssemblyName>FSharp.Data.Toolbox.Sas.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
     <Name>FSharp.Data.Toolbox.Sas.Tests</Name>
@@ -50,6 +50,7 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <Compile Include="UnitTests.fs" />
     <None Include="SAS Files.csv" />
     <Compile Include="Integration.fs" />
     <None Include="Exploratory.fsx" />
@@ -61,10 +62,6 @@
   <ItemGroup>
     <Reference Include="FSharp.Data.Toolbox.Sas">
       <HintPath>..\..\bin\FSharp.Data.Toolbox.Sas.dll</HintPath>
-    </Reference>
-    <Reference Include="FsUnit.NUnit">
-      <HintPath>..\..\packages\FsUnit.1.3.0.0\Lib\Net40\FsUnit.NUnit.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

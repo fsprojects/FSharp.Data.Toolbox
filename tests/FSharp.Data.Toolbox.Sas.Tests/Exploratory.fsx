@@ -10,9 +10,8 @@ module Exploratory =
 
     let filename = 
         Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, 
-                      //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\ccaep140.sas7bdat")
+                      @"tests\FSharp.Data.Toolbox.Sas.Tests\files\rduschedule.sas7bdat")
                       //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
-                      @"tests\FSharp.Data.Toolbox.Sas.Tests\files\redbook.sas7bdat")
 
 ///////////////////////////////////////////
 
@@ -448,22 +447,22 @@ module Exploratory =
 //let i = 1
 //let name, attr, format = Seq.nth i <| Seq.zip3 names attributes formats
             let textHeader = Seq.nth (int name.TextIndex) textHeaders
-            let textHeader = textHeader.[header.WordLength - 1 ..]
+            let textHeader = textHeader.[header.WordLength ..]
             // min used to prevent incorrect data which appear in some files
             let formatLen = 
                 min 
                 <| int format.ColumnFormatLength
-                <| textHeader.Length - int format.ColumnFormatOffset - 1
+                <| textHeader.Length - int format.ColumnFormatOffset
             let labelLen = 
                 min 
                 <| int format.ColumnLabelLength
-                <| textHeader.Length - int format.ColumnLabelOffset - 1
+                <| textHeader.Length - int format.ColumnLabelOffset
             {
                 Ordinal = i + 1
                 Name =
                     slice
                         textHeader
-                        (int name.ColumnNameOffset + 1, int name.ColumnNameLength)
+                        (int name.ColumnNameOffset , int name.ColumnNameLength)
                     |> ToStr
                 Type =  match attr.ColumnType with
                         | 1uy -> Numeric
@@ -473,13 +472,13 @@ module Exploratory =
                 Format =
                     slice
                         textHeader
-                        (int format.ColumnFormatOffset + 1, formatLen)
+                        (int format.ColumnFormatOffset, formatLen)
                     |> ToStr
                 Label =
                     //try //<<
                     slice
                         textHeader
-                        (int format.ColumnLabelOffset + 1, labelLen)
+                        (int format.ColumnLabelOffset , labelLen)
                     |> ToStr
 //                    with | :? IndexOutOfRangeException ->
 //                        let msg = sprintf "slice %i, %i" (int format.ColumnLabelOffset+1) (int format.ColumnLabelLength+1)
@@ -771,3 +770,5 @@ sasFile.Rows()
     )
 
     writer.Close()
+
+

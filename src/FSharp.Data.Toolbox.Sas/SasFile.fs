@@ -184,9 +184,7 @@ type SasFile (filename) =
                     if subHeaderPointer.Compression = TRUNCATED_SUBHEADER_ID ||
                        subHeaderPointer.Length = 0 then SubHeaderType.Truncated
                     else
-                        // read_subheader_signature
                         let subSignature = pageBytes (subHeaderPointer.Offset - header.PageBitOffset) header.WordLength
-                        // get_subheader_class
                         let subHeaderMatched, subHeader = SignatureToHeaderColumn.TryGetValue subSignature
                         if not subHeaderMatched &&
                             (subHeaderPointer.Compression = COMPRESSED_SUBHEADER_ID ||
@@ -209,15 +207,15 @@ type SasFile (filename) =
                         slice' page (offset + ROW_COUNT_OFFSET_MULTIPLIER*word, word)
                         |> ToInt
 
-                    let lcsOffset = offset + if header.Bits = X64 then 682 else 354
-                    let lcpOffset = offset + if header.Bits = X64 then 706 else 378
+                    let lcsOffset = offset + match header.Bits with X64 -> 682 | X86 -> 354
+                    let lcpOffset = offset + match header.Bits with X64 -> 706 | X86 -> 378
 //                    let rowCountMix =
 //                        slice page (offset + ROW_COUNT_ON_MIX_PAGE_OFFSET_MULTIPLIER*word, word)
 //                        |> ToInt
                     let lcs = slice' page (lcsOffset, 2) |> ToShort
                     let lcp = slice' page (lcpOffset, 2) |> ToShort
                     if lcs > 0s then
-                        let creator = slice page (offset + (if header.Bits = X86 then 16 else 20), int lcs)
+                        let creator = slice page (offset + (match header.Bits with X86 -> 16 | X64 -> 20), int lcs)
                                         |> ToStr
                         ()
                     let colCountP1 =
@@ -379,7 +377,7 @@ type SasFile (filename) =
         // compression information in the first ColumnText
         let compression =
             let firstColText = Seq.nth 0 textHeaders
-            let offset = if header.Bits = X86 then 16 else 20
+            let offset = match header.Bits with X86 -> 16 | X64 -> 20
             let signature = slice firstColText (offset, 8) |> ToStr
 
             match signature.Trim() with
@@ -424,23 +422,23 @@ type SasFile (filename) =
             |||> Seq.zip3
             |> Seq.mapi (fun i (name, attr, format) ->
             let textHeader = Seq.nth (int name.TextIndex) textHeaders
-            let textHeader = textHeader.[header.WordLength - 1 ..]
+            let textHeader = textHeader.[header.WordLength ..]
 
             // min used to prevent incorrect data which appear in some files
             let formatLen =
                 min
                 <| int format.ColumnFormatLength
-                <| textHeader.Length - int format.ColumnFormatOffset - 1
+                <| textHeader.Length - int format.ColumnFormatOffset
             let labelLen =
                 min
                 <| int format.ColumnLabelLength
-                <| textHeader.Length - int format.ColumnLabelOffset - 1
+                <| textHeader.Length - int format.ColumnLabelOffset
             {
                 Ordinal = i + 1
                 Name =
                     slice
                         textHeader
-                        (int name.ColumnNameOffset + 1, int name.ColumnNameLength)
+                        (int name.ColumnNameOffset, int name.ColumnNameLength)
                     |> ToStr
                 Type =  match attr.ColumnType with
                         | 1uy -> Numeric
@@ -450,12 +448,12 @@ type SasFile (filename) =
                 Format =
                     slice
                         textHeader
-                        (int format.ColumnFormatOffset + 1, formatLen)
+                        (int format.ColumnFormatOffset, formatLen)
                     |> ToStr
                 Label =
                     slice
                         textHeader
-                        (int format.ColumnLabelOffset + 1, labelLen)
+                        (int format.ColumnLabelOffset, labelLen)
                     |> ToStr
                 Offset = attr.ColumnAttrOffset
             })
