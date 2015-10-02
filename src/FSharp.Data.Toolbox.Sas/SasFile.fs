@@ -1,10 +1,12 @@
-﻿namespace FSharp.Data.Toolbox.SasFile
+﻿namespace FSharp.Data.Toolbox.Sas
 
 open System
 open System.Diagnostics
 open System.IO
 
 type SasFile (filename) =
+
+    let name = Path.GetFileNameWithoutExtension filename
 
     let reader =
         if not <| File.Exists filename then
@@ -470,6 +472,7 @@ type SasFile (filename) =
             reader.Close()
 
     member x.FileName = filename
+    member x.Name = name
     member x.Header = header
     member x.MetaData = meta
 

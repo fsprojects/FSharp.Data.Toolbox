@@ -1,4 +1,4 @@
-﻿namespace FSharp.Data.Toolbox.SasFile
+﻿namespace FSharp.Data.Toolbox.Sas
 
 [<AutoOpen>]
 module SasSignatures =

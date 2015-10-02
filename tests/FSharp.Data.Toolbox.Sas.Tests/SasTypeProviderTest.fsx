@@ -1,23 +1,57 @@
 ﻿#r "../../bin/FSharp.Data.Toolbox.Sas.dll"
 
-open FSharp.Data.Toolbox.SasFile
-open System.IO
+open FSharp.Data.Toolbox.Sas
+open System.IO 
 
-//let folder = Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, @"files")
-
-let sasFile = new FSharp.Data.Toolbox.SasProvider.SasFile<"files/acadindx.sas7bdat">()
+let sasFile = new SasFileTypeProvider<"files/acadindx.sas7bdat">()
 
 sasFile.Header.Alignment1
 sasFile.MetaData.RowCount
 sasFile.FileName
+sasFile.Name
 
-// 'Data' property gives strongly-typed access to columns:
-let row = sasFile.Data |> Seq.skip 5 |> Seq.head
-row.acadindx
-row.female
+// 'Observations' property gives strongly-typed access to dataset variables:
+let obs = sasFile.Observations |> Seq.skip 5 |> Seq.head
+obs.acadindx
+obs.female
 
-// 'Rows' gives generic access to data
+// sum first 10 'reading' variable values
+sasFile.Observations
+|> Seq.take 10
+|> Seq.sumBy ( fun obs -> obs.reading )
+
+// calculate mean
+let readingMean = 
+    sasFile.Observations
+    |> Seq.averageBy (fun obs -> obs.reading )
+
+// standard deviation 
+let readingStdDev =
+    sqrt (( sasFile.Observations
+            |> Seq.map (fun obs -> (obs.reading - readingMean) ** 2.0)
+            |> Seq.sum
+        ) / Seq.length sasFile.Observations )
+
+// min
+sasFile.Observations
+|> Seq.map (fun obs -> obs.reading)
+|> Seq.min
+// ...and max
+sasFile.Observations
+|> Seq.map (fun obs -> obs.reading)
+|> Seq.max
+
+// multiply 'reading' by 'writing' and sum
+sasFile.Observations
+|> Seq.map (fun obs -> obs.reading * obs.writing)
+|> Seq.sum
+
+
+
+
+// 'Rows' gives generic access to data 
 let rows = sasFile.Rows
+
 rows
 |> Seq.take 100
 |> Seq.iter (fun row ->
@@ -40,3 +74,5 @@ rows
     printfn "%s" line
         
     )
+
+

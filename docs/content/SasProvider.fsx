@@ -9,8 +9,8 @@
 F# Data Toolbox: SAS dataset type provider
 ========================
 
-The SAS dataset (sas7bdat) type provider allows exploratory, 
-information-rich programming with SAS files and provides native access 
+The SAS dataset (sas7bdat) type provider allows exploratory 
+programming with SAS files and provides native access 
 to SAS datasets. No SAS software or OLE DB providers required.
 
 Opening a SAS dataset file
@@ -25,8 +25,7 @@ Opening a SAS dataset file
 // (see the big warning box below for more!)
 #r "FSharp.Data.Toolbox.Sas.dll"
 #r "FSharp.Data.dll"
-open FSharp.Data.Toolbox.SasFile
-open FSharp.Data.Toolbox.SasProvider
+open FSharp.Data.Toolbox.Sas
 
 (**
 <div class="well well-small" style="margin:0px 70px 0px 20px;">
@@ -45,7 +44,10 @@ correctly in F# Interactive, you need to:
 
 ### Open SAS dataset by passing file name to SasFile type
 *)
-let sasFile = new SasFile<"files/acadindx.sas7bdat">()
+[<Literal>] 
+let sasPath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/acadindx.sas7bdat"
+
+let sasFile = new SasFileTypeProvider<sasPath>()
 
 (**
 After openning the dataset, you can call methods to access 
@@ -72,10 +74,47 @@ Accessing data in a strongly-typed fashion
 Good for exploratory programming. IntelliSense access to column names. 
 *)
 // read sixth row of data
-let row = sasFile.Data |> Seq.skip 5 |> Seq.head
+let row = sasFile.Observations |> Seq.skip 5 |> Seq.head
 printfn "Column 'id' value: %A" row.id
 printfn "Column 'reading' value: %A" row.reading
   
+// sum first 10 'reading' variable values
+sasFile.Observations
+|> Seq.take 10
+|> Seq.sumBy ( fun obs -> obs.reading )
+
+// calculate mean
+let readingMean = 
+    sasFile.Observations
+    |> Seq.averageBy (fun obs -> obs.reading )
+
+// standard deviation 
+let readingStdDev =
+    sqrt (( sasFile.Observations
+            |> Seq.map (fun obs -> (obs.reading - readingMean) ** 2.0)
+            |> Seq.sum
+        ) / Seq.length sasFile.Observations )
+
+// min
+sasFile.Observations
+|> Seq.map (fun obs -> obs.reading)
+|> Seq.min
+// ...and max
+sasFile.Observations
+|> Seq.map (fun obs -> obs.reading)
+|> Seq.max
+
+// multiply 'reading' by 'writing' and sum
+sasFile.Observations
+|> Seq.map (fun obs -> obs.reading * obs.writing)
+|> Seq.sum
+
+// ..equivalent to:
+query {
+    for obs in sasFile.Observations do
+    sumBy (obs.reading * obs.writing)
+}
+
 (**
 Accessing data in a generic way
 --------------------------------------
@@ -91,14 +130,13 @@ let valueToText value =
     | Empty -> ""
 
 sasFile.Rows
-|> Seq.take 100
-|> Seq.iter (fun row ->
-    let line =
-        row
-        |> Seq.map valueToText
-        |> String.concat "," 
-    printfn "%s" line
-    )
+    |> Seq.take 100
+    |> Seq.iter (fun row ->
+        let line =
+            row
+            |> Seq.map valueToText
+            |> String.concat "," 
+        printfn "%s" line )
 
 (**
 We can display the data in a grid. 
@@ -124,7 +162,7 @@ frm.Controls.Add status
 let pageSize = 100
 
 let read page = 
-    sasFile.Data 
+    sasFile.Observations 
     |> Seq.skip (pageSize*(page - 1))
     |> Seq.truncate pageSize
 
@@ -164,3 +202,6 @@ btn.Click.Add(fun _ ->
     )
 
 show page
+(**
+![SAS dataset viewer](img/SasViewer.png)
+*)

@@ -8,7 +8,7 @@ module FSharp.Data.Toolbox.Sas.UnitTests
 #endif
 
 open FSharp.Data
-open FSharp.Data.Toolbox.SasFile
+open FSharp.Data.Toolbox.Sas
 
 open NUnit.Framework
 

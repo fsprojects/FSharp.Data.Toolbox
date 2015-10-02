@@ -1,4 +1,4 @@
-﻿namespace FSharp.Data.Toolbox.SasFile
+﻿namespace FSharp.Data.Toolbox.Sas
 
 open System
 
@@ -222,6 +222,25 @@ module Core =
             | Number n when n <> 0. -> Number (n / float x)
             | Number n -> "Cannot divide by zero Number" |> DivideByZeroException |> raise 
             | y -> sprintf "Cannot divide %A by %A" x y |> InvalidOperationException |> raise 
+
+        static member Zero = Number 0.0
+        static member inline DivideByInt (value, n) =
+            match value with
+            | Empty -> Empty
+            | Number x when n <> 0 -> Number (x / float n)
+            | Number x -> "Cannot divide by zero" |> DivideByZeroException |> raise 
+            | x -> sprintf "Cannot divide %A by %A" x n |> InvalidOperationException |> raise 
+        static member inline Pow (value, n) =
+            match value with
+            | Empty -> Empty
+            | Number x -> Number (x ** float n)
+            | x -> sprintf "Cannot raise %A to power %A" x n |> InvalidOperationException |> raise 
+        static member inline Sqrt value =
+            match value with
+            | Empty -> Empty
+            | Number x -> Number (sqrt x)
+            | x -> sprintf "Cannot take square root of %A" x |> InvalidOperationException |> raise 
+
 
     let inline decompress meta offset len (data: _ array) =
         match meta.CompressionInfo with

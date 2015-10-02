@@ -2,7 +2,7 @@ FSharp.Data.Toolbox.Sas
 =======================
 
 F# Type provider for SAS dataset files (sas7bdat). 
-This library allows exploratory, information-rich programming with SAS files and provides native access to SAS datasets. No SAS software or OLE DB providers required.
+This library allows exploratory programming with SAS files and provides native access to SAS datasets. No SAS software or OLE DB providers required.
 
 This work is based on:
 

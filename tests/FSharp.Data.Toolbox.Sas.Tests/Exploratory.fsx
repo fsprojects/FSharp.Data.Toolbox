@@ -6,7 +6,7 @@ module Exploratory =
     open System.IO
     open System.Diagnostics
 
-    open FSharp.Data.Toolbox.SasFile
+    open FSharp.Data.Toolbox.Sas
 
     let filename = 
         Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, 

@@ -65,10 +65,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Core.fs" />
-    <Compile Include="SasSignatures.fs" />
+    <Compile Include="Signatures.fs" />
     <Compile Include="SasFile.fs" />
-    <Compile Include="SasLibrary.fs" />
-    <Compile Include="SasToCsv.fs" />
+    <Compile Include="Library.fs" />
     <Compile Include="..\..\paket-files\fsprojects\FSharp.TypeProviders.StarterPack\src\ProvidedTypes.fsi">
       <Link>ProvidedTypes.fsi</Link>
     </Compile>
@@ -78,7 +77,7 @@
     <Compile Include="..\..\paket-files\fsprojects\FSharp.TypeProviders.StarterPack\src\DebugProvidedTypes.fs">
       <Link>DebugProvidedTypes.fs</Link>
     </Compile>
-    <Compile Include="SasTypeProvider.fs" />
+    <Compile Include="TypeProvider.fs" />
     <None Include="paket.references" />
     <Content Include="packages.config" />
   </ItemGroup>
