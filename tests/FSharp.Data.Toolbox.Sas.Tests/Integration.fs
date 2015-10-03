@@ -31,8 +31,9 @@ if not <| Directory.Exists path
     |> Seq.iter (fun line -> 
         try
             let name, url = line.[1], line.[7] 
-            use wc = new System.Net.WebClient()
-            wc.DownloadFile (url, Path.Combine(path, name)) 
+            if not <| url.Contains "lsu.edu" then
+                use wc = new System.Net.WebClient()
+                wc.DownloadFile (url, Path.Combine(path, name)) 
         with
         | _ -> ignore()
         )
@@ -88,7 +89,9 @@ type ``Integration tests`` () =
 
     [<Test>]
     member x.``Reading magic number from SAS is success``() =
-        let file = Path.Combine(path, "agents.sas7bdat")
+        let file = 
+            Directory.EnumerateFiles(path, "*.sas7bdat")
+            |> Seq.head
         new SasFile(file) |> ignore
 
     [<Test>]
