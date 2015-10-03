@@ -7,7 +7,6 @@ open FSharp.Data.Toolbox.SasFile
 module FSharp.Data.Toolbox.Sas.IntegrationTests
 #endif
 
-open FSharp.Data
 open FSharp.Data.Toolbox.Sas
 
 open NUnit.Framework
