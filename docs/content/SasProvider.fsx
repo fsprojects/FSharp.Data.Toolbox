@@ -42,7 +42,7 @@ correctly in F# Interactive, you need to:
 
 </p></div>
 
-### Open SAS dataset by passing file name to SasFile type
+### Open SAS dataset by passing file name to SasFileTypeProvider type
 *)
 [<Literal>] 
 let sasPath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/acadindx.sas7bdat"
@@ -104,15 +104,58 @@ sasFile.Observations
 |> Seq.map (fun obs -> obs.reading)
 |> Seq.max
 
+(**
+Accessing data with F# Query Expressions
+--------------------------------------
+'query { expression } ' syntax can be used to access SAS dataset
+*)
 // multiply 'reading' by 'writing' and sum
+query {
+    for obs in sasFile.Observations do
+    sumBy (obs.reading * obs.writing)
+}
+
+// ..is equivalent to:
 sasFile.Observations
 |> Seq.map (fun obs -> obs.reading * obs.writing)
 |> Seq.sum
 
-// ..equivalent to:
+// filter data
 query {
     for obs in sasFile.Observations do
-    sumBy (obs.reading * obs.writing)
+    where (obs.female = Number 1. )
+    select obs.female
+    }
+
+// aggregate 
+query {
+    for obs in sasFile.Observations do
+    where (obs.female <> Number 1. )
+    count
+    }
+
+query {
+    for obs in sasFile.Observations do
+    where (obs.female <> Number 1. )
+    sumBy obs.writing
+    }
+
+// join two datasets
+[<Literal>] 
+let crimePath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/crime.sas7bdat" 
+let crimeFile = new SasFileTypeProvider<crimePath>()
+[<Literal>] 
+let statesPath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/states.sas7bdat" 
+let statesFile = new SasFileTypeProvider<statesPath>()
+
+let trim x = 
+    let (Character s) = x 
+    s.Trim()
+query {
+    for crime in crimeFile.Observations do
+    join state in statesFile.Observations 
+        on (trim crime.State = trim state.State)
+    select (crime.murder_rate, state.State)
 }
 
 (**

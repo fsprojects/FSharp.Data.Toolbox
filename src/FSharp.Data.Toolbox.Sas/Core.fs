@@ -139,6 +139,17 @@ module Core =
         | Time of DateTime
         | Character of string
         | Empty
+//        override x.Equals value =
+//            match x, value with 
+//            | Empty, _ -> false
+//            | Number n, (:? int  as v) -> int n = v
+//            | Number n, (:? float  as v) -> n = v
+//            | Number n, (:? int64  as v) -> int64 n = v
+//            | Character s, (:? string as v) -> s = v
+//            | DateAndTime dt, (:? DateTime as v)
+//            | Date dt, (:? DateTime as v)
+//            | Time dt, (:? DateTime as v) -> dt = v
+//            | x, v -> sprintf "Cannot compare %A and %A" x v |> InvalidOperationException |> raise 
         // todo: must be a way to do operations without boilerplate
         // addition
         static member inline (+) (value1, value2) =
