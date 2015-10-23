@@ -13,12 +13,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{BF60BC93-E09B-4E5F-9D85-95A519479D54}"
 	ProjectSection(SolutionItems) = preProject
 		build.fsx = build.fsx
+		nuget\FSharp.Data.Toolbox.Sas.nuspec = nuget\FSharp.Data.Toolbox.Sas.nuspec
 		nuget\FSharp.Data.Toolbox.Twitter.nuspec = nuget\FSharp.Data.Toolbox.Twitter.nuspec
 		README.md = README.md
 		RELEASE_NOTES.md = RELEASE_NOTES.md
 	EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Data.Toolbox.Twitter", "src\FSharp.Data.Toolbox.Twitter\FSharp.Data.Toolbox.Twitter.fsproj", "{515A2204-C5B7-40EA-B0DE-9C7A0FD0C8AC}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Data.Toolbox.Sas", "src\FSharp.Data.Toolbox.Sas\FSharp.Data.Toolbox.Sas.fsproj", "{A771F695-4292-4465-93A5-CBE19DF024A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +33,10 @@ Global
 		{515A2204-C5B7-40EA-B0DE-9C7A0FD0C8AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{515A2204-C5B7-40EA-B0DE-9C7A0FD0C8AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{515A2204-C5B7-40EA-B0DE-9C7A0FD0C8AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A771F695-4292-4465-93A5-CBE19DF024A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A771F695-4292-4465-93A5-CBE19DF024A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A771F695-4292-4465-93A5-CBE19DF024A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A771F695-4292-4465-93A5-CBE19DF024A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

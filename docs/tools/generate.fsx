@@ -4,7 +4,7 @@
 // --------------------------------------------------------------------------------------
 
 // Binaries that have XML documentation (in a corresponding generated XML file)
-let referenceBinaries = [ "FSharp.Data.Toolbox.Twitter.dll" ]
+let referenceBinaries = [ "FSharp.Data.Toolbox.Twitter.dll"; "FSharp.Data.Toolbox.Sas.dll" ]
 // Web site location for the generated documentation
 let website = "/FSharp.Data.Toolbox"
 

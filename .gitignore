@@ -8,6 +8,7 @@
 
 # Xamarin Studio / monodevelop user-specific
 *.userprefs
+.vs/
 
 # Build results
 
@@ -183,3 +184,7 @@ paket-files
 .paket/paket.exe
 docs/content/license.md
 docs/content/release-notes.md
+
+# Integration testing sas files
+tests/FSharp.Data.Toolbox.Sas.Tests/files
+
