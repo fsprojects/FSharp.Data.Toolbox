@@ -15,38 +15,23 @@ to SAS datasets. No SAS software or OLE DB providers required.
 
 Opening a SAS dataset file
 -----------------------------------------
+
+If you are using F# Interactive, you first need to reference the SAS type
+provider assembly. Assuming you obtain the package from NuGet and the assembly
+is in `packages`, this would look as follows:
 *)
-// First, reference the locations where F# Data and 
-// F# Data Toolbox are located (using '#I' is required here!)
 #I @"packages/FSharp.Data.Toolbox.Sas.0.3/lib/net40"
-#I @"packages/FSharp.Data.2.1.1/lib/net40"
-
-// The SAS reference needs to come before FSharp.Data.dll
-// (see the big warning box below for more!)
 #r "FSharp.Data.Toolbox.Sas.dll"
-#r "FSharp.Data.dll"
 open FSharp.Data.Toolbox.Sas
-
 (**
-<div class="well well-small" style="margin:0px 70px 0px 20px;">
-
-**WARNING**: Unfortunately, F# Interactive is quite sensitive to how you
-reference the packages when using F# Data Toolbox. To make the type provider work 
-correctly in F# Interactive, you need to:
-
- - Use the `#I` directive to reference the path where the two libraries are located
-   (rather than usign `#r` with a full relative path)
-
- - Reference `FSharp.Data.Toolbox.Sas.dll` *before* referencing `FSharp.Data.dll` 
-   as on the first two lines above. 
-
-</p></div>
 
 ### Open SAS dataset by passing file name to SasFileTypeProvider type
+
+The library gives you a parameterized type provider `SasFileTypeProvider` that
+takes the SAS data file as an argument:
 *)
 [<Literal>] 
 let sasPath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/acadindx.sas7bdat"
-
 let sasFile = new SasFileTypeProvider<sasPath>()
 
 (**
@@ -56,8 +41,8 @@ SAS metadata and the data itself.
 Accessing metadata
 ---------------------------------------
 The following examples show how to access meta-information about SAS dataset.
-
 *)
+
 let datasetName = sasFile.Header.DataSet.Trim()
 let architecture = sasFile.Header.Bits
 let rowCount = sasFile.MetaData.RowCount
@@ -77,7 +62,10 @@ Good for exploratory programming. IntelliSense access to column names.
 let row = sasFile.Observations |> Seq.skip 5 |> Seq.head
 printfn "Column 'id' value: %A" row.id
 printfn "Column 'reading' value: %A" row.reading
-  
+(**  
+The following examples show a couple of calculations that you can write
+using the standard F# library functions over the data obtained using the type provider:
+*)
 // sum first 10 'reading' variable values
 sasFile.Observations
 |> Seq.take 10
@@ -85,20 +73,22 @@ sasFile.Observations
 
 // calculate mean
 let readingMean = 
-    sasFile.Observations
-    |> Seq.averageBy (fun obs -> obs.reading )
+  sasFile.Observations
+  |> Seq.averageBy (fun obs -> obs.reading )
 
 // standard deviation 
 let readingStdDev =
-    sqrt (( sasFile.Observations
-            |> Seq.map (fun obs -> (obs.reading - readingMean) ** 2.0)
-            |> Seq.sum
-        ) / Seq.length sasFile.Observations )
+  let sum =
+    sasFile.Observations
+    |> Seq.map (fun obs -> (obs.reading - readingMean) ** 2.0)
+    |> Seq.sum
+  sqrt (sum / Seq.length sasFile.Observations)
 
 // min
 sasFile.Observations
 |> Seq.map (fun obs -> obs.reading)
 |> Seq.min
+
 // ...and max
 sasFile.Observations
 |> Seq.map (fun obs -> obs.reading)
@@ -119,7 +109,11 @@ query {
 sasFile.Observations
 |> Seq.map (fun obs -> obs.reading * obs.writing)
 |> Seq.sum
+(**
+You can use other constructs available inside F# query expressions to
+filter the data  or perform aggregations:
 
+*)
 // filter data
 query {
     for obs in sasFile.Observations do
@@ -139,23 +133,27 @@ query {
     where (obs.female <> Number 1. )
     sumBy obs.writing
     }
-
+(**
+The following is a slightly more interesting example which joins data from two data sets:
+*)
 // join two datasets
 [<Literal>] 
 let crimePath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/crime.sas7bdat" 
 let crimeFile = new SasFileTypeProvider<crimePath>()
+
 [<Literal>] 
 let statesPath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/states.sas7bdat" 
 let statesFile = new SasFileTypeProvider<statesPath>()
 
 let trim x = 
-    let (Character s) = x 
-    s.Trim()
+  let (Character s) = x 
+  s.Trim()
+
 query {
-    for crime in crimeFile.Observations do
-    join state in statesFile.Observations 
-        on (trim crime.State = trim state.State)
-    select (crime.murder_rate, state.State)
+  for crime in crimeFile.Observations do
+  join state in statesFile.Observations 
+      on (trim crime.State = trim state.State)
+  select (crime.murder_rate, state.State)
 }
 
 (**
@@ -164,24 +162,27 @@ Accessing data in a generic way
 Can be used for bulk data processing or converting SAS files to text files.
 *)
 let valueToText value = 
-    match value with
-    | Number n -> n.ToString()
-    | Character s -> s.Trim()
-    | Time t -> t.ToString("HH:mm:ss")
-    | Date d -> d.ToString("yyyy-MM-dd")
-    | DateAndTime dt -> dt.ToString("O")
-    | Empty -> ""
+  match value with
+  | Number n -> n.ToString()
+  | Character s -> s.Trim()
+  | Time t -> t.ToString("HH:mm:ss")
+  | Date d -> d.ToString("yyyy-MM-dd")
+  | DateAndTime dt -> dt.ToString("O")
+  | Empty -> ""
 
 sasFile.Rows
-    |> Seq.take 100
-    |> Seq.iter (fun row ->
-        let line =
-            row
-            |> Seq.map valueToText
-            |> String.concat "," 
-        printfn "%s" line )
+  |> Seq.take 100
+  |> Seq.iter (fun row ->
+      let line =
+          row
+          |> Seq.map valueToText
+          |> String.concat "," 
+      printfn "%s" line )
 
 (**
+Displaying data in a grid
+-------------------------
+
 We can display the data in a grid. 
 *)
 open System.Windows.Forms

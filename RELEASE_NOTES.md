@@ -28,3 +28,9 @@
 
 #### 0.9 - August 7 2015
 * Fix sample JSON files to always expose user_id as int64 (#30)
+
+#### 0.10 - October 23 2015
+* Releasing the SAS type provider
+
+#### 0.11 - October 23 2015
+* Releasing the SAS type provider with minor tweaks in documentation
