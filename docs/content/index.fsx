@@ -28,9 +28,10 @@ Samples & documentation
 -----------------------
 
 The library currently includes the Twitter type provider for access to Twitter users
-and feeds. 
+and feeds, and SAS type provider to read SAS dataset files. 
 
  * [Twitter type provider](TwitterProvider.html) contains examples on how to use this toolbox to access Twitter.
+ * [SAS type provider](SasProvider.html) contains examples on how to use this toolbox to access SAS datasets.
 
  
 Contributing and copyright

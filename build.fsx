@@ -41,14 +41,18 @@ let description = "F# Data-based library for various data access APIs."
 // List of author names (for NuGet package)
 let authors = [ "Evelina Gabasova"; "Tomas Petricek" ]
 // Tags for your project (for NuGet package)
-let tags = "F# fsharp data typeprovider twitter api toolbox"
+let tags = "F# fsharp data typeprovider twitter sas api toolbox"
 
 // List of NuGet pacakges to be published...
 let nugetPackages = 
   [ ("FSharp.Data.Toolbox.Twitter",
      "F# Data-based library for accessing Twitter data",
      "F# Data-based library for accessing Twitter data",
-     "nuget/FSharp.Data.Toolbox.Twitter.nuspec") ]
+     "nuget/FSharp.Data.Toolbox.Twitter.nuspec")
+    ("FSharp.Data.Toolbox.Sas",
+     "F# Data-based library for accessing SAS data",
+     "F# Data-based library for accessing SAS data",
+     "nuget/FSharp.Data.Toolbox.Sas.nuspec") ]
 
 // Pattern specifying assemblies to be tested using NUnit
 let testAssemblies = "tests/**/bin/Release/*Tests*.dll"
