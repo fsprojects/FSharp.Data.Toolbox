@@ -1,8 +1,8 @@
 ﻿#if INTERACTIVE
-#I "../../packages/FSharp.Data.2.0.7/lib/net40"
+#I "../../packages/FSharp.Data/lib/net40"
 #I "../../bin"
+#r "../../packages/NUnit/lib/nunit.framework.dll"
 #r "FSharp.Data.Toolbox.Sas.dll"
-open FSharp.Data.Toolbox.SasFile
 #else
 module FSharp.Data.Toolbox.Sas.IntegrationTests
 #endif
@@ -31,6 +31,7 @@ if not <| Directory.Exists path
         try
             let name, url = line.[1], line.[7] 
             if not <| url.Contains "lsu.edu" then
+                printfn "Downloading test file: %s" name
                 use wc = new System.Net.WebClient()
                 wc.DownloadFile (url, Path.Combine(path, name)) 
         with
