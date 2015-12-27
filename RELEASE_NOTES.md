@@ -34,3 +34,6 @@
 
 #### 0.11 - October 23 2015
 * Releasing the SAS type provider with minor tweaks in documentation
+
+#### 0.12 - December 27 2015
+* Fix percent encoding of multi-byte characters and search in streaming 

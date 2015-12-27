@@ -30,7 +30,9 @@ module internal Utils =
       String.init (String.length str) (fun i -> 
           let symbol = str.[i]
           if unreservedChars.IndexOf(symbol) = -1 then
-              "%" + String.Format("{0:X2}", int symbol)
+              Encoding.UTF8.GetBytes [| symbol |]
+              |> Array.map (fun n -> String.Format("%{0:X2}", n))
+              |> String.concat ""
           else
               string symbol)
 
@@ -291,11 +293,11 @@ and Streaming(context:TwitterContext) =
       | UserContext(c) ->
           let query = String.concat "," keywords
           let req = WebRequest.Create("https://stream.twitter.com/1.1/statuses/filter.json", Method="POST", ContentType = "application/x-www-form-urlencoded")
-          req.AddOAuthHeader(context, ["delimited", "length"; "track", query])
+          req.AddOAuthHeader(context, ["delimited", "length"; "track", Utils.urlEncode query])
           req.Timeout <- 10000
           do use reqStream = req.GetRequestStream() 
              use streamWriter = new StreamWriter(reqStream)
-             streamWriter.Write(sprintf "delimited=length&track=%s" query)
+             streamWriter.Write(sprintf "delimited=length&track=%s" (Utils.urlEncode query))
           tweets.downloadTweets req
       | _ -> failwith "Full user authentication is required to access Twitter Streaming."
 
