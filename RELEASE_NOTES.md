@@ -37,3 +37,8 @@
 
 #### 0.12 - December 27 2015
 * Fix percent encoding of multi-byte characters and search in streaming 
+
+#### 0.13 - January 30 2016
+* RLE decompression bugfix (#36)
+* Fix Travis CI build (#37)
+  

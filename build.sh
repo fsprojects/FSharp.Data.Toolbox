@@ -7,7 +7,7 @@ cd `dirname $0`
 
 PAKET_BOOTSTRAPPER_EXE=.paket/paket.bootstrapper.exe
 PAKET_EXE=.paket/paket.exe
-FAKE_EXE=packages/build/FAKE/tools/FAKE.exe
+FAKE_EXE=packages/FAKE/tools/FAKE.exe
 
 FSIARGS=""
 OS=${OS:-"unknown"}
