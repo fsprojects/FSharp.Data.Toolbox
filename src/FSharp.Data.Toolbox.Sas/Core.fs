@@ -299,7 +299,8 @@ module Core =
                             resultIndex <- resultIndex + 1
                         srcIndex <- srcIndex + 1
                     | 0x70uy ->
-                        for z = 0 to copyOffset + 16 do
+                        for z = 0 to firstByteEnd*256 + 
+                            copyOffset + 16 do
                             result.[resultIndex] <- 0uy
                             resultIndex <- resultIndex + 1
                         srcIndex <- srcIndex + 1
