@@ -190,3 +190,4 @@ tests/FSharp.Data.Toolbox.Sas.Tests/files
 
 *.svclog
 .fake
+.ionide.debug
