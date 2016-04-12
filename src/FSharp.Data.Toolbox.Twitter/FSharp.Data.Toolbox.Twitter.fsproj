@@ -70,6 +70,15 @@
     <EmbeddedResource Include="json/mentions_timeline.json">
       <Link>json/mentions_timeline.json</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="json/trends_available.json">
+      <Link>json/trends_available.json</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="json/trends_place.json">
+      <Link>json/trends_place.json</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="json/trends_closest.json">
+      <Link>json/trends_closest.json</Link>
+    </EmbeddedResource>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="GuiExtensions.fs" />
     <Compile Include="Twitter.fs" />

@@ -242,6 +242,9 @@ module TwitterTypes =
   type UsersLookup = JsonProvider<"json/users_lookup.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,users_lookup.json">
   type FriendshipShow = JsonProvider<"json/friendship_show.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,friendship_show.json">
   type MentionsTimeLine = JsonProvider<"json/mentions_timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,mentions_timeline.json">
+  type TrendsAvailable = JsonProvider<"json/trends_available.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,trends_available.json">
+  type TrendsPlace = JsonProvider<"json/trends_place.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,trends_place.json">
+  type TrendsClosest = JsonProvider<"json/trends_closest.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,trends_closest.json">
 
 type TwitterConnector =
   abstract Connect : string -> Twitter 
@@ -382,6 +385,27 @@ and Connections (context:TwitterContext) =
       let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/friendships/show.json", args)
       TwitterTypes.FriendshipShow.Parse(res)
 
+and Trends (context:TwitterContext) = 
+    member t.Available () = 
+      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/trends/available.json", [])
+      TwitterTypes.TrendsAvailable.Parse(res)
+
+    member t.Place (woeid:int, ?exclude:string) = 
+      let args = 
+        [ Utils.required "id" woeid
+          Utils.optional "exclude" exclude  ] 
+        |> Utils.makeParams
+      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/trends/place.json", args)
+      TwitterTypes.TrendsPlace.Parse(res)
+
+    member t.Closest (lat:float, long:float) = 
+      let args = 
+        [ Utils.required "lat" lat
+          Utils.required "long" long ]
+        |> Utils.makeParams
+      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/trends/closest.json", args)
+      TwitterTypes.TrendsClosest.Parse(res)
+
 and Users (context:TwitterContext) = 
     member t.Lookup userIds = 
       if (Seq.length userIds) > 100 then
@@ -444,5 +468,6 @@ and Twitter(context:TwitterContext) =
   member twitter.Search = Search(context)
   member twitter.Connections = Connections(context)
   member twitter.Users = Users(context)
+  member twitter.Trends = Trends(context)
   member twitter.RequestRawData(url:string, query) = TwitterRequest(context).RequestRawData(url, query)
       

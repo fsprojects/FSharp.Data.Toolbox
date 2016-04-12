@@ -1,9 +1,9 @@
 source https://nuget.org/api/v2
 
 nuget FSharp.Formatting
-nuget NUnit 
-nuget FsUnit 
-nuget NUnit.Runners
+nuget NUnit ~> 2
+nuget FsUnit
+nuget NUnit.Runners ~> 2
 nuget Nuget.CommandLine
 nuget FAKE
 nuget SourceLink.Fake
@@ -13,4 +13,3 @@ github fsharp/FAKE modules/Octokit/Octokit.fsx
 
 github fsprojects/FSharp.TypeProviders.StarterPack src/ProvidedTypes.fsi
 github fsprojects/FSharp.TypeProviders.StarterPack src/ProvidedTypes.fs
-github fsprojects/FSharp.TypeProviders.StarterPack src/DebugProvidedTypes.fs
