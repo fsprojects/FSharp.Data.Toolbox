@@ -34,5 +34,5 @@ GITHUB
       Octokit
   remote: fsprojects/FSharp.TypeProviders.StarterPack
   specs:
-    src/ProvidedTypes.fs (ddfb906ecbac78dc9f0f5e172518a72cb5fdf651)
-    src/ProvidedTypes.fsi (ddfb906ecbac78dc9f0f5e172518a72cb5fdf651)
+    src/ProvidedTypes.fs (ea733039c168a8e2d441e298a1c67d98f63b00f6)
+    src/ProvidedTypes.fsi (ea733039c168a8e2d441e298a1c67d98f63b00f6)
