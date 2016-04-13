@@ -400,15 +400,24 @@ module Core =
                 |> Array.map char
             new string(chars)
 
-        let ToDateTime bytes =
-            let seconds = BitConverter.ToDouble(bytes, 0)
+        // prepend zero bytes if there are fewer than 8 bytes
+        let expand (bytes:byte[]) =
+            match bytes.Length with
+            | 8 -> bytes
+            | _ -> let bytes8 = Array.create 8 0uy
+                   Array.blit bytes 0 bytes8 (8 - bytes.Length) bytes.Length
+                   bytes8
+
+        let ToDateTime (bytes:byte[]) =
+            let seconds = BitConverter.ToDouble(expand bytes, 0)
             if Double.IsNaN seconds then
                 None
             else
                 Some <| DateTime(1960, 1, 1).AddSeconds seconds
 
-        let ToDate bytes =
-            let days = BitConverter.ToDouble(bytes, 0)
+
+        let ToDate (bytes:byte[]) =
+            let days = BitConverter.ToDouble(expand bytes, 0)
             if Double.IsNaN days then
                 None
             else
