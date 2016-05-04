@@ -13,7 +13,6 @@ open FSharp.Data
 open FSharp.Control
 open FSharp.WebBrowser
 
-
 // ----------------------------------------------------------------------------------------------
 
 module internal Utils = 
@@ -230,7 +229,6 @@ module WebRequestExtensions =
           Utils.addAuthHeaderForApp this originalUrl appToken queryParams
       | UserContext {ConsumerKey = ck; ConsumerSecret = cs; AccessToken = ack; AccessSecret = acs} ->
           Utils.addAuthHeaderForUser this originalUrl ck cs ack acs queryParams
-
 
 // ----------------------------------------------------------------------------------------------
 
@@ -462,6 +460,14 @@ and Twitter(context:TwitterContext) =
   static member AuthenticateAppOnly (consumer_key, consumer_secret) =
     let token = Utils.requestAppOnlyToken consumer_key consumer_secret
     Twitter(AppContext { AppOnlyToken = token })
+
+  static member AuthenticateAppSingleUser (consumer_key, consumer_secret, access_token, access_secret) = 
+    Twitter(
+      UserContext { 
+              ConsumerKey = consumer_key;
+              ConsumerSecret = consumer_secret;
+              AccessToken = access_token;
+              AccessSecret = access_secret; })
 
   member twitter.Timelines = Timelines(context)
   member twitter.Streaming = Streaming(context)
