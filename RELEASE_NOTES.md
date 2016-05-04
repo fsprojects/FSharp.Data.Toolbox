@@ -36,7 +36,7 @@
 * Releasing the SAS type provider with minor tweaks in documentation
 
 #### 0.12 - December 27 2015
-* Fix percent encoding of multi-byte characters and search in streaming 
+* Fix percent encoding of multi-byte characters and search in streaming
 
 #### 0.13 - January 30 2016
 * RLE decompression bugfix (#36)
@@ -44,4 +44,6 @@
 
 #### 0.14 - April 12 2016
 * Support Trends API from Twitter
-  
+
+#### 0.15 - May 4 2016
+* Adding an option to use a dev-generated token (#40)
