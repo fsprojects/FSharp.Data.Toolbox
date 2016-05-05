@@ -10,7 +10,7 @@ type SasFile (filename) =
 
     let reader =
         if not <| File.Exists filename then
-            failwith "File '%s' not found" filename
+            failwith <| sprintf "File '%s' not found" filename
         dprintfn "Reading SAS file '%s'" filename
         new BinaryReader(File.Open
             (filename, FileMode.Open, FileAccess.Read, FileShare.Read))
