@@ -84,6 +84,7 @@
     <Compile Include="Twitter.fs" />
     <None Include="Twitter.fsx" />
     <None Include="paket.references" />
+    <EmbeddedResource Include="json\post_update.json" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
