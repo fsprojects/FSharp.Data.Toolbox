@@ -240,6 +240,7 @@ module TwitterTypes =
   type UsersLookup = JsonProvider<"json/users_lookup.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,users_lookup.json">
   type FriendshipShow = JsonProvider<"json/friendship_show.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,friendship_show.json">
   type MentionsTimeLine = JsonProvider<"json/mentions_timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,mentions_timeline.json">
+  type PostUpdate = JsonProvider<"json/post_update.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,post_update.json">
 
 type TwitterConnector =
   abstract Connect : string -> Twitter 
@@ -303,7 +304,7 @@ and Timelines(context:TwitterContext) =
     member tl.HomeTimeline () =
       match context with
       | UserContext(c) ->
-          let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/home_timeline.json")
+          let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/statuses/home_timeline.json")
           TwitterTypes.TimeLine.Parse(res)
       | _ -> failwith "Full user authentication is required to access Twitter Timelines."
     
@@ -312,7 +313,7 @@ and Timelines(context:TwitterContext) =
                    Utils.optional "count" count;
                    Utils.optional "max_id" maxId ]
                  |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/user_timeline.json", args)
+      let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/statuses/user_timeline.json", args)
       TwitterTypes.TimeLine.Parse(res)
 
     member tl.Timeline (screenName: string, ?count:int, ?maxId:int64) = 
@@ -320,7 +321,7 @@ and Timelines(context:TwitterContext) =
                    Utils.optional "count" count;
                    Utils.optional "max_id" maxId ]
                  |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/user_timeline.json", args)
+      let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/statuses/user_timeline.json", args)
       TwitterTypes.TimeLine.Parse(res)
 
     member tl.MentionTimeline (?count:int, ?sinceId:int64, ?maxId:int64, ?trimUser:bool, ?contributorDetails:bool, ?includeEntities:bool) = 
@@ -332,7 +333,7 @@ and Timelines(context:TwitterContext) =
           Utils.optional "contributor_details" contributorDetails;
           Utils.optional "include_entities" includeEntities]
           |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/statuses/mentions_timeline.json", args)
+      let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/statuses/mentions_timeline.json", args)
       TwitterTypes.MentionsTimeLine.Parse(res)
 
 and Search (context:TwitterContext) =
@@ -348,7 +349,7 @@ and Search (context:TwitterContext) =
           Utils.optional "max_id" maxId; 
           Utils.optional "until" until ] 
           |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/search/tweets.json", args)
+      let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/search/tweets.json", args)
       TwitterTypes.SearchTweets.Parse(res)
 
 and Connections (context:TwitterContext) = 
@@ -359,7 +360,7 @@ and Connections (context:TwitterContext) =
           Utils.optional "cursor" cursor; 
           Utils.optional "count" count ] 
           |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/friends/ids.json", args)
+      let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/friends/ids.json", args)
       TwitterTypes.IdsList.Parse(res)
 
     member f.FollowerIds (?userId:int64, ?screenName:string, ?cursor:int64, ?count:int) =
@@ -369,7 +370,7 @@ and Connections (context:TwitterContext) =
           Utils.optional "cursor" cursor; 
           Utils.optional "count" count ] 
           |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/followers/ids.json", args)
+      let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/followers/ids.json", args)
       TwitterTypes.IdsList.Parse(res)
 
     member f.Friendship(?sourceId:int64, ?targetId:int64) = 
@@ -377,7 +378,7 @@ and Connections (context:TwitterContext) =
         [ Utils.optional "source_id" sourceId; 
           Utils.optional "target_id" targetId ] 
         |> Utils.makeParams
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/friendships/show.json", args)
+      let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/friendships/show.json", args)
       TwitterTypes.FriendshipShow.Parse(res)
 
 and Users (context:TwitterContext) = 
@@ -385,22 +386,43 @@ and Users (context:TwitterContext) =
       if (Seq.length userIds) > 100 then
         failwith "Lookup possible only for up to 100 users in one request"
       let args = [ "user_id", [ for (i:int64) in userIds -> string i ] |> String.concat "," ]
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/users/lookup.json", args)
+      let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/users/lookup.json", args)
       TwitterTypes.UsersLookup.Parse(res)
 
     member t.Lookup screenNames = 
       if (Seq.length screenNames) > 100 then
         failwith "Lookup possible only for up to 100 users in one request"
       let args = [ "screen_name", screenNames |> String.concat "," ]
-      let res = TwitterRequest(context).RequestRawData("https://api.twitter.com/1.1/users/lookup.json", args)
+      let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/users/lookup.json", args)
       TwitterTypes.UsersLookup.Parse(res)
 
-and TwitterRequest (context:TwitterContext) = 
+and Tweet (context:TwitterContext) =
+    member t.Post (status:string, ?in_reply_to_status_id:int64, ?possibly_sensitive:bool, ?lat:float, 
+                          ?long:float, ?place_id:string, ?display_coordinates:bool, ?trim_user:bool, ?media_ids:int64[]) = 
+      match context with
+      | UserContext _ ->
+          let args = 
+            [ Utils.required "status" status;
+              Utils.optional "in_reply_to_status_id" in_reply_to_status_id;
+              Utils.optional "possibly_sensitive" possibly_sensitive; 
+              Utils.optional "lat" lat; 
+              Utils.optional "long" long; 
+              Utils.optional "place_id" place_id; 
+              Utils.optional "display_coordinates" display_coordinates; 
+              Utils.optional "trim_user" trim_user;
+              Utils.optional "media_ids" media_ids 
+              ] 
+              |> Utils.makeParams
+          let res = TwitterRequest(context, "POST").RequestRawData("https://api.twitter.com/1.1/statuses/update.json", args)
+          TwitterTypes.PostUpdate.Parse(res)
+      | _ -> failwith "Full user authentication is required to access Twitter Timelines."
+
+and TwitterRequest (context:TwitterContext, httpmethod) = 
   member twitter.RequestRawData (url:string, ?query) =
     let query = defaultArg query []
     let query = [ for k, v in query -> k, Utils.urlEncode v ]
     let queryString = [for k, v in query -> k + "=" + v] |> String.concat "&"
-    let req = WebRequest.Create(url + (if query <> [] then "?" + queryString else ""), Method="GET")
+    let req = WebRequest.Create(url + (if query <> [] then "?" + queryString else ""), Method=httpmethod)
     req.AddOAuthHeader(context, query, url)
 
     use resp = req.GetResponse()
@@ -450,5 +472,6 @@ and Twitter(context:TwitterContext) =
   member twitter.Search = Search(context)
   member twitter.Connections = Connections(context)
   member twitter.Users = Users(context)
-  member twitter.RequestRawData(url:string, query) = TwitterRequest(context).RequestRawData(url, query)
+  member twitter.Tweets = Tweet(context)
+  member twitter.RequestRawData(url:string, query) = TwitterRequest(context, "GET").RequestRawData(url, query)
       
