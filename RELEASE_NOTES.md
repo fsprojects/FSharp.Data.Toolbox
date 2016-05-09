@@ -50,3 +50,6 @@
 
 #### 0.16 - May 9 2016
 * Adding ability to send a tweet and fixing a warning in the sas files (#41)
+
+#### 0.17 - May 9 2016
+* Bugfix: exception when date is encoded with less than 8 bytes (#39)
