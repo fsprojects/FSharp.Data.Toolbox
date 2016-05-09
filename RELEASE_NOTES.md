@@ -47,3 +47,6 @@
 
 #### 0.15 - May 4 2016
 * Adding an option to use a dev-generated token (#40)
+
+#### 0.16 - May 9 2016
+* Adding ability to send a tweet and fixing a warning in the sas files (#41)
