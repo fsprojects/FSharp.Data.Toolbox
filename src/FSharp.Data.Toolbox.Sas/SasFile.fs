@@ -459,7 +459,7 @@ type SasFile (filename) =
                     |> ToStr
                 Offset = attr.ColumnAttrOffset
             })
-            |> Seq.toList
+            |> Seq.toArray
 
         {   RowCount = rowCount
             RowSize  = rowSize
@@ -490,7 +490,7 @@ type SasFile (filename) =
                 let readRow offset len =
                     let rowBytes = decompress meta offset len data
                     seq {
-                    for n = 0 to List.length meta.Columns - 1 do
+                    for n = 0 to Array.length meta.Columns - 1 do
                         let col = meta.Columns.[n]
                         let colBytes = sliceEndian rowBytes (col.Offset, col.Length) header.Endianness
                         yield

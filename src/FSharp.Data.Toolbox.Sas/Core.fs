@@ -133,7 +133,7 @@ module Core =
     type MetaData = {
         RowCount        : int
         RowSize         : int
-        Columns         : Column list
+        Columns         : Column array
         CompressionInfo : Compression
     }
 
