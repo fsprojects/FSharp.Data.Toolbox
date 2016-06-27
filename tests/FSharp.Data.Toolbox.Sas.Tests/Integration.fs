@@ -49,7 +49,7 @@ let convert filename =
 
         // write header
         sasFile.MetaData.Columns
-        |> List.map (fun col -> col.Name)
+        |> Array.map (fun col -> col.Name)
         |> String.concat ","
         |> writer.WriteLine
 

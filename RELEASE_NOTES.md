@@ -53,3 +53,6 @@
 
 #### 0.17 - May 9 2016
 * Bugfix: exception when date is encoded with less than 8 bytes (#39)
+
+#### 0.18 - June 27 2016
+* Bugfix: access to linked list by index in a performance critical part (#42)
