@@ -57,7 +57,6 @@
     <None Include="SasTypeProviderTest.fsx" />
     <None Include="paket.references" />
     <Content Include="app.config" />
-    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Data.Toolbox.Sas">
