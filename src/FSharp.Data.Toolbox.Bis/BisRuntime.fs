@@ -1,5 +1,4 @@
-﻿
-// --------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------
 // Bank for International Settlements (BIS) type provider - runtime components 
 // --------------------------------------------------------------------------------------
 
@@ -226,8 +225,3 @@ module Implementation =
             | dset when dset.Contains("_total_credit_") -> new CreditNonFinancialSectorParser(pathToDatasetFile) :> Parser
             | dset when dset.Contains("_dsr_") -> new DebtServiceRatioParser(pathToDatasetFile) :> Parser
             | _ -> failwith("Dataset not yet supported. File: " + pathToDatasetFile)
-
-    // Query data out of file
-    let query observationFilter pathToDatasetFile =
-        let fileParser = createPraser pathToDatasetFile
-        fileParser.filter (observationFilter)

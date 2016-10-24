@@ -26,7 +26,7 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
     let ns = "FSharp.Data.Toolbox.Bis"
     
     let createTypes () =        
-        let datasetProvider = new ProvidedTypeDefinition(asm, ns, "Dataset", Some typeof<obj>) // (asm, ns, "Bis", typeof<obj>, hideObjectMethods = false, nonNullable = false)
+        let datasetProvider = new ProvidedTypeDefinition(asm, ns, "Dataset", Some typeof<obj>)
         datasetProvider.DefineStaticParameters([ProvidedStaticParameter("pathToBisFile", typeof<string>)], fun typeName args ->
             let pathToDatasetFile = args.[0] :?> string
 
@@ -69,10 +69,7 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
                     |> Seq.toList
                     |> filterTy.AddMembers
 
-                let getDatasetPath = ProvidedProperty("DataSource", typeof<string>, IsStatic = false, GetterCode = (fun _ -> <@@ pathToDatasetFile @@>))
-                filterTy.AddMember getDatasetPath
-
-                let getFilterMeth = ProvidedMethod("Get", [], typeof<Observation list>)  //typeof<Dictionary<string, string list>>) //Observation 
+                let getFilterMeth = ProvidedMethod("Get", [], typeof<Observation list>)
                 getFilterMeth.InvokeCode <- (fun args -> 
                                     <@@ 
                                         let dict = ((%%args.[0] : obj) :?> System.Collections.Generic.Dictionary<string,string list>)
