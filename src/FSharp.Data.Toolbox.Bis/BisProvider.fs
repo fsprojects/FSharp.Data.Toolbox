@@ -75,13 +75,14 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
                     |> filterTy.AddMembers
 
                 // Method that applies the filter on a dataset file and returns the matching observations
-                let getFilterMeth = ProvidedMethod("Get", [ProvidedParameter("pathToBisFile", typeof<string>, optionalValue = true)], typeof<Observation list>)
-                getFilterMeth.InvokeCode <- (fun args -> 
+                let getFilterMeth = ProvidedMethod("Get", [ProvidedParameter("pathToBisFile", typeof<string>, optionalValue = "")], typeof<Observation list>)
+                getFilterMeth.InvokeCode <- (fun [filter; pathToFile] -> 
                                     <@@ 
-                                        let dict = ((%%args.[0] : obj) :?> System.Collections.Generic.Dictionary<string,string list>)
-                                        let filePath = pathToDatasetFile
-                                        //let filePath = if args.Length = 2 then (%%args.[1] :?> string) else pathToDatasetFile
+                                        let dict = ((%%filter : obj) :?> System.Collections.Generic.Dictionary<string,string list>)
+                                        let specificBisFile = (%%pathToFile : string)
+                                        let filePath = if specificBisFile <> ""  then specificBisFile else pathToDatasetFile
                                         let obsFilter = new Dictionary<string, string list>()
+                                        
                                         for f in dict.Where((fun d -> d.Value.Length > 0)) do
                                             obsFilter.Add(f.Key, f.Value)
 
