@@ -24,14 +24,19 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
     
     let asm = Assembly.GetExecutingAssembly()
     let ns = "FSharp.Data.Toolbox.Bis"
-    
+
+    // Create the types based on a BIS dataset file.
     let createTypes () =        
         let datasetProvider = new ProvidedTypeDefinition(asm, ns, "Dataset", Some typeof<obj>)
+        
+        // Parameter for the BIS dataset file.
         datasetProvider.DefineStaticParameters([ProvidedStaticParameter("pathToBisFile", typeof<string>)], fun typeName args ->
             let pathToDatasetFile = args.[0] :?> string
 
+            // Create parser based on the datset file
             let parser = createPraser pathToDatasetFile
 
+            // Determine all dimensions out of dataset file
             let dimensionTypes =  
                 let dimesionTys = 
                     parser.getDataset().dimensions
@@ -45,15 +50,15 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
 
                 dimesionTys
             
+            // Generate an observation filter based on dataset file
             let filterProvider =
-                let set = parser.getDataset()
+                let dset = parser.getDataset()
 
-                // Observation filter type
                 let filterTy = ProvidedTypeDefinition("ObservationFilter", Some typeof<obj>, HideObjectMethods = true)
                 filterTy.AddMember <| ProvidedConstructor(parameters = [], InvokeCode = fun args -> <@@ new Dictionary<string, string list>() @@>)
 
-                // Generate property per dataset dimension
-                set.dimensions.Select(fun x -> x.name)
+                // Generate property for each dimension in dataset
+                dset.dimensions.Select(fun x -> x.name)
                     |> Seq.map (fun d -> 
                                     ProvidedProperty (
                                         d, 
@@ -69,15 +74,18 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
                     |> Seq.toList
                     |> filterTy.AddMembers
 
-                let getFilterMeth = ProvidedMethod("Get", [], typeof<Observation list>)
+                // Method that applies the filter on a dataset file and returns the matching observations
+                let getFilterMeth = ProvidedMethod("Get", [ProvidedParameter("pathToBisFile", typeof<string>, optionalValue = true)], typeof<Observation list>)
                 getFilterMeth.InvokeCode <- (fun args -> 
                                     <@@ 
                                         let dict = ((%%args.[0] : obj) :?> System.Collections.Generic.Dictionary<string,string list>)
+                                        let filePath = pathToDatasetFile
+                                        //let filePath = if args.Length = 2 then (%%args.[1] :?> string) else pathToDatasetFile
                                         let obsFilter = new Dictionary<string, string list>()
                                         for f in dict.Where((fun d -> d.Value.Length > 0)) do
                                             obsFilter.Add(f.Key, f.Value)
 
-                                        let fileParser = createPraser pathToDatasetFile
+                                        let fileParser = createPraser filePath
                                         fileParser.filter (obsFilter)
                                      @@>)
             

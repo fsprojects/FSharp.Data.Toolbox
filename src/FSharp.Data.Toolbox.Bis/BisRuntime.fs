@@ -30,7 +30,7 @@ module Implementation =
             member this.periods = periods
         end
        
-    // representation of a filter
+    // Representation of a filter
     type ObservationFilter(dimension : string, dimensionPosition : int, memberFilter : option<string list>) = 
         class
             member this.dimension = dimension
@@ -38,7 +38,7 @@ module Implementation =
             member this.memberFilter = memberFilter
         end
 
-    // Representation of period and value
+    // Representation of observation value per period
     type ObservationValue(periodString : string, value : option<float>) =
         class
             member this.value = value
@@ -50,19 +50,22 @@ module Implementation =
                 System.Int32.Parse(periodString.Substring(periodPosition, periodLength))
         end
 
-    // Representation of an observation an values per period
+    // Representation of an observation and period values
     type Observation(key : string, values : Map<string, option<float>>) =
         class
             member this.key = key
             member this.values = values |> Seq.map (fun obs -> new ObservationValue(obs.Key, obs.Value))
         end
         
-    // Base class for parsers
+    // Base class for BIS dataset file parsers
     [<AbstractClass>]
     type public Parser(filePath: string) = 
         
+        // Defines the header row count of a file
         abstract member headerRowCount : int
+        // Used separator
         static member separator = [|"\",\""|]
+        // name of the time period column in dataset file
         static member timePeriodName  = "Time Period"
 
         member val dataset : option<Dataset> = None with get, set
@@ -80,15 +83,19 @@ module Implementation =
             else
                 dimensions.Split (Parser.separator, opt)
 
+        // Split observation dimensions into an array
         member x.splitObservation (obs : string) =
             obs.Split ([|':'|], System.StringSplitOptions.RemoveEmptyEntries)
 
+        // checks whether the column is the time period column or not
         member x.isTimePeriodColumn (column : string) =
             column = Parser.timePeriodName
 
+        // Read until passed the header
         member x.skipHeader (reader:StreamReader) =
             [for i in 1 .. x.headerRowCount -> reader.ReadLine()] |> ignore
 
+        // Get header information
         member x.getHeader () =
             use reader = new StreamReader(filePath)
             x.skipHeader reader
@@ -98,6 +105,7 @@ module Implementation =
                 |> Seq.map x.replaceQuotationMarks
                 |> Seq.toArray
 
+        // Get all periods out of header
         member x.getPeriods () = 
             use reader = new StreamReader(filePath)
             x.skipHeader reader
