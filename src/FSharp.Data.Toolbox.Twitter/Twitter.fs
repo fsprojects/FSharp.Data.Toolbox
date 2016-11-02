@@ -304,7 +304,7 @@ and Streaming(context:TwitterContext) =
       | _ -> failwith "Full user authentication is required to access Twitter Streaming."
 
 and Timelines(context:TwitterContext) =
-    member tl.HomeTimeline () =
+    member tl.HomeTimeline (?count:int, ?sinceId:int64, ?maxId:int64, ?trimUser:bool, ?contributorDetails:bool, ?includeEntities:bool) =
       let args =
         [ Utils.optional "count" count;
           Utils.optional "since_id" sinceId;
