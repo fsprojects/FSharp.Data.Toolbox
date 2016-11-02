@@ -305,11 +305,20 @@ and Streaming(context:TwitterContext) =
 
 and Timelines(context:TwitterContext) =
     member tl.HomeTimeline () =
+      let args =
+        [ Utils.optional "count" count;
+          Utils.optional "since_id" sinceId;
+          Utils.optional "max_id" maxId;
+          Utils.optional "trim_user" trimUser;
+          Utils.optional "contributor_details" contributorDetails;
+          Utils.optional "include_entities" includeEntities]
+          |> Utils.makeParams
       match context with
       | UserContext(c) ->
-          let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/statuses/home_timeline.json")
+          let res = TwitterRequest(context, "GET").RequestRawData("https://api.twitter.com/1.1/statuses/home_timeline.json", args)
           TwitterTypes.TimeLine.Parse(res)
       | _ -> failwith "Full user authentication is required to access Twitter Timelines."
+
 
     member tl.Timeline (userId: int64, ?count:int, ?maxId:int64) =
       let args = [ Utils.required "user_id" userId;
