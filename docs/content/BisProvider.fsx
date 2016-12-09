@@ -15,18 +15,14 @@ by providing a  wrapper around the CSV files.
 
 Under construction
 *)
+#r "FSharp.Data.Toolbox.Bis.dll"
 
-open FSharp.Data.Runtime.Bis.Implementation
+open FSharp.Data.Toolbox
 
-type prices = FSharp.Data.Toolbox.Bis.Dataset<"C:\\full_WEBSTATS_LONG_PP_DATAFLOW_csv.csv">
+type Prices = Bis.Dataset<"C:\\full_WEBSTATS_LONG_PP_DATAFLOW_csv.csv">
 
-[<EntryPoint>]
-let main argv = 
-    printfn "%A" argv
-    
-    let context = new prices.ObservationFilter()
-    context.``Reference area`` <- [ prices.``Reference area``.``CH:Switzerland`` ]
+let context = Prices.ObservationFilter()
+context.``Reference area`` <- 
+  [ prices.``Reference area``.``CH:Switzerland`` ]
         
-    let result = context.Get()
-        
-    0
+let result = context.Get()

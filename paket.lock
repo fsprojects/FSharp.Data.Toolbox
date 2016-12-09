@@ -1,12 +1,11 @@
 NUGET
   remote: https://www.nuget.org/api/v2
-  specs:
-    FAKE (4.25.2)
+    FAKE (4.46.1)
     FSharp.Compiler.Service (2.0.0.6)
     FSharp.Core (4.0.0.1)
-    FSharp.Data (2.2.5)
-      Zlib.Portable (>= 1.10) - framework: portable-net40+sl50+wp80+win80
-    FSharp.Formatting (2.14.2)
+    FSharp.Data (2.3.2)
+      Zlib.Portable (>= 1.11) - framework: >= netstandard11, portable-net45+sl5+win8, portable-net45+win8, portable-net45+win8+wp8+wpa81
+    FSharp.Formatting (2.14.4)
       FSharp.Compiler.Service (2.0.0.6)
       FSharpVSPowerTools.Core (>= 2.3 < 2.4)
     FSharpVSPowerTools.Core (2.3)
@@ -20,19 +19,17 @@ NUGET
     Microsoft.Net.Http (2.2.29) - framework: net10, net11, net20, net30, net35, net40, net40-full
       Microsoft.Bcl (>= 1.1.10)
       Microsoft.Bcl.Build (>= 1.0.14)
-    NuGet.CommandLine (3.3)
+    NuGet.CommandLine (3.4.3)
     NUnit (2.6.4)
     NUnit.Runners (2.6.4)
-    Octokit (0.19)
+    Octokit (0.23)
       Microsoft.Net.Http  - framework: net10, net11, net20, net30, net35, net40, net40-full
     SourceLink.Fake (1.1)
-    Zlib.Portable (1.11) - framework: portable-net40+sl50+wp80+win80
+    Zlib.Portable (1.11) - framework: >= netstandard11, portable-net45+sl5+win8, portable-net45+win8, portable-net45+win8+wp8+wpa81
 GITHUB
   remote: fsharp/FAKE
-  specs:
-    modules/Octokit/Octokit.fsx (59dfade480c5f9107107f11af366aaae1f4a9157)
-      Octokit
+    modules/Octokit/Octokit.fsx (ab0bacd2f21ee486879a3ea2a765f15b536181fb)
+      Octokit (>= 0.20)
   remote: fsprojects/FSharp.TypeProviders.StarterPack
-  specs:
-    src/ProvidedTypes.fs (ea733039c168a8e2d441e298a1c67d98f63b00f6)
-    src/ProvidedTypes.fsi (ea733039c168a8e2d441e298a1c67d98f63b00f6)
+    src/ProvidedTypes.fs (252ea631e3a7d5242205d46ffdf81fc9b03de58c)
+    src/ProvidedTypes.fsi (252ea631e3a7d5242205d46ffdf81fc9b03de58c)
