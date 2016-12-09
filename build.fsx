@@ -45,14 +45,21 @@ let nugetPackages =
      "F# Data-based library for accessing Twitter data",
      [ "Evelina Gabasova"; "Tomas Petricek" ],
      "F# fsharp data typeprovider twitter api toolbox",
-     "nuget/FSharp.Data.Toolbox.Twitter.nuspec")
+     "nuget/FSharp.Data.Toolbox.Twitter.nuspec");
      
     ("FSharp.Data.Toolbox.Sas",
      "F# Data-based library for accessing SAS data",
      "F# Data-based library for accessing SAS data",
      [ "Alexey Arestenko" ],
      "F# fsharp data sas typeprovider api toolbox",     
-     "nuget/FSharp.Data.Toolbox.Sas.nuspec") ]
+     "nuget/FSharp.Data.Toolbox.Sas.nuspec");
+     
+     ("FSharp.Data.Toolbox.Bis",
+      "F# Data-based library for accessing Bank for International Settlements data",
+      "F# Data-based library for accessing Bank for International Settlements data",
+      [ "Darko Micic" ],
+      "F# fsharp data bis typeprovider api toolbox",     
+      "nuget/FSharp.Data.Toolbox.Bis.nuspec") ]
 
 // Pattern specifying assemblies to be tested using NUnit
 let testAssemblies = "tests/**/bin/Release/*Tests*.dll"

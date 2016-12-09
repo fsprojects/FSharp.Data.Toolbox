@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1F1B4F0F-2998-4D74-865B-9122611C2B14}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{BF60BC93-E09B-4E5F-9D85-95A519479D54}"
 	ProjectSection(SolutionItems) = preProject
 		build.fsx = build.fsx
+		nuget\FSharp.Data.Toolbox.Bis.nuspec = nuget\FSharp.Data.Toolbox.Bis.nuspec
 		nuget\FSharp.Data.Toolbox.Sas.nuspec = nuget\FSharp.Data.Toolbox.Sas.nuspec
 		nuget\FSharp.Data.Toolbox.Twitter.nuspec = nuget\FSharp.Data.Toolbox.Twitter.nuspec
 		README.md = README.md
@@ -22,6 +23,8 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Data.Toolbox.Twitter", "src\FSharp.Data.Toolbox.Twitter\FSharp.Data.Toolbox.Twitter.fsproj", "{515A2204-C5B7-40EA-B0DE-9C7A0FD0C8AC}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Data.Toolbox.Sas", "src\FSharp.Data.Toolbox.Sas\FSharp.Data.Toolbox.Sas.fsproj", "{A771F695-4292-4465-93A5-CBE19DF024A9}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Data.Toolbox.Bis", "src\FSharp.Data.Toolbox.Bis\FSharp.Data.Toolbox.Bis.fsproj", "{D37239DC-1DD9-4C4C-BCAD-30F25BA32898}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +40,10 @@ Global
 		{A771F695-4292-4465-93A5-CBE19DF024A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A771F695-4292-4465-93A5-CBE19DF024A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A771F695-4292-4465-93A5-CBE19DF024A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D37239DC-1DD9-4C4C-BCAD-30F25BA32898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D37239DC-1DD9-4C4C-BCAD-30F25BA32898}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D37239DC-1DD9-4C4C-BCAD-30F25BA32898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D37239DC-1DD9-4C4C-BCAD-30F25BA32898}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
