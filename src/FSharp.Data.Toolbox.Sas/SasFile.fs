@@ -52,7 +52,7 @@ type SasFile (filename) =
             match endianByte with
             | [| 00uy |] -> Big
             | [| 01uy |] -> Little
-            | _    -> failwith "Unknown endianness"
+            | byte -> failwithf "Unknown endianness (%A)" byte
 
         let readHeader' offset len =
             sliceEndian headerBytes (offset, len) endianness
