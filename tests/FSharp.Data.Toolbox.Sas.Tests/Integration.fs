@@ -30,10 +30,10 @@ if not <| Directory.Exists path
     |> Seq.iter (fun line -> 
         try
             let name, url = line.[1], line.[7] 
-            if not <| url.Contains "lsu.edu" then
+            if name <> "yrbscol.sas7bdat" && not <| url.Contains "lsu.edu" then
                 printfn "Downloading test file: %s" name
                 use wc = new System.Net.WebClient()
-                wc.DownloadFile (url, Path.Combine(path, name)) 
+                wc.DownloadFile(url, Path.Combine(path, name)) 
         with
         | _ -> ignore()
         )
