@@ -56,3 +56,7 @@
 
 #### 0.18 - June 27 2016
 * Bugfix: access to linked list by index in a performance critical part (#42)
+
+#### 0.19 - December 9 2016
+* Preview of Type Provider for Statistical Data published by Bank for International Settlements (#43)
+* Added parameters to HomeTimeline (#45)
