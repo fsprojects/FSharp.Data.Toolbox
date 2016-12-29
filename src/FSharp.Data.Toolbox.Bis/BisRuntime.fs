@@ -16,50 +16,40 @@ open FSharp.Data
 module Implementation =
 
     // Representation of a dataset dimension
-    type public Dimension(dimensionName: string, position: int, memberList: string[]) =  
-        class
-            member this.name = dimensionName
-            member this.position = position
-            member this.members = memberList
-        end
+    type Dimension(dimensionName: string, position: int, memberList: string[]) =  
+        member this.name = dimensionName
+        member this.position = position
+        member this.members = memberList
 
     // Representation of a dataset
     type Dataset(dimensions: Dimension[], periods: string[]) =
-        class 
-            member this.dimensions = dimensions
-            member this.periods = periods
-        end
+        member this.dimensions = dimensions
+        member this.periods = periods
        
     // Representation of a filter
     type ObservationFilter(dimension : string, dimensionPosition : int, memberFilter : option<string list>) = 
-        class
-            member this.dimension = dimension
-            member this.dimensionPosition = dimensionPosition
-            member this.memberFilter = memberFilter
-        end
+        member this.dimension = dimension
+        member this.dimensionPosition = dimensionPosition
+        member this.memberFilter = memberFilter
 
     // Representation of observation value per period
     type ObservationValue(periodString : string, value : option<float>) =
-        class
-            member this.value = value
-            member this.periodString = periodString
-            member this.year = System.Int32.Parse(periodString.Substring(0,4))
-            member this.period = 
-                let periodPosition = periodString.IndexOf '-' + 2 
-                let periodLength = periodString.Length - periodPosition 
-                System.Int32.Parse(periodString.Substring(periodPosition, periodLength))
-        end
+        member this.value = value
+        member this.periodString = periodString
+        member this.year = System.Int32.Parse(periodString.Substring(0,4))
+        member this.period = 
+            let periodPosition = periodString.IndexOf '-' + 2 
+            let periodLength = periodString.Length - periodPosition 
+            System.Int32.Parse(periodString.Substring(periodPosition, periodLength))
 
     // Representation of an observation and period values
     type Observation(key : string, values : Map<string, option<float>>) =
-        class
-            member this.key = key
-            member this.values = values |> Seq.map (fun obs -> new ObservationValue(obs.Key, obs.Value))
-        end
+        member this.key = key
+        member this.values = values |> Seq.map (fun obs -> new ObservationValue(obs.Key, obs.Value))
         
     // Base class for BIS dataset file parsers
     [<AbstractClass>]
-    type public Parser(filePath: string) = 
+    type Parser(filePath: string) = 
         
         // Defines the header row count of a file
         abstract member headerRowCount : int
@@ -182,42 +172,42 @@ module Implementation =
             filtered
 
     // CBS specific parser
-    type public CbsParser(filePath) =
+    type CbsParser(filePath) =
         inherit Parser(filePath)
         override this.headerRowCount = 8
 
     // LBS specific parser
-    type public LbsParser(filePath) =
+    type LbsParser(filePath) =
         inherit Parser(filePath)
         override this.headerRowCount = 7
 
     // Property prices long
-    type public PpLongParser(filePath) =
+    type PpLongParser(filePath) =
         inherit Parser(filePath)
         override this.headerRowCount = 6
 
     // Property prices selected
-    type public PpSelectedParser(filePath) =
+    type PpSelectedParser(filePath) =
         inherit Parser(filePath)
         override this.headerRowCount = 5
 
     // Debt. securities
-    type public DebtSecurityParser(filePath) =
+    type DebtSecurityParser(filePath) =
         inherit Parser(filePath)
         override this.headerRowCount = 10
 
     // Effective exchange rates
-    type public EffectiveExchangeRatesParser(filePath) =
+    type EffectiveExchangeRatesParser(filePath) =
         inherit Parser(filePath)
         override this.headerRowCount = 4
 
     // Credit to non-financial sector
-    type public CreditNonFinancialSectorParser(filePath) =
+    type CreditNonFinancialSectorParser(filePath) =
         inherit Parser(filePath)
         override this.headerRowCount = 5
 
     // Debt service ratios for the private non-financial sector
-    type public DebtServiceRatioParser(filePath) =
+    type DebtServiceRatioParser(filePath) =
         inherit Parser(filePath)
         override this.headerRowCount = 7
 
