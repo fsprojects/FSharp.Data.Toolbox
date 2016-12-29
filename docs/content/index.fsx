@@ -32,6 +32,7 @@ and feeds, and SAS type provider to read SAS dataset files.
 
  * [Twitter type provider](TwitterProvider.html) contains examples on how to use this toolbox to access Twitter.
  * [SAS type provider](SasProvider.html) contains examples on how to use this toolbox to access SAS datasets.
+ * [BIS type provider](BisProvider.html) contains examples on how to use this toolbox to access Bank for International Settlements datasets.
 
  
 Contributing and copyright
