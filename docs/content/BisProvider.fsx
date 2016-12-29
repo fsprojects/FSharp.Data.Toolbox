@@ -9,11 +9,10 @@
 F# Data Toolbox: BIS Type Provider
 ========================
 
-The [Bank for International Settlements (BIS)][bis] publishes statistics about the global financial system. 
-The data is compiled in cooperation with central banks and other national authorities and provide information about financial stability. 
+The [Bank for International Settlements (BIS)][bis] publishes statistics relevant for anaylsis. Most of the data is compiled in cooperation with central banks and other national authorities. 
 More information can be found on the BIS statistics [website][stats]. 
 The data exploration can be done either through the [BIS Statistics Explorer][exp], [BIS Statistics Warehouse][whouse] or by 
-downloading the [raw CSV][raw] formatted files. The last option is very interesting from an automation perspective, as it allows you to use your analysis tool of choice.
+downloading the [raw CSV][raw] formatted files. The last option is very interesting from an automation perspective, as it allows you to use an analysis tool of your choice.
 The following statistics can be downloaded from [here][raw]:
 
 - Locational banking statistics
@@ -25,22 +24,22 @@ The following statistics can be downloaded from [here][raw]:
 - Property prices: long series
 - Effective exchange rate indices
 
-The BIS Type Provider extracts out of the CSV files the definition of the data and generates an abstraction layer which simplifies filtering on the file. The main advantages are:
+The BIS Type Provider extracts metadata out of the CSV file and generates an abstraction layer which simplifies filtering on the file. The main advantages are:
 
 - Developer/research analyst analysis data through abstraction layer. No knowledge of CSV file parsing required.
-- The IDE provides syntax highlighting based on the definition extracted out of the CSV file. (The consumer does not need to know the dimension and codes by heart).
-- Compile time errors in case dimensions or codes which do not exist in the definition were used.
+- The IDE provides syntax highlighting based on the metadata extracted out of the CSV file. The consumer does not need to know the dimension and codes by heart.
+- Compile-time errors are thrown in case dimensions or codes which do not exist in the metadata are used.
 - Simple but powerful way of filtering the data (observations).
-- One generic F# Type Provider for all above mentioned statistics.
+- One generic F# Type Provider for all of the above mentioned statistics.
 
-The following examples show how to utilize the BIS Type Provider.
 
-First we download the [Property prices: long series][raw] CSV file as the structure of this data is very simple and perfect for this demo. Firstly (see code block below), the “PropertyPrice” type must be defined. By doing this, the BIS Type Provider analysis the CSV file and generates the PropertyPrice.ObservationFilter plus one type per dimension of the property price data. In this case the types “Frequency” and “Reference Area” were generated and each of them contains generated fields per dimension member.
-As shown in the picture below, the definition of the data has been reflected in the code. With this, we have full IntelliSense support and compile-time checks!
+The following examples show how to run the BIS Type Provider.
+First we download the [Property prices: long series][raw] CSV file as the structure of this data is very simple and perfect for this demo. Firstly (see code block below), the “PropertyPrice” type must be defined. By doing this, the BIS Type Provider analysis the CSV file and generates the PropertyPrice.ObservationFilter plus one type per dimension of the property price data. In this case the types “Frequency” and “Reference Area” are generated and each of them contains generated fields per dimension member.
+As shown in the picture below, the metadata is reflected in the code. With this, we have full IntelliSense support and compile-time checks!
 
 ![BIS Property Prices](img/BisPropertyPrices.jpg)
 
-It requires only 3-4 lines of code to filter out a certain observation out of the data. The last part of the code builds up a line chart for the data we were looking for. I’m using the FSharp.Charting for the visualization.
+It requires only 3-4 lines of code to filter out a certain observation out of the data. The last part of the code builds up a line chart for the data we are looking for. I’m using the FSharp.Charting for the visualization.
 *) 
 type PropertyPrice = Dataset<"C:/full_BIS_LONG_PP_csv.csv">
 
@@ -69,7 +68,7 @@ And this is the output of this code.
 
 ![BIS Property Prices Chart](img/BisPropertyPricesChart.jpg)
 
-Let’s go one step further and analyse data of a much more complex dataset. The CBS file contains much more records and dimensions than the property prices. The following piece of code looks up a certain observation between Switzerland and Bahamas + Singapore and plots the outcome in a chart. Same as for the previous example, the CSV file was analysed by the BIS Type Provider and relevant types were generated. And again, we have full IntelliSense support as the properties on the “filter” and also the members under “Cbs” exist in code.
+Let’s take one step further and analyse data of a much more complex dataset. The CBS file contains more records and dimensions than the Property prices dataset. The following piece of code filters out certain observations on Switzerland vis-à-vis Bahamas and Singapore and plots the outcome in a chart. Same as for the previous example, the CSV file is analysed by the BIS Type Provider and relevant types are generated.
 *)
 
 type Cbs = Dataset<"C:/full_BIS_CBS_csv.csv">
@@ -103,7 +102,7 @@ filter.Get()
 
 ![BIS CBS Chart](img/BisCbsChart.jpg)
 
-The cbs.Filter() function returns a sequence of observations and their values for all periods. With F# you can easily slice out and aggregate data. In this code snippet we use the same filter as above and sum the values of 2000-Q1 across Bahamas and Singapore.
+The cbs.Filter() function returns a sequence of observations and their values for all periods. With F# you can easily slice out and aggregate data. In this code snippet we use the same filter as above and sum the values of 2000-Q1 of Bahamas and Singapore.
 *)
 
 let sum = filter.Get()
