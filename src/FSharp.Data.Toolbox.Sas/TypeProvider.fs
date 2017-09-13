@@ -2,6 +2,8 @@
 
 open ProviderImplementation.ProvidedTypes
 open Microsoft.FSharp.Core.CompilerServices
+open Microsoft.FSharp.Quotations
+open System
 open System.Reflection
 
 #nowarn "25"
@@ -50,10 +52,36 @@ type public SasProvider (config : TypeProviderConfig) as this =
 
             // define a provided type for each row, erasing to a Value seq
             let tyObservation = ProvidedTypeDefinition("Observation", Some typeof<Value seq>)
-       
+
             // read SAS schema
             use sasFile = new SasFile(filename')
 
+            // ``Create(...)``: ('a * 'b * 'c * ...) -> Observation 
+            let normalParameters = 
+                sasFile.MetaData.Columns 
+                |> Array.map(fun c -> ProvidedParameter(c.Name, typedefof<Value>))
+                |> Array.sortBy(fun p -> p.Name)
+                |> Array.toList
+            let template=
+                let cols = normalParameters |> Seq.map(fun c -> c.Name )
+                "CreateObservation(" + String.Join(", ", cols) + ")"
+            let create = ProvidedMethod(template, normalParameters, tyObservation, InvokeCode = fun args -> 
+                    let sasFileContext = args.Head
+                    let cols = args.Tail
+                    let columns =
+                        Expr.NewArray(
+                                typeof<Value>,
+                                cols
+                                |> Seq.toList
+                                |> List.mapi(fun i v -> Expr.Coerce(v, typeof<Value>)))
+                    <@@
+                        let cols = %%columns: Value array
+                        (%%sasFileContext : SasFile).InsertRow cols
+                        cols
+                    @@>)
+                    
+            ty.AddMemberDelayed(fun () -> create :> MemberInfo)
+       
             // add one property per SAS variable
             sasFile.MetaData.Columns
             |> Seq.map (fun col ->

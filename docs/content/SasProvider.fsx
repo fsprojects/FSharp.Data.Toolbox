@@ -249,3 +249,19 @@ show page
 (**
 ![SAS dataset viewer](img/SasViewer.png)
 *)
+
+
+(**
+Inserting a row to current file
+-------------------------
+
+We can insert a row to non-compressed file: 
+
+*)
+let newItem =
+    // Un-typed:
+    //sasFile.InsertRow([|Number 1.; Number 2.; Number 3.; Number 4.; Number 5.|])
+
+    // Typed:
+    sasFile.``CreateObservation(acadindx, female, id, reading, writing)``(
+        Number 1., Number 2., Number 3., Number 4., Number 5.)

@@ -3,17 +3,25 @@
 open System
 open System.Diagnostics
 open System.IO
+open System.Text
 
 type SasFile (filename) =
 
     let name = Path.GetFileNameWithoutExtension filename
 
-    let reader =
+    let openReader() =
         if not <| File.Exists filename then
             failwith <| sprintf "File '%s' not found" filename
         dprintfn "Reading SAS file '%s'" filename
         new BinaryReader(File.Open
             (filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+    
+    let mutable reader = openReader()
+
+    let append() =
+        dprintfn "Writing SAS file '%s'" filename
+        new BinaryWriter(File.Open
+            (filename, FileMode.Append, FileAccess.Write, FileShare.Write))
 
     let header =
         let headerBytes =
@@ -561,3 +569,25 @@ type SasFile (filename) =
 
             )
             |> Seq.concat
+    member x.InsertRow (row:Value array) =
+        match meta.CompressionInfo with
+        | Compression.NotCompressed(_) ->
+            reader.Close()
+            reader.Dispose()
+            use appender = append()
+            row |> Array.iter(fun col ->
+                // Obviously this is not correct format:
+                // the current read-logic should be reversed.
+                let bytes =
+                    match col with
+                    | Number x -> BitConverter.GetBytes x
+                    | DateAndTime x -> BitConverter.GetBytes x.Ticks
+                    | Date x -> BitConverter.GetBytes x.Ticks
+                    | Time x -> BitConverter.GetBytes x.Ticks
+                    | Character x -> Encoding.UTF8.GetBytes x
+                    | Empty -> failwith "value not found"
+                appender.Write(bytes)
+            )
+            appender.Close()
+            reader <- openReader()
+        | _ -> failwith "Compressed file writing not supported yet"
