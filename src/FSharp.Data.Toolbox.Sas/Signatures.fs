@@ -162,7 +162,7 @@ module SasSignatures =
     let TIME_FORMAT_STRINGS = "TIME"
     [<Literal>]
     let DATE_TIME_FORMAT_STRINGS = "DATETIME"
-    let DATE_FORMAT_STRINGS = ["YYMMDD"; "MMDDYY"; "DDMMYY"; "DATE"; "JULIAN"; "MONYY"]
+    let DATE_FORMAT_STRINGS = ["YYMMDDN";"YYMMDD"; "MMDDYY"; "DDMMYY"; "DATE"; "JULIAN"; "MONYY"]
 
     [<Literal>]
     let RLE_COMPRESSION = "SASYZCRL"
