@@ -10,7 +10,7 @@
     <RootNamespace>FSharp.Data.Toolbox.Bis</RootNamespace>
     <AssemblyName>FSharp.Data.Toolbox.Bis</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFSharpCoreVersion>4.4.0.0</TargetFSharpCoreVersion>
+    <TargetFSharpCoreVersion>4.6.0.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Name>FSharp.Data.Toolbox.Bis</Name>
   </PropertyGroup>

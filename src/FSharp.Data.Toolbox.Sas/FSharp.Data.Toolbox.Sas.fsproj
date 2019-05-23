@@ -11,7 +11,7 @@
     <AssemblyName>FSharp.Data.Toolbox.Sas</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Name>SasReader</Name>
-    <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
+    <TargetFSharpCoreVersion>4.6.0.0</TargetFSharpCoreVersion>
     <TargetFrameworkProfile />
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
