@@ -378,7 +378,7 @@ type SasFile (filename) =
 
         // compression information in the first ColumnText
         let compression =
-            let firstColText = Seq.nth 0 textHeaders
+            let firstColText = Seq.item 0 textHeaders
             let offset = match header.Bits with X86 -> 16 | X64 -> 20
             let signature = slice firstColText (offset, 8) |> ToStr
 
@@ -423,7 +423,7 @@ type SasFile (filename) =
             (names, attributes, formats)
             |||> Seq.zip3
             |> Seq.mapi (fun i (name, attr, format) ->
-            let textHeader = Seq.nth (int name.TextIndex) textHeaders
+            let textHeader = Seq.item (int name.TextIndex) textHeaders
             let textHeader = textHeader.[header.WordLength ..]
 
             // min used to prevent incorrect data which appear in some files

@@ -20,7 +20,7 @@ open FSharp.Data.Runtime.Bis
 
 [<TypeProvider>]
 type public BisProvider(cfg:TypeProviderConfig) as this = 
-    inherit TypeProviderForNamespaces()
+    inherit TypeProviderForNamespaces (cfg, assemblyReplacementMap=[("BasicGenerativeProvider.DesignTime", "BasicProvider")])
     
     let asm = Assembly.GetExecutingAssembly()
     let ns = "FSharp.Data.Toolbox.Bis"
@@ -41,9 +41,9 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
                 let dimesionTys = 
                     parser.getDataset().dimensions
                         |> Seq.map (fun d -> 
-                                        let p = ProvidedTypeDefinition(d.name, Some typeof<obj>, HideObjectMethods = true)
+                                        let p = ProvidedTypeDefinition(d.name, Some typeof<obj>, hideObjectMethods = true)
                                         d.members
-                                            |> Seq.map (fun m -> ProvidedProperty(m, typeof<string>, IsStatic = true, GetterCode = fun args -> <@@ m.Substring(0, m.IndexOf(':')) @@> ))
+                                            |> Seq.map (fun m -> ProvidedProperty(m, typeof<string>, isStatic = true, getterCode = fun args -> <@@ m.Substring(0, m.IndexOf(':')) @@> ))
                                             |> Seq.iter (fun m -> p.AddMember(m))
                                         p)
                         |> Seq.toList
@@ -54,8 +54,8 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
             let filterProvider =
                 let dset = parser.getDataset()
 
-                let filterTy = ProvidedTypeDefinition("ObservationFilter", Some typeof<obj>, HideObjectMethods = true)
-                filterTy.AddMember <| ProvidedConstructor(parameters = [], InvokeCode = fun args -> <@@ new Dictionary<string, string list>() @@>)
+                let filterTy = ProvidedTypeDefinition("ObservationFilter", Some typeof<obj>, hideObjectMethods = true)
+                filterTy.AddMember <| ProvidedConstructor(parameters = [], invokeCode = fun args -> <@@ new Dictionary<string, string list>() @@>)
 
                 // Generate property for each dimension in dataset
                 dset.dimensions.Select(fun x -> x.name)
@@ -63,20 +63,20 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
                                     ProvidedProperty (
                                         d, 
                                         typeof<string list>, 
-                                        IsStatic = false, 
-                                        GetterCode = (fun args -> 
+                                        isStatic = false, 
+                                        getterCode = (fun args -> 
                                                         <@@ let dict = ((%%args.[0] : obj) :?> Dictionary<string,string list>)
                                                             if not (dict.ContainsKey d) then dict.Add (d, [])
                                                             dict.[d]
                                                          @@>),
-                                        SetterCode = (fun args -> 
+                                        setterCode = (fun args -> 
                                                         <@@ ((%%args.[0] : obj) :?>Dictionary<string,string list>).[d] <- (%%args.[1] : string list) @@>)))
                     |> Seq.toList
                     |> filterTy.AddMembers
 
                 // Method that applies the filter on a dataset file and returns the matching observations
                 let getFilterMeth = ProvidedMethod("Get", [ProvidedParameter("pathToBisFile", typeof<string>, optionalValue = "")], typeof<Observation list>)
-                getFilterMeth.InvokeCode <- (fun [filter; pathToFile] -> 
+                getFilterMeth.GetInvokeCode <- (fun [filter; pathToFile] -> 
                                     <@@ 
                                         let dict = ((%%filter : obj) :?> System.Collections.Generic.Dictionary<string,string list>)
                                         let specificBisFile = (%%pathToFile : string)
@@ -94,7 +94,7 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
                 filterTy
 
             let provider = new ProvidedTypeDefinition(asm, ns, typeName, Some typeof<obj>)
-            provider.AddMember <| ProvidedConstructor(parameters = [], InvokeCode = fun _ -> <@@ new Dictionary<string, string list>() @@>)
+            provider.AddMember <| ProvidedConstructor(parameters = [], invokeCode = fun _ -> <@@ new Dictionary<string, string list>() @@>)
             let alltypes = dimensionTypes.Union([filterProvider]).ToList() 
             provider.AddMembers(alltypes |> Seq.toList)
             provider)
