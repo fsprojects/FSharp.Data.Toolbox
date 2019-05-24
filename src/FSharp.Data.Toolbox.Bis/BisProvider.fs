@@ -75,21 +75,22 @@ type public BisProvider(cfg:TypeProviderConfig) as this =
                     |> filterTy.AddMembers
 
                 // Method that applies the filter on a dataset file and returns the matching observations
-                let getFilterMeth = ProvidedMethod("Get", [ProvidedParameter("pathToBisFile", typeof<string>, optionalValue = "")], typeof<Observation list>)
-                getFilterMeth.GetInvokeCode <- (fun [filter; pathToFile] -> 
-                                    <@@ 
-                                        let dict = ((%%filter : obj) :?> System.Collections.Generic.Dictionary<string,string list>)
-                                        let specificBisFile = (%%pathToFile : string)
-                                        let filePath = if specificBisFile <> ""  then specificBisFile else pathToDatasetFile
-                                        let obsFilter = new Dictionary<string, string list>()
-                                        
-                                        for f in dict.Where((fun d -> d.Value.Length > 0)) do
-                                            obsFilter.Add(f.Key, f.Value)
+                let getFilterMeth = ProvidedMethod("Get", 
+                                                   [ProvidedParameter("pathToBisFile", typeof<string>, optionalValue = "")], 
+                                                   typeof<Observation list>,
+                                                   invokeCode = (fun [filter; pathToFile] -> 
+                                                       <@@ 
+                                                           let dict = ((%%filter : obj) :?> System.Collections.Generic.Dictionary<string,string list>)
+                                                           let specificBisFile = (%%pathToFile : string)
+                                                           let filePath = if specificBisFile <> ""  then specificBisFile else pathToDatasetFile
+                                                           let obsFilter = new Dictionary<string, string list>()
+                                                           
+                                                           for f in dict.Where((fun d -> d.Value.Length > 0)) do
+                                                               obsFilter.Add(f.Key, f.Value)
 
-                                        let fileParser = createPraser filePath
-                                        fileParser.filter (obsFilter)
-                                     @@>)
-            
+                                                           let fileParser = createPraser filePath
+                                                           fileParser.filter (obsFilter)
+                                                        @@>))
                 filterTy.AddMember (getFilterMeth)
                 filterTy
 
