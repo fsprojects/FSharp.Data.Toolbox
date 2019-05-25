@@ -1,10 +1,10 @@
 #if INTERACTIVE
-#I "../../packages/FSharp.Data.2.0.7/lib/net40"
+#I "../../packages/FSharp.Data/lib/net45"
 #I "../../bin"
-#I "../../packages/NUnit.2.6.3/lib"
+#I "../../packages/NUnit/lib"
 #r "nunit.framework.dll"
-#r @"FSharp.Data.dll"
 #r "FSharp.Data.Toolbox.Twitter.dll"
+#r @"FSharp.Data.dll"
 open FSharp.Data.Toolbox.Twitter
 #else
 module FSharp.ProjectScaffold.Tests

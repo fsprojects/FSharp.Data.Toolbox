@@ -95,12 +95,11 @@ type ``Integration tests`` () =
         new SasFile(file) |> ignore
 
     [<Test>]
-    [<ExpectedException("System.Exception")>]
     member x.``Reading magic number from non-SAS file is failure``() =
         let file = Path.Combine(path, "test.csv")
         if not <| File.Exists file then
             File.WriteAllText(file, "1,2,3")
-        new SasFile(file) |> ignore
+        Assert.Throws<System.Exception>( fun () -> new SasFile(file) |> ignore )
         //|> should throw typeof<Exception> 
 
     [<Test>]

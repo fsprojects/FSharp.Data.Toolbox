@@ -1,5 +1,10 @@
 namespace FSharp.Data.Toolbox.Twitter
 
+#if INTERACTIVE
+#I "../../packages/FSharp.Data/lib/net45"
+#r @"FSharp.Data.dll"
+#endif
+
 open System
 open System.Globalization
 open System.Threading
