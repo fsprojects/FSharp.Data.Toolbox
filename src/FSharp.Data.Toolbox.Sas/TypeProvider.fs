@@ -8,7 +8,7 @@ open System.Reflection
 
 [<TypeProvider>]
 type public SasProvider (config : TypeProviderConfig) as this =
-    inherit TypeProviderForNamespaces ()
+    inherit TypeProviderForNamespaces (config)
 
     let ns = "FSharp.Data.Toolbox.Sas"
     let asm = Assembly.GetExecutingAssembly()
@@ -39,12 +39,12 @@ type public SasProvider (config : TypeProviderConfig) as this =
             let ty = ProvidedTypeDefinition(asm, ns, tyName, Some typeof<SasFile>)
 
             // add a parameterless constructor which loads the file that was used to define the schema
-            ty.AddMember(ProvidedConstructor([], InvokeCode = fun [] -> <@@ new SasFile(filename') @@>))
+            ty.AddMember(ProvidedConstructor([], invokeCode = fun [] -> <@@ new SasFile(filename') @@>))
 
             // add a constructor taking the filename to load
             ty.AddMember(ProvidedConstructor(
                             [ProvidedParameter("filename", typeof<string>)],
-                            InvokeCode = fun [filename] -> <@@ new SasFile(%%filename) @@>))
+                            invokeCode = fun [filename] -> <@@ new SasFile(%%filename) @@>))
 
 
 
@@ -59,7 +59,7 @@ type public SasProvider (config : TypeProviderConfig) as this =
             |> Seq.map (fun col ->
                 let i = col.Ordinal - 1 
                 ProvidedProperty(col.Name, typeof<Value>,
-                    GetterCode = fun [values] ->
+                    getterCode = fun [values] ->
                                     <@@ (Seq.nth i (%%values: Value seq) ) @@> ) 
                 )
             |> Seq.toList
@@ -68,7 +68,7 @@ type public SasProvider (config : TypeProviderConfig) as this =
             // add a new, more strongly typed Data property (which uses the existing property at runtime)
             ty.AddMember(ProvidedProperty(
                             "Observations", typedefof<seq<_>>.MakeGenericType(tyObservation),
-                            GetterCode = fun [sasFile] -> <@@ (%%sasFile: SasFile).Rows @@>))
+                            getterCode = fun [sasFile] -> <@@ (%%sasFile: SasFile).Rows @@>))
 
             // add the row type as a nested type
             ty.AddMember tyObservation
