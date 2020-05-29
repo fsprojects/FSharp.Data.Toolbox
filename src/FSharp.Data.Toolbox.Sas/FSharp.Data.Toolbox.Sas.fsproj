@@ -35,6 +35,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>..\..\bin\FSharp.Data.Toolbox.Sas.xml</DocumentationFile>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\..\paket-files\fsprojects\FSharp.TypeProviders.StarterPack\src\ProvidedTypes.fsi">
       <Paket>True</Paket>

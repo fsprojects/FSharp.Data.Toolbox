@@ -1,5 +1,4 @@
-﻿#r "netstandard"
-#r "../../bin/netcoreapp3.1/FSharp.Data.Toolbox.Sas.dll"
+﻿#r "../../bin/netcoreapp3.1/FSharp.Data.Toolbox.Sas.dll"
 
 open FSharp.Data.Toolbox.Sas
 open System.IO 
