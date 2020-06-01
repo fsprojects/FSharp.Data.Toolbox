@@ -212,7 +212,7 @@ module Implementation =
         override this.headerRowCount = 7
 
     // Parser factory
-    let createPraser pathToDatasetFile =
+    let createPraser (pathToDatasetFile:string) =
         match Path.GetFileName(pathToDatasetFile).ToLower() with
             | dset when dset.Contains("_cbs_") -> new CbsParser(pathToDatasetFile) :> Parser
             | dset when dset.Contains("_lbs_") -> new LbsParser(pathToDatasetFile) :> Parser

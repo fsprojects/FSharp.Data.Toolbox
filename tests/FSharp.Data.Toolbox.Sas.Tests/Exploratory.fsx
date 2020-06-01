@@ -10,8 +10,8 @@ module Exploratory =
 
     let filename = 
         Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, 
-                      @"tests\FSharp.Data.Toolbox.Sas.Tests\files\rduschedule.sas7bdat")
-                      //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
+                      //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\rduschedule.sas7bdat")
+                      @"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
 
 ///////////////////////////////////////////
 
@@ -446,7 +446,7 @@ module Exploratory =
             |> Seq.mapi (fun i (name, attr, format) ->
 //let i = 1
 //let name, attr, format = Seq.nth i <| Seq.zip3 names attributes formats
-            let textHeader = Seq.nth (int name.TextIndex) textHeaders
+            let textHeader = Seq.item (int name.TextIndex) textHeaders
             let textHeader = textHeader.[header.WordLength ..]
             // min used to prevent incorrect data which appear in some files
             let formatLen = 
@@ -486,7 +486,7 @@ module Exploratory =
 //                        ""
                 Offset = attr.ColumnAttrOffset
             })
-            |> Seq.toList
+            |> Seq.toArray
 
         {   RowCount = rowCount
             RowSize  = rowSize
@@ -494,6 +494,8 @@ module Exploratory =
             CompressionInfo =  compression } // return collected metadata
 
 
+let mutable srcIndex = 0
+let mutable resultIndex = 0
 srcIndex <- 306
 resultIndex <- 572
 //decompress
