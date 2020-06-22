@@ -1,7 +1,7 @@
-﻿#I "../../bin/"
+﻿#I "../../bin/net47"
 #I "../../packages/"
 
-#r @"FSharp.Data.2.0.7\lib\net40\FSharp.Data.dll"
+#r @"FSharp.Data\lib\netstandard2.0\FSharp.Data.dll"
 #r "FSharp.Data.Toolbox.Twitter.dLl"
 
 open FSharp.Data.Toolbox.Twitter

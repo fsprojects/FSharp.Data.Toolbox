@@ -1,9 +1,8 @@
 #if INTERACTIVE
-#I "../../packages/FSharp.Data.2.0.7/lib/net40"
-#I "../../bin"
-#I "../../packages/NUnit.2.6.3/lib"
-#r "nunit.framework.dll"
-#r @"FSharp.Data.dll"
+#I "../../packages/FSharp.Data/lib/netstandard2.0"
+#r "../../packages/NUnit/lib/NUnit.framework.dll"
+//#I "../../bin/net47"
+#I "../../bin/netcoreapp3.1"
 #r "FSharp.Data.Toolbox.Twitter.dll"
 open FSharp.Data.Toolbox.Twitter
 #else

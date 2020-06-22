@@ -1,17 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
+    <TargetFrameworks>net47</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
-    <RootNamespace>FSharp.Data.Toolbox.Twitter</RootNamespace>
-    <AssemblyName>FSharp.Data.Toolbox.Twitter</AssemblyName>
-    <Name>FSharp.Data.Toolbox.Twitter</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,7 +19,7 @@
     <DocumentationFile>..\..\bin\FSharp.Data.Toolbox.Twitter.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <Tailcalls>true</Tailcalls>
     <OutputPath>..\..\bin\</OutputPath>
