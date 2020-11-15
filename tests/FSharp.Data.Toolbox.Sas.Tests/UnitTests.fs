@@ -1,8 +1,10 @@
 ﻿#if INTERACTIVE
-#I "../../packages/FSharp.Data.2.0.7/lib/net40"
-#I "../../bin"
+//#I "../../packages/FSharp.Data.2.0.7/lib/net40"
+//#I "../../bin"
+#I "../../packages/FSharp.Data/lib/netstandard2.0"
+#I "../../bin/netstandard2.0"
 #r "FSharp.Data.Toolbox.Sas.dll"
-open FSharp.Data.Toolbox.SasFile
+#r "../../packages/NUnit/lib/NUnit.framework.dll"
 #else
 module FSharp.Data.Toolbox.Sas.UnitTests
 #endif

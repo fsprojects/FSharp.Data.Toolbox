@@ -1,8 +1,8 @@
 ﻿#if INTERACTIVE
-#I "../../packages/FSharp.Data/lib/net40"
-#I "../../bin"
-#r "../../packages/NUnit/lib/nunit.framework.dll"
+#I "../../packages/FSharp.Data/lib/netstandard2.0"
+#I "../../bin/netstandard2.0"
 #r "FSharp.Data.Toolbox.Sas.dll"
+#r "../../packages/NUnit/lib/NUnit.framework.dll"
 #else
 module FSharp.Data.Toolbox.Sas.IntegrationTests
 #endif
@@ -21,22 +21,29 @@ if not <| Directory.Exists path
 
     if not <| Directory.Exists path then
         Directory.CreateDirectory path |> ignore
-
+    
+    let downloadFile (line : string []) =
+        async {  
+            try
+                let name, url = line.[1], line.[7] 
+                if name <> "yrbscol.sas7bdat" && not <| url.Contains "lsu.edu" then
+                    printfn "Downloading test file: %s" name
+                    use wc = new System.Net.WebClient()
+                    return! wc.AsyncDownloadFile(Uri(url), Path.Combine(path, name)) 
+            with
+            | ex -> printfn "%s" (ex.Message)
+            }
     // download publicly available SAS files
     Path.Combine(dir, "SAS Files.csv")
     |> File.ReadLines
     |> Seq.skip 1
     |> Seq.map (fun line -> line.Split(',') ) 
-    |> Seq.iter (fun line -> 
-        try
-            let name, url = line.[1], line.[7] 
-            if name <> "yrbscol.sas7bdat" && not <| url.Contains "lsu.edu" then
-                printfn "Downloading test file: %s" name
-                use wc = new System.Net.WebClient()
-                wc.DownloadFile(url, Path.Combine(path, name)) 
-        with
-        | _ -> ignore()
-        )
+    |> Seq.map downloadFile
+    |> Async.Parallel
+    |> Async.RunSynchronously
+    |> ignore
+
+
 
 let convert filename = 
         let csvFilename =

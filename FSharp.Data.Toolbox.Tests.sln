@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.36
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}"
 EndProject
@@ -19,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "content", "content", "{8E6D
 		docs\content\TwitterProvider.fsx = docs\content\TwitterProvider.fsx
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Data.Toolbox.Twitter.Tests", "tests\FSharp.Data.Toolbox.Twitter.Tests\FSharp.Data.Toolbox.Twitter.Tests.fsproj", "{E789C72A-5CFD-436B-8EF1-61AA2852A89F}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSharp.Data.Toolbox.Sas.Tests", "tests\FSharp.Data.Toolbox.Sas.Tests\FSharp.Data.Toolbox.Sas.Tests.fsproj", "{F3EB7D46-EDA3-4D6C-A173-D5692579172E}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Data.Toolbox.Sas.Tests", "tests\FSharp.Data.Toolbox.Sas.Tests\FSharp.Data.Toolbox.Sas.Tests.fsproj", "{F3EB7D46-EDA3-4D6C-A173-D5692579172E}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "FSharp.Data.Toolbox.Twitter.Tests", "tests\FSharp.Data.Toolbox.Twitter.Tests\FSharp.Data.Toolbox.Twitter.Tests.fsproj", "{43E6E09B-A308-4F02-9A5D-F417B23905ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,14 +29,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E789C72A-5CFD-436B-8EF1-61AA2852A89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E789C72A-5CFD-436B-8EF1-61AA2852A89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E789C72A-5CFD-436B-8EF1-61AA2852A89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E789C72A-5CFD-436B-8EF1-61AA2852A89F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3EB7D46-EDA3-4D6C-A173-D5692579172E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F3EB7D46-EDA3-4D6C-A173-D5692579172E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3EB7D46-EDA3-4D6C-A173-D5692579172E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3EB7D46-EDA3-4D6C-A173-D5692579172E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43E6E09B-A308-4F02-9A5D-F417B23905ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43E6E09B-A308-4F02-9A5D-F417B23905ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43E6E09B-A308-4F02-9A5D-F417B23905ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43E6E09B-A308-4F02-9A5D-F417B23905ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,5 +44,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{83F16175-43B1-4C90-A1EE-8E351C33435D} = {A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}
 		{8E6D5255-776D-4B61-85F9-73C37AA1FB9A} = {A6A6AF7D-D6E3-442D-9B1E-58CC91879BE1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0E13D796-A42C-4F1B-B9F1-B65F0A15E5D3}
 	EndGlobalSection
 EndGlobal

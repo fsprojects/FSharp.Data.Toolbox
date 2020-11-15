@@ -181,7 +181,7 @@ release.sh
 localpackages/
 paket-files
 *.orig
-.paket/paket.exe
+.paket/
 docs/content/license.md
 docs/content/release-notes.md
 
@@ -191,4 +191,4 @@ tests/FSharp.Data.Toolbox.Sas.Tests/files
 *.svclog
 .fake
 .ionide.debug
-.ionide/symbolCache.db
+/.ionide

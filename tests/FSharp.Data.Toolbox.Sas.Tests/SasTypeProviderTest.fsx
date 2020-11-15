@@ -1,7 +1,6 @@
-﻿#r "../../bin/netcoreapp3.1/FSharp.Data.Toolbox.Sas.dll"
+﻿#r "../../bin/netstandard2.0/FSharp.Data.Toolbox.Sas.dll"
 
 open FSharp.Data.Toolbox.Sas
-open System.IO 
 
 let sasFile = new SasFileTypeProvider<"files/acadindx.sas7bdat">()
 

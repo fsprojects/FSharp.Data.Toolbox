@@ -1,4 +1,4 @@
-﻿#I @"..\..\bin"
+﻿#I @"..\..\bin\netstandard2.0"
 #r "FSharp.Data.Toolbox.Sas"
 
 module Exploratory =
