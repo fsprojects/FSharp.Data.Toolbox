@@ -2,10 +2,10 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "paket": {
-      "version": "5.245.2",
+    "fsharp.formatting.commandtool": {
+      "version": "7.2.9",
       "commands": [
-        "paket"
+        "fsdocs"
       ]
     }
   }

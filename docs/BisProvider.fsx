@@ -2,7 +2,7 @@
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
 #nowarn "211"
-#I "../../packages/FSharp.Data/lib/net40"
+#I "../../packages/FSharp.Data/lib/netstandard2.0"
 #I "../../bin"
 
 (**
@@ -58,9 +58,9 @@ filter.Get()
                             |> Seq.filter (fun v -> v.value.IsSome)
                             |> Seq.map (fun v -> v.value.Value)
                             |> (fun x -> Chart.Line(x, Name = o.key)))
-	|> Chart.Combine
-	|> Chart.WithLegend(true, Title="Switzerland property prices")
-	|> Chart.Show 
+    |> Chart.Combine
+    |> Chart.WithLegend(true, Title="Switzerland property prices")
+    |> Chart.Show 
 
 (**
 
@@ -94,9 +94,9 @@ filter.Get()
                             |> Seq.filter (fun v -> v.value.IsSome)
                             |> Seq.map (fun v -> v.value.Value)
                             |> (fun x -> Chart.Line(x, Name = o.key)))
-	|> Chart.Combine
-	|> Chart.WithLegend(true, Title="Switzerland vis-à-vis Bahamas and Singapore")
-	|> Chart.Show 
+    |> Chart.Combine
+    |> Chart.WithLegend(true, Title="Switzerland vis-à-vis Bahamas and Singapore")
+    |> Chart.Show 
 
 (**
 

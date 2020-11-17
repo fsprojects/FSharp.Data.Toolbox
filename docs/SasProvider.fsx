@@ -2,7 +2,7 @@
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
 #nowarn "211"
-#I "../../packages/FSharp.Data/lib/net40"
+#I "../../packages/FSharp.Data/lib/netstandard2.0"
 #I "../../bin"
 
 (**

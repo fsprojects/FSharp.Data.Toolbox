@@ -192,3 +192,5 @@ tests/FSharp.Data.Toolbox.Sas.Tests/files
 .fake
 .ionide.debug
 /.ionide
+/.fsdocs
+/tmp/watch
