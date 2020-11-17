@@ -6,7 +6,7 @@ nuget NUnit ~> 2
 nuget FsUnit
 nuget NUnit.Runners ~> 2
 nuget Nuget.CommandLine
-nuget FAKE
+nuget FAKE prerelease
 nuget SourceLink.Fake
 nuget FSharp.Data
 
