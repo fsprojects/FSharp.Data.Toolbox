@@ -60,7 +60,7 @@ type public SasProvider (config : TypeProviderConfig) as this =
                 let i = col.Ordinal - 1 
                 ProvidedProperty(col.Name, typeof<Value>,
                     getterCode = fun [values] ->
-                                    <@@ (Seq.nth i (%%values: Value seq) ) @@> ) 
+                                    <@@ (Seq.item i (%%values: Value seq) ) @@> ) 
                 )
             |> Seq.toList
             |> tyObservation.AddMembers

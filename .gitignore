@@ -194,3 +194,9 @@ tests/FSharp.Data.Toolbox.Sas.Tests/files
 /.ionide
 /.fsdocs
 /tmp/watch
+/docs/.fsdocs
+/docs/tmp/watch
+output/
+tmp/
+.fsdocs/
+build.fsx.lock

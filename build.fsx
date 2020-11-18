@@ -2,9 +2,15 @@
 // FAKE build script
 // --------------------------------------------------------------------------------------
 
-#I "packages/FAKE/tools/"
-#r "FakeLib.dll"
+// This is a FAKE 5.0 script, run using
+//    dotnet fake build
 
+#r "paket: groupref fake //"
+
+#if !FAKE
+#load ".fake/build.fsx/intellisense.fsx"
+#r "netstandard"
+#endif
 
 
 open System
@@ -93,6 +99,8 @@ let gitRaw = Environment.environVarOrDefault "gitRaw" "https://raw.github.com/fs
 
 // Read additional information from the release notes document
 let release = ReleaseNotes.load "RELEASE_NOTES.md"
+let configuration = DotNet.BuildConfiguration.fromEnvironVarOrDefault "configuration" DotNet.BuildConfiguration.Release
+
 
 let genFSAssemblyInfo (projectPath) =
     let projectName = Path.GetFileNameWithoutExtension(projectPath)
@@ -138,20 +146,18 @@ Fake.Core.Target.create "CleanDocs" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Build library & test project
 
-Fake.Core.Target.create "Build" (fun _ ->
-    !! "src/**/*.fsproj"//!! "FSharp.Data.Toolbox.sln"
-    |> Fake.DotNet.MSBuild.runRelease id "" "Rebuild"
-    |> ignore
+Target.create "Build" (fun _ ->
+    "FSharp.Data.Toolbox.sln"//!! "src/**/*.fsproj"//!! "FSharp.Data.Toolbox.sln"
+    |> DotNet.build (fun opts -> { opts with Configuration = configuration } )
 
-    !! "tests/**/*.fsproj"//!! "FSharp.Data.Toolbox.Tests.sln"
-    |> Fake.DotNet.MSBuild.runRelease id "" "Rebuild"
-    |> ignore
+    "FSharp.Data.Toolbox.Tests.sln" //!! "tests/**/*.fsproj"//
+    |> DotNet.build (fun opts -> { opts with Configuration = configuration } )
 )
 
 // --------------------------------------------------------------------------------------
 // Run the unit tests using test runner
 
-Fake.Core.Target.create "RunTests" (fun _ ->
+Target.create "RunTests" (fun _ ->
     !! testAssemblies
     |> Fake.DotNet.Testing.NUnit.Parallel.run (fun p ->
         { p with
@@ -186,9 +192,9 @@ Target "SourceLink" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Build a NuGet package
 
-Fake.Core.Target.create "NuGet" (fun _ ->
+Target.create "NuGet" (fun _ ->
     for project, summary, description, authors, tags, nuspec in nugetPackages do
-        Fake.DotNet.NuGet.NuGet.NuGet (fun p -> 
+        NuGet.NuGet (fun p -> 
             { p with   
                 Authors = authors
                 Project = project
@@ -198,8 +204,8 @@ Fake.Core.Target.create "NuGet" (fun _ ->
                 ReleaseNotes = String.Join(Environment.NewLine, release.Notes)
                 Tags = tags
                 OutputPath = "bin"
-                AccessKey = Fake.Core.Environment.environVarOrDefault "nugetkey" ""
-                Publish = Fake.Core.Environment.hasEnvironVar "nugetkey"
+                AccessKey = Environment.environVarOrDefault "nugetkey" ""
+                Publish = Environment.hasEnvironVar "nugetkey"
                 Dependencies = [] })
             (nuspec)
 )
@@ -207,140 +213,21 @@ Fake.Core.Target.create "NuGet" (fun _ ->
 // --------------------------------------------------------------------------------------
 // Generate the documentation
 
-Fake.Core.Target.create "GenerateReferenceDocs" (fun _ ->
-    let (exitCode, messages) =
-        Fake.DotNet.Fsi.exec 
-            (fun p ->
-                { p with 
-                    WorkingDirectory = "docs/tools"
-                    ToolPath = Fsi.FsiTool.Internal
-                     
-                    } )
-            // Script to run
-            "generate.fsx"
-            // script arguments
-            ["--define:RELEASE"; "--define:REFERENCE"] 
-    match exitCode with
-    | 0 -> 
-        messages
-        |> List.iter Fake.Core.Trace.trace
-    | _ -> 
-        messages
-        |> List.iter Fake.Core.Trace.traceError
-        failwith "generating reference documentation failed"            
-)
-let generateHelp' fail debug =
-    let args =
-        if debug then ["--define:HELP"]
-        else ["--define:RELEASE"; "--define:HELP"]
-    let (exitCode, messages) =
-        Fake.DotNet.Fsi.exec 
-            (fun p ->
-                { p with 
-                    WorkingDirectory = "docs/tools"
-                    ToolPath = Fsi.FsiTool.Internal
-                    } )
-            // Script to run
-            "docs/tools/generate.fsx"
-            // script arguments
-            args
-    match exitCode with
-    | 0 -> 
-        Fake.Core.Trace.traceImportant "Help generated"
-    | _ -> 
-        messages
-        |> List.iter Fake.Core.Trace.traceError
-        Fake.Core.Trace.traceImportant "generating reference documentation failed"
-
-let generateHelp fail =
-    generateHelp' fail false
-
-Fake.Core.Target.create "GenerateHelp" (fun _ ->
-    File.delete "docs/content/release-notes.md"
-    Shell.copyFile "docs/content/" "RELEASE_NOTES.md"
-    Shell.rename "docs/content/release-notes.md" "docs/content/RELEASE_NOTES.md"
-
-    File.delete "docs/content/license.md"
-    Shell.copyFile "docs/content/" "LICENSE.txt"
-    Shell.rename "docs/content/license.md" "docs/content/LICENSE.txt"
-
-    generateHelp true
+Target.create "GenerateDocs" (fun _ ->
+   Shell.cleanDir ".fsdocs"
+   DotNet.exec id "fsdocs" "build --clean" |> ignore
 )
 
-Fake.Core.Target.create "GenerateHelpDebug" (fun _ ->
-    File.delete "docs/content/release-notes.md"
-    Shell.copyFile "docs/content/" "RELEASE_NOTES.md"
-    Shell.rename "docs/content/release-notes.md" "docs/content/RELEASE_NOTES.md"
-
-    File.delete "docs/content/license.md"
-    Shell.copyFile "docs/content/" "LICENSE.txt"
-    Shell.rename "docs/content/license.md" "docs/content/LICENSE.txt"
-
-    generateHelp' true true
+Target.create "KeepRunning" (fun _ ->
+   Shell.cleanDir ".fsdocs"
+   DotNet.exec id "fsdocs" "watch" |> ignore
 )
 
-Fake.Core.Target.create "KeepRunning" (fun _ ->    
-    use watcher = new FileSystemWatcher(DirectoryInfo("docs/content").FullName,"*.*")
-    watcher.EnableRaisingEvents <- true
-    watcher.Changed.Add(fun e -> generateHelp false)
-    watcher.Created.Add(fun e -> generateHelp false)
-    watcher.Renamed.Add(fun e -> generateHelp false)
-    watcher.Deleted.Add(fun e -> generateHelp false)
-
-    Fake.Core.Trace.traceImportant "Waiting for help edits. Press any key to stop."
-
-    System.Console.ReadKey() |> ignore
-
-    watcher.EnableRaisingEvents <- false
-    watcher.Dispose()
-)
-
-Fake.Core.Target.create "GenerateDocs" ignore
-
-let createIndexFsx lang =
-    let content = """(*** hide ***)
-// This block of code is omitted in the generated HTML documentation. Use 
-// it to define helpers that you do not want to show in the documentation.
-#I "../../../bin"
-
-(**
-F# Project Scaffold ({0})
-=========================
-*)
-"""
-    let targetDir = "docs/content" @@ lang
-    let targetFile = targetDir @@ "index.fsx"
-    Directory.ensure targetDir
-    System.IO.File.WriteAllText(targetFile, System.String.Format(content, lang))
-
-Fake.Core.Target.create "AddLangDocs" (fun _ ->
-    let args = System.Environment.GetCommandLineArgs()
-    if args.Length < 4 then
-        failwith "Language not specified."
-
-    args.[3..]
-    |> Seq.iter (fun lang ->
-        if lang.Length <> 2 && lang.Length <> 3 then
-            failwithf "Language must be 2 or 3 characters (ex. 'de', 'fr', 'ja', 'gsw', etc.): %s" lang
-
-        let templateFileName = "template.cshtml"
-        let templateDir = "docs/tools/templates"
-        let langTemplateDir = templateDir @@ lang
-        let langTemplateFileName = langTemplateDir @@ templateFileName
-
-        if System.IO.File.Exists(langTemplateFileName) then
-            failwithf "Documents for specified language '%s' have already been added." lang
-
-        Directory.ensure langTemplateDir
-        Shell.copy langTemplateDir [ templateDir @@ templateFileName ]
-
-        createIndexFsx lang)
-)
 
 // --------------------------------------------------------------------------------------
 // Release Scripts
 
-Fake.Core.Target.create "ReleaseDocs" (fun _ ->
+Target.create "ReleaseDocs" (fun _ ->
     let tempDocsDir = "temp/gh-pages"
     Shell.cleanDir tempDocsDir
     Repository.cloneSingleBranch "" (gitHome + "/" + gitName + ".git") "gh-pages" tempDocsDir
@@ -348,16 +235,16 @@ Fake.Core.Target.create "ReleaseDocs" (fun _ ->
     Repository.fullclean tempDocsDir
     Shell.copyRecursive "docs/output" tempDocsDir true |> Fake.Core.Trace.tracefn "%A"
     Staging.stageAll tempDocsDir
-    Fake.Tools.Git.Commit.exec tempDocsDir (sprintf "Update generated documentation for version %s" release.NugetVersion)
+    Commit.exec tempDocsDir (sprintf "Update generated documentation for version %s" release.NugetVersion)
     Branches.push tempDocsDir
 )
 
 //#load "paket-files/fsharp/FAKE/modules/Octokit/Octokit.fsx"
 //open Octokit
 
-Fake.Core.Target.create "Release" (fun _ ->
+Target.create "Release" (fun _ ->
     Staging.stageAll ""
-    Fake.Tools.Git.Commit.exec "" (sprintf "Bump version to %s" release.NugetVersion)
+    Commit.exec "" (sprintf "Bump version to %s" release.NugetVersion)
     Branches.push ""
 
     Branches.tag "" release.NugetVersion
@@ -371,21 +258,19 @@ Fake.Core.Target.create "Release" (fun _ ->
     // |> Async.RunSynchronously
 )
 
-Fake.Core.Target.create "BuildPackage" ignore
+Target.create "BuildPackage" ignore
 
 // --------------------------------------------------------------------------------------
 // Run all targets by default. Invoke 'build <Target>' to override
 
-Fake.Core.Target.create "All" ignore
+Target.create "All" ignore
 
 "Clean"
   ==> "AssemblyInfo"
   ==> "Build"
   ==> "RunTests"
-  =?> ("GenerateReferenceDocs",Fake.Core.BuildServer.isLocalBuild && not Fake.Core.Environment.isMono)
-  =?> ("GenerateDocs",Fake.Core.BuildServer.isLocalBuild && not Fake.Core.Environment.isMono)
+  =?> ("GenerateDocs",BuildServer.isLocalBuild && not Environment.isMono)
   ==> "All"
-  =?> ("ReleaseDocs",Fake.Core.BuildServer.isLocalBuild && not Fake.Core.Environment.isMono)
 
 "All" 
 #if MONO
@@ -396,20 +281,12 @@ Fake.Core.Target.create "All" ignore
   ==> "BuildPackage"
 
 "CleanDocs"
-  ==> "GenerateHelp"
-  ==> "GenerateReferenceDocs"
   ==> "GenerateDocs"
 
-"CleanDocs"
-  ==> "GenerateHelpDebug"
-
-"GenerateHelp"
-  ==> "KeepRunning"
-    
 "ReleaseDocs"
   ==> "Release"
 
 "BuildPackage"
   ==> "Release"
 
-Fake.Core.Target.runOrDefault "All"
+Target.runOrDefault "All"
