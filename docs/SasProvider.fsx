@@ -2,8 +2,8 @@
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
 #nowarn "211"
-#I "../../packages/FSharp.Data/lib/netstandard2.0"
-#I "../../bin"
+#I "../packages/FSharp.Data/lib/netstandard2.0"
+#I "../bin/netstandard2.0"
 
 (**
 F# Data Toolbox: SAS dataset type provider
@@ -31,7 +31,7 @@ The library gives you a parameterized type provider `SasFileTypeProvider` that
 takes the SAS data file as an argument:
 *)
 [<Literal>] 
-let sasPath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/acadindx.sas7bdat"
+let sasPath = @"../tests/FSharp.Data.Toolbox.Sas.Tests/files/acadindx.sas7bdat"
 let sasFile = new SasFileTypeProvider<sasPath>()
 
 (**
@@ -138,11 +138,11 @@ The following is a slightly more interesting example which joins data from two d
 *)
 // join two datasets
 [<Literal>] 
-let crimePath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/crime.sas7bdat" 
+let crimePath = @"../tests/FSharp.Data.Toolbox.Sas.Tests/files/crime.sas7bdat" 
 let crimeFile = new SasFileTypeProvider<crimePath>()
 
 [<Literal>] 
-let statesPath = @"../../tests/FSharp.Data.Toolbox.Sas.Tests/files/states.sas7bdat" 
+let statesPath = @"../tests/FSharp.Data.Toolbox.Sas.Tests/files/states.sas7bdat" 
 let statesFile = new SasFileTypeProvider<statesPath>()
 
 let trim x = 
@@ -185,6 +185,7 @@ Displaying data in a grid
 
 We can display the data in a grid. 
 *)
+
 open System.Windows.Forms
 
 // Create a window with a grid
