@@ -1,11 +1,11 @@
 source https://nuget.org/api/v2
 framework: netstandard20,net47
 
-nuget FSharp.Core
+nuget FSharp.Core  ~> 4.7.2
 nuget FSharp.Formatting
-nuget NUnit ~> 2
-nuget FsUnit
-nuget NUnit.Runners ~> 2
+nuget NUnit
+nuget FsUnit ~> 4.0
+nuget NUnit.Runners
 nuget Nuget.CommandLine
 nuget FSharp.Data
 
