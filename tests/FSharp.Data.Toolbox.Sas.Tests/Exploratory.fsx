@@ -10,8 +10,8 @@ module Exploratory =
 
     let filename = 
         Path.Combine(Directory.GetParent(__SOURCE_DIRECTORY__).Parent.FullName, 
-                      //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\rduschedule.sas7bdat")
-                      @"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
+                      @"tests\FSharp.Data.Toolbox.Sas.Tests\files\texas.sas7bdat")
+                      //@"tests\FSharp.Data.Toolbox.Sas.Tests\files\acadindx.sas7bdat")
 
 ///////////////////////////////////////////
 
