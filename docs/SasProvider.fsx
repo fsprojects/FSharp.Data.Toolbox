@@ -134,12 +134,12 @@ query {
     sumBy obs.writing
     }
 
-(*** hide ***)
-(*
+
+(**
 The following is a slightly more interesting example which joins data from two data sets:
 *)
 
-(*
+
 // join two datasets
 [<Literal>] 
 let crimePath = @"../tests/FSharp.Data.Toolbox.Sas.Tests/files/crime.sas7bdat" 
@@ -159,7 +159,7 @@ query {
       on (trim crime.State = trim state.State)
   select (crime.murder_rate, state.State)
 }
-*)
+
 
 (**
 Accessing data in a generic way
@@ -184,8 +184,8 @@ sasFile.Rows
           |> String.concat "," 
       printfn "%s" line )
 
-(*** hide ***)
-(*
+
+(**
 Displaying data in a grid
 -------------------------
 
@@ -252,6 +252,6 @@ btn.Click.Add(fun _ ->
     )
 
 show page
-(*
+(**
 ![SAS dataset viewer](img/SasViewer.png)
 *)
