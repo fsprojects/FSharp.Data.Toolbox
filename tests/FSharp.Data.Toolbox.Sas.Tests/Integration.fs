@@ -2,7 +2,7 @@
 #I "../../packages/FSharp.Data/lib/netstandard2.0"
 #I "../../bin/netstandard2.0"
 #r "FSharp.Data.Toolbox.Sas.dll"
-#r "../../packages/NUnit/lib/NUnit.framework.dll"
+#r "../../packages/NUnit/lib/netstandard2.0/NUnit.framework.dll"
 #else
 module FSharp.Data.Toolbox.Sas.IntegrationTests
 #endif
@@ -34,8 +34,7 @@ if not <| Directory.Exists path
             try
                 let name, url = line.[1], line.[7] 
                 if not (failingFiles.Contains name) && 
-                   not <| url.Contains "lsu.edu" &&
-                   not <| url.Contains "ats.ucla.edu" 
+                   not <| url.Contains "lsu.edu" 
                 then
                     printfn "Downloading test file: %s" name
                     use wc = new System.Net.WebClient()
@@ -47,8 +46,7 @@ if not <| Directory.Exists path
     Path.Combine(dir, "SAS Files.csv")
     |> File.ReadLines
     |> Seq.skip 1
-    |> Seq.map (fun line -> line.Split(',') ) 
-    |> Seq.map downloadFile
+    |> Seq.map (fun line -> downloadFile (line.Split(',')))  
     |> Async.Parallel
     |> Async.RunSynchronously
     |> ignore
