@@ -273,10 +273,6 @@ Target.create "All" ignore
   ==> "All"
 
 "All" 
-#if MONO
-#else
-//  =?> ("SourceLink", Pdbstr.tryFind().IsSome )
-#endif
   ==> "NuGet"
   ==> "BuildPackage"
 

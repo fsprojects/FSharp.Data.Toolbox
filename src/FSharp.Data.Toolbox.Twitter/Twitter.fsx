@@ -30,7 +30,7 @@ let connector = Twitter.Authenticate(key, secret)
 // login to twitter and you'll get a pin code that you need to copy and
 // paste as an argument to the 'Connect' method below:
 
-let twitter = connector.Connect("6178040")
+let twitter = connector.Connect("9959115")
 
 // B) Application-only authentication
 let twitterApp = Twitter.AuthenticateAppOnly(key, secret)
