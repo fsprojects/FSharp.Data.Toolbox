@@ -61,7 +61,7 @@
 * Preview of Type Provider for Statistical Data published by Bank for International Settlements (#43)
 * Added parameters to HomeTimeline (#45)
 
-### 0.20 - November 29 2020
+#### 0.20 - November 29 2020
 * Upgraded Sas and BIS Providers to netstandard2.0
 * Upgraded Twitter type provider to .NET 4.7
 * Upgraded build to Fake 5
