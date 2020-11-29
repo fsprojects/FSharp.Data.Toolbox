@@ -1,17 +1,17 @@
 #if INTERACTIVE
 #I "../../packages/FSharp.Data/lib/netstandard2.0"
-#r "../../packages/NUnit/lib/NUnit.framework.dll"
+#r "../../packages/NUnit/lib/netstandard2.0/NUnit.framework.dll"
 #I "../../bin/net47"
 //#I "../../bin/netcoreapp3.1"
 #r "FSharp.Data.Toolbox.Twitter.dll"
-open FSharp.Data.Toolbox.Twitter
+#r "FSharp.Data.dll"
 #else
 module FSharp.ProjectScaffold.Tests
 #endif
 
-open FSharp.Data
 open FSharp.Data.Toolbox.Twitter
 open NUnit.Framework
+open System.Windows.Forms
 
 [<Test>]
 let ``Can authenticate with Twitter using AppOnly mode and search for F# org twitter`` () =

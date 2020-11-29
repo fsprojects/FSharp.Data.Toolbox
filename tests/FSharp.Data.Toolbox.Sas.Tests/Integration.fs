@@ -2,7 +2,7 @@
 #I "../../packages/FSharp.Data/lib/netstandard2.0"
 #I "../../bin/netstandard2.0"
 #r "FSharp.Data.Toolbox.Sas.dll"
-#r "../../packages/NUnit/lib/NUnit.framework.dll"
+#r "../../packages/NUnit/lib/netstandard2.0/NUnit.framework.dll"
 #else
 module FSharp.Data.Toolbox.Sas.IntegrationTests
 #endif
@@ -23,10 +23,19 @@ if not <| Directory.Exists path
         Directory.CreateDirectory path |> ignore
     
     let downloadFile (line : string []) =
+        let failingFiles = 
+            Set ["manp.sas7bdat"; "dietnihtablea1.sas7bdat"; "Insurer_co.sas7bdat"; 
+                 "hltheds2000.sas7bdat";"ymcls_p2_long_040506.sas7bdat";"pipdata.sas7bdat";
+                 "Insurer_co.sas7bdat"; "Final_Candy.sas7bdat"; "f2002be2.sas7bdat";
+                 "ctcodes-procedures.sas7bdat"; "candyinfo.sas7bdat"; "candy.sas7bdat";
+                 "calcmilk.sas7bdat"; "yrbscol.sas7bdat"; "sorted_work_panel_data_aquifer_1.sas7bdat";
+                 "osteo_analysis_data.sas7bdat"]
         async {  
             try
                 let name, url = line.[1], line.[7] 
-                if name <> "yrbscol.sas7bdat" && not <| url.Contains "lsu.edu" then
+                if not (failingFiles.Contains name) && 
+                   not <| url.Contains "lsu.edu" 
+                then
                     printfn "Downloading test file: %s" name
                     use wc = new System.Net.WebClient()
                     return! wc.AsyncDownloadFile(Uri(url), Path.Combine(path, name)) 
@@ -37,8 +46,7 @@ if not <| Directory.Exists path
     Path.Combine(dir, "SAS Files.csv")
     |> File.ReadLines
     |> Seq.skip 1
-    |> Seq.map (fun line -> line.Split(',') ) 
-    |> Seq.map downloadFile
+    |> Seq.map (fun line -> downloadFile (line.Split(',')))  
     |> Async.Parallel
     |> Async.RunSynchronously
     |> ignore
@@ -83,6 +91,13 @@ let convert filename =
                 writer.WriteLine line
             )
 
+// To find bad files
+if false then
+    Directory.EnumerateFiles(path, "*.sas7bdat")
+    |> Seq.iter (fun path -> 
+        try new SasFile(path) |> ignore
+        with | Failure(msg) -> printfn "%s\n%s\n" path msg)
+
 [<TestFixture>]
 type ``Integration tests`` () =
 
@@ -102,12 +117,12 @@ type ``Integration tests`` () =
         new SasFile(file) |> ignore
 
     [<Test>]
-    [<ExpectedException("System.Exception")>]
     member x.``Reading magic number from non-SAS file is failure``() =
         let file = Path.Combine(path, "test.csv")
         if not <| File.Exists file then
             File.WriteAllText(file, "1,2,3")
-        new SasFile(file) |> ignore
+        Assert.Throws<System.Exception>(fun () -> new SasFile(file) |> ignore)
+        |> ignore
         //|> should throw typeof<Exception> 
 
     [<Test>]

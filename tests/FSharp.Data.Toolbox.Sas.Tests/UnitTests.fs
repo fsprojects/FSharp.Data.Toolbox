@@ -4,7 +4,7 @@
 #I "../../packages/FSharp.Data/lib/netstandard2.0"
 #I "../../bin/netstandard2.0"
 #r "FSharp.Data.Toolbox.Sas.dll"
-#r "../../packages/NUnit/lib/NUnit.framework.dll"
+#r "../../packages/NUnit/lib/netstandard2.0/NUnit.framework.dll"
 #else
 module FSharp.Data.Toolbox.Sas.UnitTests
 #endif
@@ -51,10 +51,9 @@ type ``Unit tests`` () =
         let a, b = 2., Character "hello"
         Assert.AreEqual(b + a, Character "hello2" )
     [<Test>]
-    [<ExpectedException("System.InvalidOperationException")>]
     member x.``Adding a number to date value throws exception``() =
         let a, b = Number 2., Date <| DateTime.Now
-        a + b |> ignore 
+        Assert.Throws<System.InvalidOperationException>(fun () -> a + b |> ignore) 
 
     [<Test>]
     member x.``Substract positive numbers``() =
@@ -73,10 +72,9 @@ type ``Unit tests`` () =
         let a, b = 6., Number 5.
         Assert.AreEqual(a - b, Number 1. )
     [<Test>]
-    [<ExpectedException("System.InvalidOperationException")>]
     member x.``Substracting from a character throws exception``() =
         let a, b = Character "hi", Number 1.
-        a - b |> ignore 
+        Assert.Throws<System.InvalidOperationException>(fun () -> 1.0 |> ignore ) |> ignore
 
     [<Test>]
     member x.``Multiply positive numbers``() =
@@ -99,10 +97,9 @@ type ``Unit tests`` () =
         let a, b = Character "F# ", Number 5.
         Assert.AreEqual(a * b, Character "F# F# F# F# F# ")
     [<Test>]
-    [<ExpectedException("System.InvalidOperationException")>]
     member x.``Dividing a character throws exception``() =
         let a, b = Character "hi", Number 1.
-        a / b |> ignore 
+        Assert.Throws<System.InvalidOperationException>(fun () -> a / b |> ignore) 
     [<Test>]
     member x.``Divide positive numbers``() =
         let a, b = Number 15., Number 3.
@@ -116,17 +113,14 @@ type ``Unit tests`` () =
         let a, b = Number 12., 3
         Assert.AreEqual(a / b, Number 4. )
     [<Test>]
-    [<ExpectedException("System.DivideByZeroException")>]
     member x.``Divide by empty``() =
         let a, b = Number 10., Empty
-        a / b |> ignore
+        Assert.Throws<System.DivideByZeroException>(fun () -> a / b |> ignore) |> ignore
     [<Test>]
-    [<ExpectedException("System.DivideByZeroException")>]
     member x.``Divide by zero``() =
         let a, b = Number 10., 0
-        a / b |> ignore
+        Assert.Throws<System.DivideByZeroException>(fun () -> a / b |> ignore) |> ignore
     [<Test>]
-    [<ExpectedException("System.InvalidOperationException")>]
     member x.``Divide character and number``() =
         let a, b = Character "F# ", Number 5.
-        a / b |> ignore
+        Assert.Throws<System.InvalidOperationException>(fun () -> a / b |> ignore) |> ignore
