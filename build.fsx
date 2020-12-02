@@ -233,7 +233,7 @@ Target.create "ReleaseDocs" (fun _ ->
     Repository.cloneSingleBranch "" (gitHome + "/" + gitName + ".git") "gh-pages" tempDocsDir
 
     Repository.fullclean tempDocsDir
-    Shell.copyRecursive "docs/output" tempDocsDir true |> Fake.Core.Trace.tracefn "%A"
+    Shell.copyRecursive "output" tempDocsDir true |> Fake.Core.Trace.tracefn "%A"
     Staging.stageAll tempDocsDir
     Commit.exec tempDocsDir (sprintf "Update generated documentation for version %s" release.NugetVersion)
     Branches.push tempDocsDir
