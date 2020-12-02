@@ -1,41 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>F# Data Toolbox: BIS Type Provider
 </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="F# Data-based library for various data access APIs">
-    <meta name="author" content="Evelina Gabasova">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="FSharp.Data.Toolbox.Bis">
 
-    <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
-    <script src="http://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/style.css" />
-    <script type="text/javascript" src="/FSharp.Data.Toolbox/content/tips.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script> -->
+
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/navbar-fixed-right.css" />
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/FSharp.Data.Toolbox/content/fsdocs-tips.js"></script>
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  </head>
-  <body>
-    <div class="container"> 
-      <div class="masthead">
-        <ul class="nav nav-pills pull-right">
-          <li><a href="http://fsharp.github.io/FSharp.Data"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Data.png" /> F# Data</a></li>
-          <li><a href="http://bluemountaincapital.github.io/Deedle"><img height="16" width="16" src="http://fsharp.org/images/thumbs/Deedle.png" /> Deedle</a></li>
-          <li><a href="http://bluemountaincapital.github.io/FSharpRProvider"><img height=" 16" width="16" src="http://fsharp.org/images/thumbs/FSharpRProvider.png" /> R Provider</a></li>
-          <li><a href="http://fsharp.github.io/FSharp.Charting/"><img height="16" width="16" src="http://fsharp.org/images/thumbs/FSharp.Charting.png" /> F# Charting</a></li>
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-right" id="fsdocs-menu">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <a href="/FSharp.Data.Toolbox/"><img id="fsdocs-logo" src="/FSharp.Data.Toolbox/img/logo.png" /></a>
+          <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+          <div id="header">
+              <div class="searchbox" id="fsdocs-searchbox">
+                  <label for="search-by">
+                      <i class="fas fa-search"></i>
+                  </label>
+                  <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                  <span data-search-clear="">
+                      <i class="fas fa-times"></i>
+                  </span>
+              </div>
+          </div>
+
+        <!-- END SEARCH BOX: this adds support for the search box -->
+        <ul class="navbar-nav">
+          <li class="nav-header">Links</li>
+          <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/LICENSE.txt">License</a></li>
+          <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+          <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="http://github.com/fsprojects/FSharp.Data.Toolbox">Source Repository</a></li>
+          <li class="nav-header">
+  Documentation
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/BisProvider.html">
+    F# Data Toolbox: BIS Type Provider
+
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/SasProvider.html">
+    F# Data Toolbox: SAS dataset type provider
+
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/TwitterProvider.html">
+    F# Data Toolbox: Twitter type provider
+
+  </a>
+</li>
+          <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/reference/index.html">
+    All Namespaces
+  </a>
+</li>
         </ul>
-        <h3 class="muted"><a href="/FSharp.Data.Toolbox/index.html">F# Data Toolbox</a></h3>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="masthead">
+          <h3 class="muted"><a href="/FSharp.Data.Toolbox/">FSharp.Data.Toolbox</a></h3>
       </div>
       <hr />
-      <div class="row">
-        <div class="span9" id="main">
-          
-<h1>F# Data Toolbox: BIS Type Provider</h1>
+      <div class="container" id="fsdocs-content">
+          <h1><a name="F-Data-Toolbox-BIS-Type-Provider" class="anchor" href="#F-Data-Toolbox-BIS-Type-Provider">F# Data Toolbox: BIS Type Provider</a></h1>
 <p>The <a href="https://www.bis.org/">Bank for International Settlements (BIS)</a> publishes statistics relevant for anaylsis. Most of the data is compiled in cooperation with central banks and other national authorities.
 More information can be found on the BIS statistics <a href="https://www.bis.org/statistics/index.htm?l=2&amp;m=6%7C37">website</a>.
 The data exploration can be done either through the <a href="http://stats.bis.org/statx/toc/LBS.html">BIS Statistics Explorer</a>, <a href="http://stats.bis.org/bis-stats-tool/org.bis.stats.ui.StatsApplication/StatsApplication.html">BIS Statistics Warehouse</a> or by
@@ -64,158 +121,85 @@ First we download the <a href="http://www.bis.org/statistics/full_data_sets.htm"
 As shown in the picture below, the metadata is reflected in the code. With this, we have full IntelliSense support and compile-time checks!</p>
 <p><img src="img/BisPropertyPrices.jpg" alt="BIS Property Prices" /></p>
 <p>It requires only 3-4 lines of code to filter out a certain observation out of the data. The last part of the code builds up a line chart for the data we are looking for. I’m using the FSharp.Charting for the visualization.</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
-<span class="l"> 2: </span>
-<span class="l"> 3: </span>
-<span class="l"> 4: </span>
-<span class="l"> 5: </span>
-<span class="l"> 6: </span>
-<span class="l"> 7: </span>
-<span class="l"> 8: </span>
-<span class="l"> 9: </span>
-<span class="l">10: </span>
-<span class="l">11: </span>
-<span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-<span class="l">15: </span>
-<span class="l">16: </span>
-<span class="l">17: </span>
-<span class="l">18: </span>
-<span class="l">19: </span>
-<span class="l">20: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="t">PropertyPrice</span> <span class="o">=</span> <span class="i">Dataset</span><span class="o">&lt;</span><span class="s">&quot;C:/full_BIS_LONG_PP_csv.csv&quot;</span><span class="o">&gt;</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="rt">PropertyPrice</span> <span class="o">=</span> <span class="id">Dataset</span><span class="pn">&lt;</span><span class="s">&quot;C:/full_BIS_LONG_PP_csv.csv&quot;</span><span class="pn">&gt;</span>
 
 <span class="o">..</span><span class="o">..</span>
 
 <span class="c">// Create filter</span>
-<span class="k">let</span> <span class="i">filter</span> <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="i">PropertyPrice</span><span class="o">.</span><span class="i">ObservationFilter</span>()
+<span class="k">let</span> <span class="id">filter</span> <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="id">PropertyPrice</span><span class="pn">.</span><span class="id">ObservationFilter</span><span class="pn">(</span><span class="pn">)</span>
 
 <span class="c">// Define criteria</span>
-<span class="i">filter</span><span class="o">.</span><span class="i">``Reference area``</span> <span class="o">&lt;-</span> [ <span onmouseout="hideTip(event, 'fs1', 3)" onmouseover="showTip(event, 'fs1', 3)" class="i">PropertyPrice</span><span class="o">.</span><span class="i">``Reference area``</span><span class="o">.</span><span class="i">``CH:Switzerland``</span> ]
+<span class="id">filter</span><span class="pn">.</span><span class="id">``Reference area``</span> <span class="k">&lt;-</span> <span class="pn">[</span> <span onmouseout="hideTip(event, 'fs1', 3)" onmouseover="showTip(event, 'fs1', 3)" class="id">PropertyPrice</span><span class="pn">.</span><span class="id">``Reference area``</span><span class="pn">.</span><span class="id">``CH:Switzerland``</span> <span class="pn">]</span>
 
 <span class="c">// Apply filter and plot</span>
-<span class="i">filter</span><span class="o">.</span><span class="i">Get</span>()
-        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 5)" onmouseover="showTip(event, 'fs3', 5)" class="i">map</span> (<span class="k">fun</span> <span class="i">o</span> <span class="k">-&gt;</span> 
-                        <span class="i">o</span><span class="o">.</span><span class="i">values</span>
-                            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 6)" onmouseover="showTip(event, 'fs2', 6)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs4', 7)" onmouseover="showTip(event, 'fs4', 7)" class="i">filter</span> (<span class="k">fun</span> <span class="i">v</span> <span class="k">-&gt;</span> <span class="i">v</span><span class="o">.</span><span class="i">value</span><span class="o">.</span><span class="i">IsSome</span>)
-                            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 8)" onmouseover="showTip(event, 'fs2', 8)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 9)" onmouseover="showTip(event, 'fs3', 9)" class="i">map</span> (<span class="k">fun</span> <span class="i">v</span> <span class="k">-&gt;</span> <span class="i">v</span><span class="o">.</span><span class="i">value</span><span class="o">.</span><span class="i">Value</span>)
-                            <span class="o">|&gt;</span> (<span class="k">fun</span> <span class="i">x</span> <span class="k">-&gt;</span> <span class="i">Chart</span><span class="o">.</span><span class="i">Line</span>(<span class="i">x</span>, <span class="i">Name</span> <span class="o">=</span> <span class="i">o</span><span class="o">.</span><span class="i">key</span>)))
-	<span class="o">|&gt;</span> <span class="i">Chart</span><span class="o">.</span><span class="i">Combine</span>
-	<span class="o">|&gt;</span> <span class="i">Chart</span><span class="o">.</span><span class="i">WithLegend</span>(<span class="k">true</span>, <span class="i">Title</span><span class="o">=</span><span class="s">&quot;Switzerland property prices&quot;</span>)
-	<span class="o">|&gt;</span> <span class="i">Chart</span><span class="o">.</span><span class="i">Show</span> 
-</code></pre></td>
-</tr>
-</table>
+<span class="id">filter</span><span class="pn">.</span><span class="id">Get</span><span class="pn">(</span><span class="pn">)</span>
+        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 5)" onmouseover="showTip(event, 'fs3', 5)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">o</span> <span class="k">-&gt;</span> 
+                        <span class="id">o</span><span class="pn">.</span><span class="id">values</span>
+                            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 6)" onmouseover="showTip(event, 'fs2', 6)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs4', 7)" onmouseover="showTip(event, 'fs4', 7)" class="id">filter</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">v</span> <span class="k">-&gt;</span> <span class="id">v</span><span class="pn">.</span><span class="id">value</span><span class="pn">.</span><span class="id">IsSome</span><span class="pn">)</span>
+                            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 8)" onmouseover="showTip(event, 'fs2', 8)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 9)" onmouseover="showTip(event, 'fs3', 9)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">v</span> <span class="k">-&gt;</span> <span class="id">v</span><span class="pn">.</span><span class="id">value</span><span class="pn">.</span><span class="id">Value</span><span class="pn">)</span>
+                            <span class="o">|&gt;</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">x</span> <span class="k">-&gt;</span> <span class="id">Chart</span><span class="pn">.</span><span class="id">Line</span><span class="pn">(</span><span class="id">x</span><span class="pn">,</span> <span class="id">Name</span> <span class="o">=</span> <span class="id">o</span><span class="pn">.</span><span class="id">key</span><span class="pn">)</span><span class="pn">)</span><span class="pn">)</span>
+    <span class="o">|&gt;</span> <span class="id">Chart</span><span class="pn">.</span><span class="id">Combine</span>
+    <span class="o">|&gt;</span> <span class="id">Chart</span><span class="pn">.</span><span class="id">WithLegend</span><span class="pn">(</span><span class="k">true</span><span class="pn">,</span> <span class="id">Title</span><span class="o">=</span><span class="s">&quot;Switzerland property prices&quot;</span><span class="pn">)</span>
+    <span class="o">|&gt;</span> <span class="id">Chart</span><span class="pn">.</span><span class="id">Show</span> 
+</code></pre>
 <p>And this is the output of this code.</p>
 <p><img src="img/BisPropertyPricesChart.jpg" alt="BIS Property Prices Chart" /></p>
 <p>Let’s take one step further and analyse data of a much more complex dataset. The CBS file contains more records and dimensions than the Property prices dataset. The following piece of code filters out certain observations on Switzerland vis-à-vis Bahamas and Singapore and plots the outcome in a chart. Same as for the previous example, the CSV file is analysed by the BIS Type Provider and relevant types are generated.</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
-<span class="l"> 2: </span>
-<span class="l"> 3: </span>
-<span class="l"> 4: </span>
-<span class="l"> 5: </span>
-<span class="l"> 6: </span>
-<span class="l"> 7: </span>
-<span class="l"> 8: </span>
-<span class="l"> 9: </span>
-<span class="l">10: </span>
-<span class="l">11: </span>
-<span class="l">12: </span>
-<span class="l">13: </span>
-<span class="l">14: </span>
-<span class="l">15: </span>
-<span class="l">16: </span>
-<span class="l">17: </span>
-<span class="l">18: </span>
-<span class="l">19: </span>
-<span class="l">20: </span>
-<span class="l">21: </span>
-<span class="l">22: </span>
-<span class="l">23: </span>
-<span class="l">24: </span>
-<span class="l">25: </span>
-<span class="l">26: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="i">Cbs</span> <span class="o">=</span> <span class="i">Dataset</span><span class="o">&lt;</span><span class="s">&quot;C:/full_BIS_CBS_csv.csv&quot;</span><span class="o">&gt;</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="id">Cbs</span> <span class="o">=</span> <span class="id">Dataset</span><span class="pn">&lt;</span><span class="s">&quot;C:/full_BIS_CBS_csv.csv&quot;</span><span class="pn">&gt;</span>
 
 <span class="o">..</span><span class="o">..</span>
      
-<span class="k">let</span> <span class="i">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="i">Cbs</span><span class="o">.</span><span class="i">ObservationFilter</span>()
+<span class="k">let</span> <span class="id">filter</span> <span class="o">=</span> <span class="k">new</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">ObservationFilter</span><span class="pn">(</span><span class="pn">)</span>
 
-<span class="i">filter</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs5', 10)" onmouseover="showTip(event, 'fs5', 10)" class="i">Measure</span>                               <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs5', 11)" onmouseover="showTip(event, 'fs5', 11)" class="i">Measure</span><span class="o">.</span><span class="i">``S:Amounts outstanding / Stocks``</span> ]
-<span class="i">filter</span><span class="o">.</span><span class="i">``Reporting country``</span>                 <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span class="i">``Reporting country``</span><span class="o">.</span><span class="i">``CH:Switzerland``</span> ]
-<span class="i">filter</span><span class="o">.</span><span class="i">``CBS bank type``</span>                     <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span class="i">``CBS bank type``</span><span class="o">.</span><span class="i">``4R:Domestic banks(4B), excl. domestic positions``</span> ]
-<span class="i">filter</span><span class="o">.</span><span class="i">``CBS reporting basis``</span>               <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span class="i">``CBS reporting basis``</span><span class="o">.</span><span class="i">``F:Immediate counterparty basis``</span> ]
-<span class="i">filter</span><span class="o">.</span><span class="i">``Balance sheet position``</span>            <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span class="i">``Balance sheet position``</span><span class="o">.</span><span class="i">``I:International claims``</span> ]
-<span class="i">filter</span><span class="o">.</span><span class="i">``Type of instruments``</span>               <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span class="i">``Type of instruments``</span><span class="o">.</span><span class="i">``A:All instruments``</span> ]
-<span class="i">filter</span><span class="o">.</span><span class="i">``Remaining maturity``</span>                <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span class="i">``Remaining maturity``</span><span class="o">.</span><span class="i">``A:All maturities``</span> ]
-<span class="i">filter</span><span class="o">.</span><span class="i">``Currency type of booking location``</span> <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span class="i">``Currency type of booking location``</span><span class="o">.</span><span class="i">``TO1:All currencies``</span>]
-<span class="i">filter</span><span class="o">.</span><span class="i">``Counterparty sector``</span>               <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span class="i">``Counterparty sector``</span><span class="o">.</span><span class="i">``A:All sectors``</span> ]
-<span class="i">filter</span><span class="o">.</span><span class="i">``Counterparty country``</span>              <span class="o">&lt;-</span> [ <span class="i">Cbs</span><span class="o">.</span><span class="i">``Counterparty country``</span><span class="o">.</span><span class="i">``BS:Bahamas``</span>; <span class="i">Cbs</span><span class="o">.</span><span class="i">``Counterparty country``</span><span class="o">.</span><span class="i">``SG:Singapore``</span> ]  
+<span class="id">filter</span><span class="pn">.</span><span class="id">Measure</span>                               <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">Measure</span><span class="pn">.</span><span class="id">``S:Amounts outstanding / Stocks``</span> <span class="pn">]</span>
+<span class="id">filter</span><span class="pn">.</span><span class="id">``Reporting country``</span>                 <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``Reporting country``</span><span class="pn">.</span><span class="id">``CH:Switzerland``</span> <span class="pn">]</span>
+<span class="id">filter</span><span class="pn">.</span><span class="id">``CBS bank type``</span>                     <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``CBS bank type``</span><span class="pn">.</span><span class="id">``4R:Domestic banks(4B), excl. domestic positions``</span> <span class="pn">]</span>
+<span class="id">filter</span><span class="pn">.</span><span class="id">``CBS reporting basis``</span>               <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``CBS reporting basis``</span><span class="pn">.</span><span class="id">``F:Immediate counterparty basis``</span> <span class="pn">]</span>
+<span class="id">filter</span><span class="pn">.</span><span class="id">``Balance sheet position``</span>            <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``Balance sheet position``</span><span class="pn">.</span><span class="id">``I:International claims``</span> <span class="pn">]</span>
+<span class="id">filter</span><span class="pn">.</span><span class="id">``Type of instruments``</span>               <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``Type of instruments``</span><span class="pn">.</span><span class="id">``A:All instruments``</span> <span class="pn">]</span>
+<span class="id">filter</span><span class="pn">.</span><span class="id">``Remaining maturity``</span>                <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``Remaining maturity``</span><span class="pn">.</span><span class="id">``A:All maturities``</span> <span class="pn">]</span>
+<span class="id">filter</span><span class="pn">.</span><span class="id">``Currency type of booking location``</span> <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``Currency type of booking location``</span><span class="pn">.</span><span class="id">``TO1:All currencies``</span><span class="pn">]</span>
+<span class="id">filter</span><span class="pn">.</span><span class="id">``Counterparty sector``</span>               <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``Counterparty sector``</span><span class="pn">.</span><span class="id">``A:All sectors``</span> <span class="pn">]</span>
+<span class="id">filter</span><span class="pn">.</span><span class="id">``Counterparty country``</span>              <span class="k">&lt;-</span> <span class="pn">[</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``Counterparty country``</span><span class="pn">.</span><span class="id">``BS:Bahamas``</span><span class="pn">;</span> <span class="id">Cbs</span><span class="pn">.</span><span class="id">``Counterparty country``</span><span class="pn">.</span><span class="id">``SG:Singapore``</span> <span class="pn">]</span>  
 
-<span class="i">filter</span><span class="o">.</span><span class="i">Get</span>()
-        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 12)" onmouseover="showTip(event, 'fs2', 12)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 13)" onmouseover="showTip(event, 'fs3', 13)" class="i">map</span> (<span class="k">fun</span> <span class="i">o</span> <span class="k">-&gt;</span> 
-                        <span class="i">o</span><span class="o">.</span><span class="i">values</span>
-                            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 14)" onmouseover="showTip(event, 'fs2', 14)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs4', 15)" onmouseover="showTip(event, 'fs4', 15)" class="i">filter</span> (<span class="k">fun</span> <span class="i">v</span> <span class="k">-&gt;</span> <span class="i">v</span><span class="o">.</span><span class="i">value</span><span class="o">.</span><span class="i">IsSome</span>)
-                            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 16)" onmouseover="showTip(event, 'fs2', 16)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 17)" onmouseover="showTip(event, 'fs3', 17)" class="i">map</span> (<span class="k">fun</span> <span class="i">v</span> <span class="k">-&gt;</span> <span class="i">v</span><span class="o">.</span><span class="i">value</span><span class="o">.</span><span class="i">Value</span>)
-                            <span class="o">|&gt;</span> (<span class="k">fun</span> <span class="i">x</span> <span class="k">-&gt;</span> <span class="i">Chart</span><span class="o">.</span><span class="i">Line</span>(<span class="i">x</span>, <span class="i">Name</span> <span class="o">=</span> <span class="i">o</span><span class="o">.</span><span class="i">key</span>)))
-	<span class="o">|&gt;</span> <span class="i">Chart</span><span class="o">.</span><span class="i">Combine</span>
-	<span class="o">|&gt;</span> <span class="i">Chart</span><span class="o">.</span><span class="i">WithLegend</span>(<span class="k">true</span>, <span class="i">Title</span><span class="o">=</span><span class="s">&quot;Switzerland vis-&#224;-vis Bahamas and Singapore&quot;</span>)
-	<span class="o">|&gt;</span> <span class="i">Chart</span><span class="o">.</span><span class="i">Show</span> 
-</code></pre></td>
-</tr>
-</table>
+<span class="id">filter</span><span class="pn">.</span><span class="id">Get</span><span class="pn">(</span><span class="pn">)</span>
+        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 10)" onmouseover="showTip(event, 'fs2', 10)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 11)" onmouseover="showTip(event, 'fs3', 11)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">o</span> <span class="k">-&gt;</span> 
+                        <span class="id">o</span><span class="pn">.</span><span class="id">values</span>
+                            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 12)" onmouseover="showTip(event, 'fs2', 12)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs4', 13)" onmouseover="showTip(event, 'fs4', 13)" class="id">filter</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">v</span> <span class="k">-&gt;</span> <span class="id">v</span><span class="pn">.</span><span class="id">value</span><span class="pn">.</span><span class="id">IsSome</span><span class="pn">)</span>
+                            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 14)" onmouseover="showTip(event, 'fs2', 14)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 15)" onmouseover="showTip(event, 'fs3', 15)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">v</span> <span class="k">-&gt;</span> <span class="id">v</span><span class="pn">.</span><span class="id">value</span><span class="pn">.</span><span class="id">Value</span><span class="pn">)</span>
+                            <span class="o">|&gt;</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">x</span> <span class="k">-&gt;</span> <span class="id">Chart</span><span class="pn">.</span><span class="id">Line</span><span class="pn">(</span><span class="id">x</span><span class="pn">,</span> <span class="id">Name</span> <span class="o">=</span> <span class="id">o</span><span class="pn">.</span><span class="id">key</span><span class="pn">)</span><span class="pn">)</span><span class="pn">)</span>
+    <span class="o">|&gt;</span> <span class="id">Chart</span><span class="pn">.</span><span class="id">Combine</span>
+    <span class="o">|&gt;</span> <span class="id">Chart</span><span class="pn">.</span><span class="id">WithLegend</span><span class="pn">(</span><span class="k">true</span><span class="pn">,</span> <span class="id">Title</span><span class="o">=</span><span class="s">&quot;Switzerland vis-&#224;-vis Bahamas and Singapore&quot;</span><span class="pn">)</span>
+    <span class="o">|&gt;</span> <span class="id">Chart</span><span class="pn">.</span><span class="id">Show</span> 
+</code></pre>
 <p><img src="img/BisCbsChart.jpg" alt="BIS CBS Chart" /></p>
 <p>The cbs.Filter() function returns a sequence of observations and their values for all periods. With F# you can easily slice out and aggregate data. In this code snippet we use the same filter as above and sum the values of 2000-Q1 of Bahamas and Singapore.</p>
-<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
-<span class="l">2: </span>
-<span class="l">3: </span>
-<span class="l">4: </span>
-<span class="l">5: </span>
-<span class="l">6: </span>
-</pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="i">sum</span> <span class="o">=</span> <span class="i">filter</span><span class="o">.</span><span class="i">Get</span>()
-            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 18)" onmouseover="showTip(event, 'fs2', 18)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 19)" onmouseover="showTip(event, 'fs3', 19)" class="i">map</span> (<span class="k">fun</span> <span class="i">o</span> <span class="k">-&gt;</span> 
-                            <span class="i">o</span><span class="o">.</span><span class="i">values</span>
-                                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 20)" onmouseover="showTip(event, 'fs2', 20)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs6', 21)" onmouseover="showTip(event, 'fs6', 21)" class="i">find</span> (<span class="k">fun</span> <span class="i">v</span> <span class="k">-&gt;</span> <span class="i">v</span><span class="o">.</span><span class="i">year</span> <span class="o">=</span> <span class="n">2000</span> <span class="o">&amp;&amp;</span> <span class="i">v</span><span class="o">.</span><span class="i">period</span> <span class="o">=</span> <span class="n">1</span> <span class="o">&amp;&amp;</span> <span class="i">v</span><span class="o">.</span><span class="i">value</span><span class="o">.</span><span class="i">IsSome</span>))
-                                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 22)" onmouseover="showTip(event, 'fs2', 22)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 23)" onmouseover="showTip(event, 'fs3', 23)" class="i">map</span> (<span class="k">fun</span> <span class="i">v</span> <span class="k">-&gt;</span> <span class="i">v</span><span class="o">.</span><span class="i">value</span><span class="o">.</span><span class="i">Value</span>)
-            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 24)" onmouseover="showTip(event, 'fs2', 24)" class="i">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs7', 25)" onmouseover="showTip(event, 'fs7', 25)" class="i">sum</span>
-</code></pre></td>
-</tr>
-</table>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">sum</span> <span class="o">=</span> <span class="id">filter</span><span class="pn">.</span><span class="id">Get</span><span class="pn">(</span><span class="pn">)</span>
+            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 16)" onmouseover="showTip(event, 'fs2', 16)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 17)" onmouseover="showTip(event, 'fs3', 17)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">o</span> <span class="k">-&gt;</span> 
+                            <span class="id">o</span><span class="pn">.</span><span class="id">values</span>
+                                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 18)" onmouseover="showTip(event, 'fs2', 18)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 19)" onmouseover="showTip(event, 'fs5', 19)" class="id">find</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">v</span> <span class="k">-&gt;</span> <span class="id">v</span><span class="pn">.</span><span class="id">year</span> <span class="o">=</span> <span class="n">2000</span> <span class="o">&amp;&amp;</span> <span class="id">v</span><span class="pn">.</span><span class="id">period</span> <span class="o">=</span> <span class="n">1</span> <span class="o">&amp;&amp;</span> <span class="id">v</span><span class="pn">.</span><span class="id">value</span><span class="pn">.</span><span class="id">IsSome</span><span class="pn">)</span><span class="pn">)</span>
+                                <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 20)" onmouseover="showTip(event, 'fs2', 20)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 21)" onmouseover="showTip(event, 'fs3', 21)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span class="id">v</span> <span class="k">-&gt;</span> <span class="id">v</span><span class="pn">.</span><span class="id">value</span><span class="pn">.</span><span class="id">Value</span><span class="pn">)</span>
+            <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 22)" onmouseover="showTip(event, 'fs2', 22)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs6', 23)" onmouseover="showTip(event, 'fs6', 23)" class="id">sum</span>
+</code></pre>
 
-<div class="tip" id="fs1">type PropertyPrice = obj<br /><br />Full name: BisProvider.PropertyPrice</div>
-<div class="tip" id="fs2">module Seq<br /><br />from Microsoft.FSharp.Collections</div>
-<div class="tip" id="fs3">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;U&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.map</div>
-<div class="tip" id="fs4">val filter : predicate:(&#39;T -&gt; bool) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.filter</div>
-<div class="tip" id="fs5">Multiple items<br />type MeasureAttribute =<br />&#160;&#160;inherit Attribute<br />&#160;&#160;new : unit -&gt; MeasureAttribute<br /><br />Full name: Microsoft.FSharp.Core.MeasureAttribute<br /><br />--------------------<br />new : unit -&gt; MeasureAttribute</div>
-<div class="tip" id="fs6">val find : predicate:(&#39;T -&gt; bool) -&gt; source:seq&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Collections.Seq.find</div>
-<div class="tip" id="fs7">val sum : source:seq&lt;&#39;T&gt; -&gt; &#39;T (requires member ( + ) and member get_Zero)<br /><br />Full name: Microsoft.FSharp.Collections.Seq.sum</div>
+          <div class="fsdocs-tip" id="fs1">type PropertyPrice = obj</div>
+<div class="fsdocs-tip" id="fs2">module Seq<br /><br />from Microsoft.FSharp.Collections</div>
+<div class="fsdocs-tip" id="fs3">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;U&gt;</div>
+<div class="fsdocs-tip" id="fs4">val filter : predicate:(&#39;T -&gt; bool) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;</div>
+<div class="fsdocs-tip" id="fs5">val find : predicate:(&#39;T -&gt; bool) -&gt; source:seq&lt;&#39;T&gt; -&gt; &#39;T</div>
+<div class="fsdocs-tip" id="fs6">val sum : source:seq&lt;&#39;T&gt; -&gt; &#39;T (requires member ( + ) and member get_Zero)</div>
 
-        </div>
-        <div class="span3">
-          <img src="/FSharp.Data.Toolbox/img/logo.png" style="width:140px;height:140px;margin:10px 0px 0px 35px;border-style:none;" />
-          <ul class="nav nav-list" id="menu" style="margin-top: 20px;">
-            <li class="nav-header">F# Data Toolbox</li>
-            <li><a href="/FSharp.Data.Toolbox/index.html">Home page</a></li>
-            <li class="divider"></li>
-            <li><a href="https://www.nuget.org/packages/FSharp.Data.Toolbox.Twitter/">Get Twitter package via NuGet</a></li>
-            <li><a href="http://github.com/fsprojects/FSharp.Data.Toolbox">Source Code on GitHub</a></li>
-            <li><a href="http://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/LICENSE.txt">License</a></li>
-            <li><a href="http://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
-            
-            <li class="nav-header">Getting started</li>
-            <li><a href="/FSharp.Data.Toolbox/TwitterProvider.html">Twitter Type provider</a></li>
-            <li><a href="/FSharp.Data.Toolbox/SasProvider.html">SAS Type provider</a></li>
-
-            <li class="nav-header">Documentation</li>
-            <li><a href="/FSharp.Data.Toolbox/reference/index.html">API Reference</a><br />(Work in progress)</li>
-          </ul>
-        </div>
       </div>
-    </div>
-    <a href="http://github.com/fsprojects/FSharp.Data.Toolbox"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
-  </body>
-  </html>
+
+      <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+      <script type="text/javascript">var fsdocs_search_baseurl = '/FSharp.Data.Toolbox/';</script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+      <script type="text/javascript" src="/FSharp.Data.Toolbox/content/fsdocs-search.js"></script>
+      <!-- END SEARCH BOX: this adds support for the search box -->
+  </div>
+</body>
+
+</html>
+

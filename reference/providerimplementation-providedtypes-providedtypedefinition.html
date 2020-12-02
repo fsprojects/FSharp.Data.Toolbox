@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>ProvidedTypeDefinition (FSharp.Data.Toolbox)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="FSharp.Data.Toolbox.Bis">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script> -->
+
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/navbar-fixed-right.css" />
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/FSharp.Data.Toolbox/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-right" id="fsdocs-menu">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <a href="/FSharp.Data.Toolbox/"><img id="fsdocs-logo" src="/FSharp.Data.Toolbox/img/logo.png" /></a>
+          <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+          <div id="header">
+              <div class="searchbox" id="fsdocs-searchbox">
+                  <label for="search-by">
+                      <i class="fas fa-search"></i>
+                  </label>
+                  <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                  <span data-search-clear="">
+                      <i class="fas fa-times"></i>
+                  </span>
+              </div>
+          </div>
+
+        <!-- END SEARCH BOX: this adds support for the search box -->
+        <ul class="navbar-nav">
+          <li class="nav-header">Links</li>
+          <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/LICENSE.txt">License</a></li>
+          <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+          <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="http://github.com/fsprojects/FSharp.Data.Toolbox">Source Repository</a></li>
+          <li class="nav-header">
+  Documentation
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/BisProvider.html">
+    F# Data Toolbox: BIS Type Provider
+
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/SasProvider.html">
+    F# Data Toolbox: SAS dataset type provider
+
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/TwitterProvider.html">
+    F# Data Toolbox: Twitter type provider
+
+  </a>
+</li>
+          <li class="nav-header">
+  Namespaces
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-control.html">
+      FSharp.Control
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-data-runtime-bis.html">
+      FSharp.Data.Runtime.Bis
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-data-toolbox-bis.html">
+      FSharp.Data.Toolbox.Bis
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-data-toolbox-sas.html">
+      FSharp.Data.Toolbox.Sas
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-data-toolbox-twitter.html">
+      FSharp.Data.Toolbox.Twitter
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation.html">
+      ProviderImplementation
+    </a>
+  </span>
+</li>             
+<li class="nav-item active">
+  <span>
+    <a class="nav-link active" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes.html">
+      ProviderImplementation.ProvidedTypes
+    </a>
+  </span>
+</li>             
+<ul list-style-type="none">
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedassembly.html">
+      ProvidedAssembly
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedassembly-0.html">
+      ProvidedAssembly
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedconstructor.html">
+      ProvidedConstructor
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedconstructor-0.html">
+      ProvidedConstructor
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedevent.html">
+      ProvidedEvent
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedevent-0.html">
+      ProvidedEvent
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedfield.html">
+      ProvidedField
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedfield-0.html">
+      ProvidedField
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmeasurebuilder.html">
+      ProvidedMeasureBuilder
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmeasurebuilder-0.html">
+      ProvidedMeasureBuilder
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmethod.html">
+      ProvidedMethod
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmethod-0.html">
+      ProvidedMethod
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedparameter.html">
+      ProvidedParameter
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedparameter-0.html">
+      ProvidedParameter
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedproperty.html">
+      ProvidedProperty
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedproperty-0.html">
+      ProvidedProperty
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedstaticparameter.html">
+      ProvidedStaticParameter
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedstaticparameter-0.html">
+      ProvidedStaticParameter
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypebuilder.html">
+      ProvidedTypeBuilder
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypebuilder-0.html">
+      ProvidedTypeBuilder
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">
+      ProvidedTypeDefinition
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition-0.html">
+      ProvidedTypeDefinition
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypescontext.html">
+      ProvidedTypesContext
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypescontext-0.html">
+      ProvidedTypesContext
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypesymbol.html">
+      ProvidedTypeSymbol
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypesymbol-0.html">
+      ProvidedTypeSymbol
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-typeproviderfornamespaces.html">
+      TypeProviderForNamespaces
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-typeproviderfornamespaces-0.html">
+      TypeProviderForNamespaces
+    </a>
+  </li>
+</ul>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="masthead">
+          <h3 class="muted"><a href="/FSharp.Data.Toolbox/">FSharp.Data.Toolbox</a></h3>
+      </div>
+      <hr />
+      <div class="container" id="fsdocs-content">
+          <div>
+  <h1>
+    ProvidedTypeDefinition Type
+  </h1>
+  <p>
+    Namespace: 
+    <a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes.html">
+      ProviderImplementation.ProvidedTypes
+    </a>
+  </p>
+  <p>
+    Assembly: FSharp.Data.Toolbox.Bis.dll
+  </p>
+  <p>
+    Base Type: 
+    <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.typedelegator">TypeDelegator</a></code>
+  </p>
+  <p>
+    All Interfaces: 
+    <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.icustomattributeprovider">ICustomAttributeProvider</a></code>
+    , 
+    <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.ireflect">IReflect</a></code>
+    , 
+    <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.ireflectabletype">IReflectableType</a></code>
+  </p>
+  <div class="fsdocs-xmldoc">
+    
+ Represents a provided type definition.
+
+  </div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div>
+    <h3>
+      Constructors
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Constructor
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '359', 359)" onmouseover="showTip(event, '359', 359)">
+                <p>
+                  <a id="( .ctor )">
+                    <a href="#( .ctor )">
+                      <code><span>ProvidedTypeDefinition<span><span>(<span>assembly,&#32;namespaceName,&#32;className,&#32;baseType,&#32;?hideObjectMethods,&#32;?nonNullable,&#32;?isErased,&#32;?isSealed,&#32;?isInterface,&#32;?isAbstract</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="359">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>ProvidedTypeDefinition<span><span>(<span>assembly,&#32;namespaceName,&#32;className,&#32;baseType,&#32;?hideObjectMethods,&#32;?nonNullable,&#32;?isErased,&#32;?isSealed,&#32;?isInterface,&#32;?isAbstract</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        assembly
+                      </b>
+                      :
+                      <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        namespaceName
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        className
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        baseType
+                      </b>
+                      :
+                      <code><span><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>&#32;option</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?hideObjectMethods
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?nonNullable
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isErased
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isSealed
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isInterface
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isAbstract
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">ProvidedTypeDefinition</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ When making a cross-targeting type provider, use this method instead of the corresponding ProvidedTypeDefinition constructor from ProvidedTypes
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  assembly
+                </span>
+                :
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  namespaceName
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  className
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  baseType
+                </span>
+                :
+                <code><span><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>&#32;option</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?hideObjectMethods
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?nonNullable
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isErased
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isSealed
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isInterface
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isAbstract
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns:
+                </span>
+                <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">ProvidedTypeDefinition</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '360', 360)" onmouseover="showTip(event, '360', 360)">
+                <p>
+                  <a id="( .ctor )">
+                    <a href="#( .ctor )">
+                      <code><span>ProvidedTypeDefinition<span><span>(<span>className,&#32;baseType,&#32;?hideObjectMethods,&#32;?nonNullable,&#32;?isErased,&#32;?isSealed,&#32;?isInterface,&#32;?isAbstract</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="360">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>ProvidedTypeDefinition<span><span>(<span>className,&#32;baseType,&#32;?hideObjectMethods,&#32;?nonNullable,&#32;?isErased,&#32;?isSealed,&#32;?isInterface,&#32;?isAbstract</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        className
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        baseType
+                      </b>
+                      :
+                      <code><span><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>&#32;option</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?hideObjectMethods
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?nonNullable
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isErased
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isSealed
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isInterface
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isAbstract
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">ProvidedTypeDefinition</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ When making a cross-targeting type provider, use this method instead of the corresponding ProvidedTypeDefinition constructor from ProvidedTypes
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  className
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  baseType
+                </span>
+                :
+                <code><span><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>&#32;option</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?hideObjectMethods
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?nonNullable
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isErased
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isSealed
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isInterface
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isAbstract
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns:
+                </span>
+                <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">ProvidedTypeDefinition</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>
+      Instance members
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Instance member
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '361', 361)" onmouseover="showTip(event, '361', 361)">
+                <p>
+                  <a id="AddAssemblyTypesAsNestedTypesDelayed">
+                    <a href="#AddAssemblyTypesAsNestedTypesDelayed">
+                      <code><span>this.AddAssemblyTypesAsNestedTypesDelayed<span><span>(<span>assemblyFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="361">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddAssemblyTypesAsNestedTypesDelayed<span><span>(<span>assemblyFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        assemblyFunction
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;<a href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add the types of the generated assembly as generative types, where types in namespaces get hierarchically positioned as nested types.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  assemblyFunction
+                </span>
+                :
+                <code><span>unit&#32;->&#32;<a href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '362', 362)" onmouseover="showTip(event, '362', 362)">
+                <p>
+                  <a id="AddCustomAttribute">
+                    <a href="#AddCustomAttribute">
+                      <code><span>this.AddCustomAttribute<span><span>(<span>arg1</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="362">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddCustomAttribute<span><span>(<span>arg1</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        arg0
+                      </b>
+                      :
+                      <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.customattributedata">CustomAttributeData</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add a custom attribute to the provided type definition.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  arg0
+                </span>
+                :
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.customattributedata">CustomAttributeData</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '363', 363)" onmouseover="showTip(event, '363', 363)">
+                <p>
+                  <a id="AddDefinitionLocation">
+                    <a href="#AddDefinitionLocation">
+                      <code><span>this.AddDefinitionLocation<span><span>(<span>line,&#32;column,&#32;filePath</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="363">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddDefinitionLocation<span><span>(<span>line,&#32;column,&#32;filePath</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        line
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        column
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        filePath
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add definition location information to the provided type definition.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  line
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  column
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  filePath
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '364', 364)" onmouseover="showTip(event, '364', 364)">
+                <p>
+                  <a id="AddInterfaceImplementation">
+                    <a href="#AddInterfaceImplementation">
+                      <code><span>this.AddInterfaceImplementation<span><span>(<span>interfaceType</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="364">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddInterfaceImplementation<span><span>(<span>interfaceType</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        interfaceType
+                      </b>
+                      :
+                      <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add the given type as an implemented interface.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  interfaceType
+                </span>
+                :
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '365', 365)" onmouseover="showTip(event, '365', 365)">
+                <p>
+                  <a id="AddInterfaceImplementationsDelayed">
+                    <a href="#AddInterfaceImplementationsDelayed">
+                      <code><span>this.AddInterfaceImplementationsDelayed<span><span>(<span>interfacesFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="365">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddInterfaceImplementationsDelayed<span><span>(<span>interfacesFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        interfacesFunction
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;<span><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>&#32;list</span></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add the given function as a set of on-demand computed interfaces.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  interfacesFunction
+                </span>
+                :
+                <code><span>unit&#32;->&#32;<span><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>&#32;list</span></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '366', 366)" onmouseover="showTip(event, '366', 366)">
+                <p>
+                  <a id="AddMember">
+                    <a href="#AddMember">
+                      <code><span>this.AddMember<span><span>(<span>memberInfo</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="366">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddMember<span><span>(<span>memberInfo</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        memberInfo
+                      </b>
+                      :
+                      <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.memberinfo">MemberInfo</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add a method, property, nested type or other member to a ProvidedTypeDefinition
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  memberInfo
+                </span>
+                :
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.memberinfo">MemberInfo</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '367', 367)" onmouseover="showTip(event, '367', 367)">
+                <p>
+                  <a id="AddMemberDelayed">
+                    <a href="#AddMemberDelayed">
+                      <code><span>this.AddMemberDelayed<span><span>(<span>memberFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="367">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddMemberDelayed<span><span>(<span>memberFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        memberFunction
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;'a</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add a member to a ProvidedTypeDefinition, delaying computation of the members until required by the compilation context.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  memberFunction
+                </span>
+                :
+                <code><span>unit&#32;->&#32;'a</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '368', 368)" onmouseover="showTip(event, '368', 368)">
+                <p>
+                  <a id="AddMembers">
+                    <a href="#AddMembers">
+                      <code><span>this.AddMembers<span><span>(<span>memberInfos</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="368">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddMembers<span><span>(<span>memberInfos</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        memberInfos
+                      </b>
+                      :
+                      <code><span>'a&#32;list</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add a set of members to a ProvidedTypeDefinition
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  memberInfos
+                </span>
+                :
+                <code><span>'a&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '369', 369)" onmouseover="showTip(event, '369', 369)">
+                <p>
+                  <a id="AddMembersDelayed">
+                    <a href="#AddMembersDelayed">
+                      <code><span>this.AddMembersDelayed<span><span>(<span>membersFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="369">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddMembersDelayed<span><span>(<span>membersFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        membersFunction
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;<span>'a&#32;list</span></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add a set of members to a ProvidedTypeDefinition, delaying computation of the members until required by the compilation context.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  membersFunction
+                </span>
+                :
+                <code><span>unit&#32;->&#32;<span>'a&#32;list</span></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '370', 370)" onmouseover="showTip(event, '370', 370)">
+                <p>
+                  <a id="AddObsoleteAttribute">
+                    <a href="#AddObsoleteAttribute">
+                      <code><span>this.AddObsoleteAttribute<span><span>(<span>message,&#32;?isError</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="370">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddObsoleteAttribute<span><span>(<span>message,&#32;?isError</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        message
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isError
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add a 'Obsolete' attribute to this provided type definition
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  message
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isError
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '371', 371)" onmouseover="showTip(event, '371', 371)">
+                <p>
+                  <a id="AddXmlDoc">
+                    <a href="#AddXmlDoc">
+                      <code><span>this.AddXmlDoc<span><span>(<span>xmlDoc</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="371">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddXmlDoc<span><span>(<span>xmlDoc</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        xmlDoc
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add XML documentation information to this provided constructor
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  xmlDoc
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '372', 372)" onmouseover="showTip(event, '372', 372)">
+                <p>
+                  <a id="AddXmlDocComputed">
+                    <a href="#AddXmlDocComputed">
+                      <code><span>this.AddXmlDocComputed<span><span>(<span>xmlDocFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="372">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddXmlDocComputed<span><span>(<span>xmlDocFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        xmlDocFunction
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;string</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add XML documentation information to this provided constructor, where the computation of the documentation is delayed until necessary
+ The documentation is re-computed  every time it is required.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  xmlDocFunction
+                </span>
+                :
+                <code><span>unit&#32;->&#32;string</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '373', 373)" onmouseover="showTip(event, '373', 373)">
+                <p>
+                  <a id="AddXmlDocDelayed">
+                    <a href="#AddXmlDocDelayed">
+                      <code><span>this.AddXmlDocDelayed<span><span>(<span>xmlDocFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="373">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddXmlDocDelayed<span><span>(<span>xmlDocFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        xmlDocFunction
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;string</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add XML documentation information to this provided constructor, where the computation of the documentation is delayed until necessary.
+ The documentation is only computed once.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  xmlDocFunction
+                </span>
+                :
+                <code><span>unit&#32;->&#32;string</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '374', 374)" onmouseover="showTip(event, '374', 374)">
+                <p>
+                  <a id="ApplyStaticArguments">
+                    <a href="#ApplyStaticArguments">
+                      <code><span>this.ApplyStaticArguments<span><span>(<span>name,&#32;args</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="374">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.ApplyStaticArguments<span><span>(<span>name,&#32;args</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        name
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        args
+                      </b>
+                      :
+                      <code><span>obj[]</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">ProvidedTypeDefinition</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  name
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  args
+                </span>
+                :
+                <code><span>obj[]</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns:
+                </span>
+                <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">ProvidedTypeDefinition</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '375', 375)" onmouseover="showTip(event, '375', 375)">
+                <p>
+                  <a id="DefineMethodOverride">
+                    <a href="#DefineMethodOverride">
+                      <code><span>this.DefineMethodOverride<span><span>(<span>methodInfoBody,&#32;methodInfoDeclaration</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="375">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.DefineMethodOverride<span><span>(<span>methodInfoBody,&#32;methodInfoDeclaration</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        methodInfoBody
+                      </b>
+                      :
+                      <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmethod.html">ProvidedMethod</a></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        methodInfoDeclaration
+                      </b>
+                      :
+                      <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Specifies that the given method body implements the given method declaration.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  methodInfoBody
+                </span>
+                :
+                <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmethod.html">ProvidedMethod</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  methodInfoDeclaration
+                </span>
+                :
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '376', 376)" onmouseover="showTip(event, '376', 376)">
+                <p>
+                  <a id="DefineMethodOverridesDelayed">
+                    <a href="#DefineMethodOverridesDelayed">
+                      <code><span>this.DefineMethodOverridesDelayed<span><span>(<span>arg1</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="376">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.DefineMethodOverridesDelayed<span><span>(<span>arg1</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        arg0
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;<span><span>(<span><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmethod.html">ProvidedMethod</a>&#32;*&#32;<a href="https://docs.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></span>)</span>&#32;list</span></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Specifies that the given method bodies implement the given method declarations
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  arg0
+                </span>
+                :
+                <code><span>unit&#32;->&#32;<span><span>(<span><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmethod.html">ProvidedMethod</a>&#32;*&#32;<a href="https://docs.microsoft.com/dotnet/api/system.reflection.methodinfo">MethodInfo</a></span>)</span>&#32;list</span></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '377', 377)" onmouseover="showTip(event, '377', 377)">
+                <p>
+                  <a id="DefineStaticParameters">
+                    <a href="#DefineStaticParameters">
+                      <code><span>this.DefineStaticParameters<span><span>(<span>parameters,&#32;instantiationFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="377">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.DefineStaticParameters<span><span>(<span>parameters,&#32;instantiationFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        parameters
+                      </b>
+                      :
+                      <code><span><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedstaticparameter.html">ProvidedStaticParameter</a>&#32;list</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        instantiationFunction
+                      </b>
+                      :
+                      <code><span>string&#32;->&#32;<span>obj[]</span>&#32;->&#32;<a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">ProvidedTypeDefinition</a></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Define the static parameters available on a statically parameterized type
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  parameters
+                </span>
+                :
+                <code><span><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedstaticparameter.html">ProvidedStaticParameter</a>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  instantiationFunction
+                </span>
+                :
+                <code><span>string&#32;->&#32;<span>obj[]</span>&#32;->&#32;<a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">ProvidedTypeDefinition</a></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '378', 378)" onmouseover="showTip(event, '378', 378)">
+                <p>
+                  <a id="HideObjectMethods">
+                    <a href="#HideObjectMethods">
+                      <code><span>this.HideObjectMethods</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="378">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.HideObjectMethods</span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code>bool</code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Suppress Object entries in intellisense menus in instances of this provided type
+
+            </p>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns:
+                </span>
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '379', 379)" onmouseover="showTip(event, '379', 379)">
+                <p>
+                  <a id="IsErased">
+                    <a href="#IsErased">
+                      <code><span>this.IsErased</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="379">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.IsErased</span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code>bool</code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Get a flag indicating if the ProvidedTypeDefinition is erased
+
+            </p>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns:
+                </span>
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '380', 380)" onmouseover="showTip(event, '380', 380)">
+                <p>
+                  <a id="NonNullable">
+                    <a href="#NonNullable">
+                      <code><span>this.NonNullable</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="380">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.NonNullable</span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code>bool</code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Disallows the use of the null literal.
+
+            </p>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns:
+                </span>
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '381', 381)" onmouseover="showTip(event, '381', 381)">
+                <p>
+                  <a id="SetAttributes">
+                    <a href="#SetAttributes">
+                      <code><span>this.SetAttributes<span><span>(<span>arg1</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="381">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.SetAttributes<span><span>(<span>arg1</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        arg0
+                      </b>
+                      :
+                      <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.typeattributes">TypeAttributes</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Set the attributes on the provided type. This fully replaces the default TypeAttributes.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  arg0
+                </span>
+                :
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.typeattributes">TypeAttributes</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '382', 382)" onmouseover="showTip(event, '382', 382)">
+                <p>
+                  <a id="SetBaseType">
+                    <a href="#SetBaseType">
+                      <code><span>this.SetBaseType<span><span>(<span>arg1</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="382">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.SetBaseType<span><span>(<span>arg1</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        arg0
+                      </b>
+                      :
+                      <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Set the base type
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  arg0
+                </span>
+                :
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '383', 383)" onmouseover="showTip(event, '383', 383)">
+                <p>
+                  <a id="SetBaseTypeDelayed">
+                    <a href="#SetBaseTypeDelayed">
+                      <code><span>this.SetBaseTypeDelayed<span><span>(<span>baseTypeFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="383">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.SetBaseTypeDelayed<span><span>(<span>baseTypeFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        baseTypeFunction
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;<a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Set the base type to a lazily evaluated value. Use this to delay realization of the base type as late as possible.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  baseTypeFunction
+                </span>
+                :
+                <code><span>unit&#32;->&#32;<a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '384', 384)" onmouseover="showTip(event, '384', 384)">
+                <p>
+                  <a id="SetEnumUnderlyingType">
+                    <a href="#SetEnumUnderlyingType">
+                      <code><span>this.SetEnumUnderlyingType<span><span>(<span>arg1</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="384">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.SetEnumUnderlyingType<span><span>(<span>arg1</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        arg0
+                      </b>
+                      :
+                      <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Set underlying type for generated enums
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  arg0
+                </span>
+                :
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '385', 385)" onmouseover="showTip(event, '385', 385)">
+                <p>
+                  <a id="SuppressRelocation">
+                    <a href="#SuppressRelocation">
+                      <code><span>this.SuppressRelocation</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="385">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.SuppressRelocation</span></code>
+                  <br/>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Get or set a flag indicating if the ProvidedTypeDefinition has type-relocation suppressed
+
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>
+      Static members
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Static member
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '386', 386)" onmouseover="showTip(event, '386', 386)">
+                <p>
+                  <a id="EraseType">
+                    <a href="#EraseType">
+                      <code><span>ProvidedTypeDefinition.EraseType<span><span>(<span>typ</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="386">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>ProvidedTypeDefinition.EraseType<span><span>(<span>typ</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        typ
+                      </b>
+                      :
+                      <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Emulate the F# type provider type erasure mechanism to get the
+ actual (erased) type. We erase ProvidedTypes to their base type
+ and we erase array of provided type to array of base type. In the
+ case of generics all the generic type arguments are also recursively
+ replaced with the erased-to types
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  typ
+                </span>
+                :
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns:
+                </span>
+                <code><a href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '387', 387)" onmouseover="showTip(event, '387', 387)">
+                <p>
+                  <a id="Logger">
+                    <a href="#Logger">
+                      <code><span>ProvidedTypeDefinition.Logger</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="387">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>ProvidedTypeDefinition.Logger</span></code>
+                  <br/>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><span><span><span>(<span>string&#32;->&#32;unit</span>)</span>&#32;option</span>&#32;ref</span></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Get or set a utility function to log the creation of root Provided Type. Used to debug caching/invalidation.
+
+            </p>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns:
+                </span>
+                <code><span><span><span>(<span>string&#32;->&#32;unit</span>)</span>&#32;option</span>&#32;ref</span></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+          
+      </div>
+
+      <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+      <script type="text/javascript">var fsdocs_search_baseurl = '/FSharp.Data.Toolbox/';</script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+      <script type="text/javascript" src="/FSharp.Data.Toolbox/content/fsdocs-search.js"></script>
+      <!-- END SEARCH BOX: this adds support for the search box -->
+  </div>
+</body>
+
+</html>
+

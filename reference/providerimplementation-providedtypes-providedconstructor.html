@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>ProvidedConstructor (FSharp.Data.Toolbox)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="FSharp.Data.Toolbox.Bis">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script> -->
+
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/navbar-fixed-right.css" />
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/FSharp.Data.Toolbox/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-right" id="fsdocs-menu">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <a href="/FSharp.Data.Toolbox/"><img id="fsdocs-logo" src="/FSharp.Data.Toolbox/img/logo.png" /></a>
+          <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+          <div id="header">
+              <div class="searchbox" id="fsdocs-searchbox">
+                  <label for="search-by">
+                      <i class="fas fa-search"></i>
+                  </label>
+                  <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                  <span data-search-clear="">
+                      <i class="fas fa-times"></i>
+                  </span>
+              </div>
+          </div>
+
+        <!-- END SEARCH BOX: this adds support for the search box -->
+        <ul class="navbar-nav">
+          <li class="nav-header">Links</li>
+          <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/LICENSE.txt">License</a></li>
+          <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+          <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="http://github.com/fsprojects/FSharp.Data.Toolbox">Source Repository</a></li>
+          <li class="nav-header">
+  Documentation
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/BisProvider.html">
+    F# Data Toolbox: BIS Type Provider
+
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/SasProvider.html">
+    F# Data Toolbox: SAS dataset type provider
+
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/TwitterProvider.html">
+    F# Data Toolbox: Twitter type provider
+
+  </a>
+</li>
+          <li class="nav-header">
+  Namespaces
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-control.html">
+      FSharp.Control
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-data-runtime-bis.html">
+      FSharp.Data.Runtime.Bis
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-data-toolbox-bis.html">
+      FSharp.Data.Toolbox.Bis
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-data-toolbox-sas.html">
+      FSharp.Data.Toolbox.Sas
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/fsharp-data-toolbox-twitter.html">
+      FSharp.Data.Toolbox.Twitter
+    </a>
+  </span>
+</li>             
+<li class="nav-item">
+  <span>
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation.html">
+      ProviderImplementation
+    </a>
+  </span>
+</li>             
+<li class="nav-item active">
+  <span>
+    <a class="nav-link active" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes.html">
+      ProviderImplementation.ProvidedTypes
+    </a>
+  </span>
+</li>             
+<ul list-style-type="none">
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedassembly.html">
+      ProvidedAssembly
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedassembly-0.html">
+      ProvidedAssembly
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedconstructor.html">
+      ProvidedConstructor
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedconstructor-0.html">
+      ProvidedConstructor
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedevent.html">
+      ProvidedEvent
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedevent-0.html">
+      ProvidedEvent
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedfield.html">
+      ProvidedField
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedfield-0.html">
+      ProvidedField
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmeasurebuilder.html">
+      ProvidedMeasureBuilder
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmeasurebuilder-0.html">
+      ProvidedMeasureBuilder
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmethod.html">
+      ProvidedMethod
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedmethod-0.html">
+      ProvidedMethod
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedparameter.html">
+      ProvidedParameter
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedparameter-0.html">
+      ProvidedParameter
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedproperty.html">
+      ProvidedProperty
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedproperty-0.html">
+      ProvidedProperty
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedstaticparameter.html">
+      ProvidedStaticParameter
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedstaticparameter-0.html">
+      ProvidedStaticParameter
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypebuilder.html">
+      ProvidedTypeBuilder
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypebuilder-0.html">
+      ProvidedTypeBuilder
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition.html">
+      ProvidedTypeDefinition
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypedefinition-0.html">
+      ProvidedTypeDefinition
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypescontext.html">
+      ProvidedTypesContext
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypescontext-0.html">
+      ProvidedTypesContext
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypesymbol.html">
+      ProvidedTypeSymbol
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedtypesymbol-0.html">
+      ProvidedTypeSymbol
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-typeproviderfornamespaces.html">
+      TypeProviderForNamespaces
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-typeproviderfornamespaces-0.html">
+      TypeProviderForNamespaces
+    </a>
+  </li>
+</ul>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="masthead">
+          <h3 class="muted"><a href="/FSharp.Data.Toolbox/">FSharp.Data.Toolbox</a></h3>
+      </div>
+      <hr />
+      <div class="container" id="fsdocs-content">
+          <div>
+  <h1>
+    ProvidedConstructor Type
+  </h1>
+  <p>
+    Namespace: 
+    <a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes.html">
+      ProviderImplementation.ProvidedTypes
+    </a>
+  </p>
+  <p>
+    Assembly: FSharp.Data.Toolbox.Bis.dll
+  </p>
+  <p>
+    Base Type: 
+    <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.constructorinfo">ConstructorInfo</a></code>
+  </p>
+  <p>
+    All Interfaces: 
+    <code><a href="https://docs.microsoft.com/dotnet/api/system.reflection.icustomattributeprovider">ICustomAttributeProvider</a></code>
+  </p>
+  <div class="fsdocs-xmldoc">
+    
+ Represents an erased provided constructor.
+
+  </div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div>
+    <h3>
+      Constructors
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Constructor
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '298', 298)" onmouseover="showTip(event, '298', 298)">
+                <p>
+                  <a id="( .ctor )">
+                    <a href="#( .ctor )">
+                      <code><span>ProvidedConstructor<span><span>(<span>parameters,&#32;invokeCode</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="298">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>ProvidedConstructor<span><span>(<span>parameters,&#32;invokeCode</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        parameters
+                      </b>
+                      :
+                      <code><span><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedparameter.html">ProvidedParameter</a>&#32;list</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        invokeCode
+                      </b>
+                      :
+                      <code><span><span><a href="https://docs.microsoft.com/dotnet/api/microsoft.fsharp.quotations.fsharpexpr">Expr</a>&#32;list</span>&#32;->&#32;<a href="https://docs.microsoft.com/dotnet/api/microsoft.fsharp.quotations.fsharpexpr">Expr</a></span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedconstructor.html">ProvidedConstructor</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ When making a cross-targeting type provider, use this method instead of the ProvidedConstructor constructor from ProvidedTypes
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  parameters
+                </span>
+                :
+                <code><span><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedparameter.html">ProvidedParameter</a>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  invokeCode
+                </span>
+                :
+                <code><span><span><a href="https://docs.microsoft.com/dotnet/api/microsoft.fsharp.quotations.fsharpexpr">Expr</a>&#32;list</span>&#32;->&#32;<a href="https://docs.microsoft.com/dotnet/api/microsoft.fsharp.quotations.fsharpexpr">Expr</a></span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns:
+                </span>
+                <code><a href="/FSharp.Data.Toolbox/reference/providerimplementation-providedtypes-providedconstructor.html">ProvidedConstructor</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>
+      Instance members
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Instance member
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '299', 299)" onmouseover="showTip(event, '299', 299)">
+                <p>
+                  <a id="AddDefinitionLocation">
+                    <a href="#AddDefinitionLocation">
+                      <code><span>this.AddDefinitionLocation<span><span>(<span>line,&#32;column,&#32;filePath</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="299">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddDefinitionLocation<span><span>(<span>line,&#32;column,&#32;filePath</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        line
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        column
+                      </b>
+                      :
+                      <code>int</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        filePath
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add definition location information to the provided constructor.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  line
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  column
+                </span>
+                :
+                <code>int</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  filePath
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '300', 300)" onmouseover="showTip(event, '300', 300)">
+                <p>
+                  <a id="AddObsoleteAttribute">
+                    <a href="#AddObsoleteAttribute">
+                      <code><span>this.AddObsoleteAttribute<span><span>(<span>message,&#32;?isError</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="300">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddObsoleteAttribute<span><span>(<span>message,&#32;?isError</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        message
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        ?isError
+                      </b>
+                      :
+                      <code>bool</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add a 'Obsolete' attribute to this provided constructor
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  message
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  ?isError
+                </span>
+                :
+                <code>bool</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '301', 301)" onmouseover="showTip(event, '301', 301)">
+                <p>
+                  <a id="AddXmlDoc">
+                    <a href="#AddXmlDoc">
+                      <code><span>this.AddXmlDoc<span><span>(<span>xmlDoc</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="301">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddXmlDoc<span><span>(<span>xmlDoc</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        xmlDoc
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add XML documentation information to this provided constructor
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  xmlDoc
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '302', 302)" onmouseover="showTip(event, '302', 302)">
+                <p>
+                  <a id="AddXmlDocComputed">
+                    <a href="#AddXmlDocComputed">
+                      <code><span>this.AddXmlDocComputed<span><span>(<span>xmlDocFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="302">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddXmlDocComputed<span><span>(<span>xmlDocFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        xmlDocFunction
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;string</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add XML documentation information to this provided constructor, where the documentation is re-computed  every time it is required.
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  xmlDocFunction
+                </span>
+                :
+                <code><span>unit&#32;->&#32;string</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '303', 303)" onmouseover="showTip(event, '303', 303)">
+                <p>
+                  <a id="AddXmlDocDelayed">
+                    <a href="#AddXmlDocDelayed">
+                      <code><span>this.AddXmlDocDelayed<span><span>(<span>xmlDocFunction</span>)</span></span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="303">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.AddXmlDocDelayed<span><span>(<span>xmlDocFunction</span>)</span></span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        xmlDocFunction
+                      </b>
+                      :
+                      <code><span>unit&#32;->&#32;string</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Add XML documentation information to this provided constructor, where the computation of the documentation is delayed until necessary
+
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  xmlDocFunction
+                </span>
+                :
+                <code><span>unit&#32;->&#32;string</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '304', 304)" onmouseover="showTip(event, '304', 304)">
+                <p>
+                  <a id="BaseConstructorCall">
+                    <a href="#BaseConstructorCall">
+                      <code><span>this.BaseConstructorCall<span>()</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="304">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.BaseConstructorCall<span>()</span></span></code>
+                  <br/>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Set the target and arguments of the base constructor call. Only used for generated types.
+
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '305', 305)" onmouseover="showTip(event, '305', 305)">
+                <p>
+                  <a id="IsImplicitConstructor">
+                    <a href="#IsImplicitConstructor">
+                      <code><span>this.IsImplicitConstructor</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="305">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.IsImplicitConstructor</span></code>
+                  <br/>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+ Set a flag indicating that the constructor acts like an F# implicit constructor, so the
+ parameters of the constructor become fields and can be accessed using Expr.GlobalVar with the
+ same name.
+
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-name">
+            <div>
+              <code onmouseout="hideTip(event, '306', 306)" onmouseover="showTip(event, '306', 306)">
+                <p>
+                  <a id="IsTypeInitializer">
+                    <a href="#IsTypeInitializer">
+                      <code><span>this.IsTypeInitializer</span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="306">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>this.IsTypeInitializer</span></code>
+                  <br/>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-xmldoc">
+            <p class="fsdocs-summary">
+              
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div></div>
+</div>
+          
+      </div>
+
+      <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+      <script type="text/javascript">var fsdocs_search_baseurl = '/FSharp.Data.Toolbox/';</script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+      <script type="text/javascript" src="/FSharp.Data.Toolbox/content/fsdocs-search.js"></script>
+      <!-- END SEARCH BOX: this adds support for the search box -->
+  </div>
+</body>
+
+</html>
+
