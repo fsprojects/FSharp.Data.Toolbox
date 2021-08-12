@@ -1,5 +1,4 @@
-[![Issue Stats](http://issuestats.com/github/fsprojects/FSharp.Data.Toolbox/badge/issue)](http://issuestats.com/github/fsprojects/FSharp.Data.Toolbox)
-[![Issue Stats](http://issuestats.com/github/fsprojects/FSharp.Data.Toolbox/badge/pr)](http://issuestats.com/github/fsprojects/FSharp.Data.Toolbox)
+
 
 FSharp.Data.Toolbox
 =======================
