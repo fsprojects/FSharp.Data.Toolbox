@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -30,7 +30,6 @@
   <ItemGroup>
     <EmbeddedResource Include="json/*.*"/>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="GuiExtensions.fs" />
     <Compile Include="Twitter.fs" />
     <None Include="Twitter.fsx" />
     <None Include="paket.references" />

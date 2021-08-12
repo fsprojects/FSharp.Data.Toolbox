@@ -2,8 +2,8 @@
 // This block of code is omitted in the generated HTML documentation. Use 
 // it to define helpers that you do not want to show in the documentation.
 #nowarn "211"
-#I "../../packages/FSharp.Data/lib/net40"
-#I "../../bin"
+#I "../packages/FSharp.Data/lib/netstandard2.0"
+#I "../bin/netstandard2.0"
 
 (**
 F# Data Toolbox: Twitter type provider
@@ -27,6 +27,7 @@ After registration, Twitter provides API key and API secret
 
 // The Twitter reference needs to come before FSharp.Data.dll
 // (see the big warning box below for more!)
+
 #r "FSharp.Data.Toolbox.Twitter.dll"
 #r "FSharp.Data.dll"
 open FSharp.Data.Toolbox.Twitter
@@ -85,6 +86,8 @@ use as an argument for the Connect function. This user authentication
 allows full access to Twitter APIs.
 
 *)
+
+(*** do-not-eval ***)
 
 let connector = Twitter.Authenticate(key, secret) 
 
