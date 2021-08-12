@@ -32,6 +32,8 @@ jobs:
         force_orphan: true
     - name: Examine bin
       run: ls -r bin
-    - name: Publish NuGets (if this version not published before)
-      run: dotnet nuget push bin\FSharp.Data.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGETKEY }} --skip-duplicate
+    - name: Publish Twitter NuGets (if this version not published before)
+      run: dotnet nuget push bin\FSharp.Data.Toolbox.Twitter.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGETKEY }} --skip-duplicate
+    - name: Publish Sas NuGets (if this version not published before)
+      run: dotnet nuget push bin\FSharp.Data.Toolbox.Sas.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGETKEY }} --skip-duplicate
 
