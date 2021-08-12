@@ -67,5 +67,5 @@
 * Upgraded build to Fake 5
 * Upgraded documentation and website to fsdocs version of FSharp.Formatting
 * Added YYMMDDN date format to SAS Provider
-#### 0.20-beta3 - August 2021
+#### 0.20-beta4 - August 2021
 * Twitter to netstandard2.0
