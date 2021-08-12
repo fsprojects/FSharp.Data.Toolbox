@@ -23,6 +23,8 @@ jobs:
       run: dotnet paket restore
     - name: Build and test
       run: dotnet fake build -t Release
+    - name: Examine root
+      run: ls 
     - name: Deploy documentation from master
       uses: peaceiris/actions-gh-pages@v3
       with:
