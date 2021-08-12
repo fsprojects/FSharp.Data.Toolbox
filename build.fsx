@@ -242,22 +242,7 @@ Target.create "ReleaseDocs" (fun _ ->
 //#load "paket-files/fsharp/FAKE/modules/Octokit/Octokit.fsx"
 //open Octokit
 
-Target.create "Release" (fun _ ->
-    Staging.stageAll ""
-    Commit.exec "" (sprintf "Bump version to %s" release.NugetVersion)
-    Branches.push ""
-
-    Branches.tag "" release.NugetVersion
-    Branches.pushTag "" "origin" release.NugetVersion
-    
-    // release on github
-    // createClient (getBuildParamOrDefault "github-user" "") (getBuildParamOrDefault "github-pw" "")
-    // |> createDraft gitOwner gitName release.NugetVersion (release.SemVer.PreRelease <> None) release.Notes 
-    // // TODO: |> uploadFile "PATH_TO_FILE"    
-    // |> releaseDraft
-    // |> Async.RunSynchronously
-)
-
+Target.create "Release" ignore
 Target.create "BuildPackage" ignore
 
 // --------------------------------------------------------------------------------------
