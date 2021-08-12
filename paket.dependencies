@@ -1,5 +1,5 @@
 source https://nuget.org/api/v2
-framework: netstandard20,net47
+framework: netstandard20
 
 nuget FSharp.Core  ~> 4.7.2
 nuget FSharp.Formatting
