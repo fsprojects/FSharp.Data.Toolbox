@@ -280,7 +280,6 @@ Target.create "All" ignore
   ==> "GenerateDocs"
 
 "BuildPackage"
-  ==> "ReleaseDocs"
   ==> "Release"
 
 Target.runOrDefault "All"
