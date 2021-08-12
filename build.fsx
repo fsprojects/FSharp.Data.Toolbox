@@ -17,8 +17,8 @@ open System
 open System.IO
 open Fake.Core
 open Fake.Core.TargetOperators
-open Fake.DotNet.NuGet
 open Fake.DotNet
+open Fake.DotNet.NuGet
 open Fake.DotNet.Testing
 open Fake.IO
 open Fake.IO.FileSystemOperators
@@ -269,7 +269,7 @@ Target.create "All" ignore
   ==> "AssemblyInfo"
   ==> "Build"
   ==> "RunTests"
-  =?> ("GenerateDocs",BuildServer.isLocalBuild && not Environment.isMono)
+  ==> "GenerateDocs"
   ==> "All"
 
 "All" 
@@ -280,7 +280,6 @@ Target.create "All" ignore
   ==> "GenerateDocs"
 
 "BuildPackage"
-  ==> "GenerateDocs"
   ==> "ReleaseDocs"
   ==> "Release"
 

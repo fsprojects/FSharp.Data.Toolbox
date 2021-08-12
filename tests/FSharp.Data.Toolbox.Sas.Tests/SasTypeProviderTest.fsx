@@ -1,4 +1,5 @@
-﻿#r "../../bin/netstandard2.0/FSharp.Data.Toolbox.Sas.dll"
+﻿System.Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
+#r "../../bin/netstandard2.0/FSharp.Data.Toolbox.Sas.dll"
 
 open FSharp.Data.Toolbox.Sas
 
