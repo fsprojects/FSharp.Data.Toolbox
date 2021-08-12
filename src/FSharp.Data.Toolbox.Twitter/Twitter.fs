@@ -10,12 +10,14 @@ open System.Globalization
 open System.Threading
 open System.Web
 open System.IO
-open System.Windows.Forms
+open System.Runtime.InteropServices
 open System.Net
 open System.Security.Cryptography
 open System.Text
 open FSharp.Data
 open FSharp.Control
+
+
 
 // ----------------------------------------------------------------------------------------------
 
@@ -198,6 +200,16 @@ module internal Utils =
   let inline optional key = function Some value -> [key, string value] | _ -> []
   let inline required key value = [key, string value]
 
+  let openWebpage url =
+      if RuntimeInformation.IsOSPlatform(OSPlatform.Windows) then
+          let psi = System.Diagnostics.ProcessStartInfo(FileName = url, UseShellExecute = true)
+          System.Diagnostics.Process.Start(psi) |> ignore
+      elif RuntimeInformation.IsOSPlatform(OSPlatform.Linux) then
+          System.Diagnostics.Process.Start("xdg-open", url) |> ignore
+      elif RuntimeInformation.IsOSPlatform(OSPlatform.OSX) then
+          System.Diagnostics.Process.Start("open", url) |> ignore
+      else
+          invalidOp "Not supported OS platform"
 // ----------------------------------------------------------------------------------------------
 type TwitterStream<'T> =
   abstract TweetReceived : IEvent<'T>
@@ -468,17 +480,11 @@ and TwitterRequest(context:TwitterContext, httpmethod) =
     sr.ReadToEnd()
 
 and Twitter(context:TwitterContext) =
-  static member TwitterWeb () =
-    let frm = new Form(TopMost = true, Visible = true, Width = 500, Height = 400)
-    let web = new WebBrowser(Dock = DockStyle.Fill)
-    frm.Controls.Add(web)
-    web
 
   static member Authenticate(consumer_key, consumer_secret) =
-    let web = Twitter.TwitterWeb()
     let request_token, request_secret, _ = Utils.requestToken consumer_key consumer_secret
     let url = Utils.authorizeURI + "?oauth_token=" + request_token
-    web.Navigate(url)
+    Utils.openWebpage url
     { new TwitterConnector with
         member x.Connect(number) =
           let access_token, access_secret =

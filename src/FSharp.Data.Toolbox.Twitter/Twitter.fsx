@@ -1,18 +1,9 @@
 ﻿#I "../../packages/FSharp.Data/lib/netstandard2.0"
-#I "../../bin/net47"
+#I "../../bin/netstandard2.0"
 
 #r "FSharp.Data.Toolbox.Twitter.dll"
 #r "FSharp.Data.dll"
 
-open FSharp.Data.Toolbox.Twitter
-
-open System
-open System.Threading
-open System.Windows.Forms
-open System.Collections.Generic
-
-open FSharp.Control
-open FSharp.WebBrowser
 open FSharp.Data.Toolbox.Twitter
 
 // ----------------------------------------------------------------------------
@@ -50,9 +41,12 @@ printfn "Number of followers: %d" (followers.Ids |> Seq.length)
 // Get a list IDs of friends and followers for a specific user 
 let followersFSorg = twitter.Connections.FriendsIds(userId=880772426L)
 let friendsFSorg = twitter.Connections.FollowerIds(screenName="fsharporg")
+let dsyme = 
+    twitter.Users.Lookup(["dsymetweets"])
+    |> Array.find(fun x -> x.ScreenName = "dsymetweets")
 
 // Get information about connection between specific users
-let fs = twitter.Connections.Friendship(880772426L, 94144339L)
+let fs = twitter.Connections.Friendship(880772426L, dsyme.Id)
 fs.Relationship.Source.ScreenName
 fs.Relationship.Target.ScreenName
 fs.Relationship.Source.Following
