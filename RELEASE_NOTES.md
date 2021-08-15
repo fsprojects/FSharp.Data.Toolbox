@@ -61,7 +61,7 @@
 * Preview of Type Provider for Statistical Data published by Bank for International Settlements (#43)
 * Added parameters to HomeTimeline (#45)
 
-#### 0.20-beta7 - August 2021
+#### 0.20.0.0-beta8 - August 2021
 * Upgraded to netstandard2.0
 * Upgraded documentation and website to fsdocs version of FSharp.Formatting
 * Added YYMMDDN date format to SAS Provider
