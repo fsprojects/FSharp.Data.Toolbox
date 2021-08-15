@@ -27,6 +27,7 @@
     <DocumentationFile>..\..\bin\FSharp.Data.Toolbox.Twitter.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EmbeddedResources.fs" />
     <EmbeddedResource Include="json/*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
