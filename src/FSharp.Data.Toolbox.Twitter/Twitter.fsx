@@ -70,6 +70,9 @@ let home = twitter.Timelines.HomeTimeline()
 // Timeline of a specific user, up to a specified number of tweets
 let timeline = twitter.Timelines.Timeline("fsharporg", 10)
 
+(*
+// gui code doesn't exist anymore 
+
 // Display timeline in a web browser
 // - create a web browser
 let frm = new Form(TopMost = true, Visible = true, Width = 500, Height = 400)
@@ -117,4 +120,6 @@ twitter.RequestRawData("https://api.twitter.com/1.1/search/tweets.json", ["q", "
 twitter.RequestRawData("https://api.twitter.com/1.1/followers/ids.json")
 twitter.RequestRawData("https://api.twitter.com/1.1/users/lookup.json", ["user_id", "880772426,464211199"])
 |> (fun s -> System.IO.File.WriteAllText(System.IO.Path.Combine(__SOURCE_DIRECTORY__, "references/users_lookup.json"), s))
+*)
+
 *)
