@@ -29,7 +29,7 @@ module internal Utils =
   let appOnlyTokenURI = "https://api.twitter.com/oauth2/token"
 
   type Response = JsonProvider<"json/bearer_token.json", 
-                               EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.bearer_token.json", 
+                               EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.bearer_token.json", 
                                ResolutionFolder=__SOURCE_DIRECTORY__>
   
   // Utilities
@@ -252,17 +252,17 @@ module WebRequestExtensions =
 // ----------------------------------------------------------------------------------------------
 
 module TwitterTypes =
-  type Tweet = JsonProvider<"json/stream.json", SampleIsList=true, EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.stream.json",ResolutionFolder= __SOURCE_DIRECTORY__>
-  type TimeLine = JsonProvider<"json/timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.timeline.json",ResolutionFolder=__SOURCE_DIRECTORY__>
-  type SearchTweets = JsonProvider<"json/search_tweets.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.search_tweets.json",ResolutionFolder=__SOURCE_DIRECTORY__>
-  type IdsList = JsonProvider<"json/idslist.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.idslist.json",ResolutionFolder=__SOURCE_DIRECTORY__>
-  type UsersLookup = JsonProvider<"json/users_lookup.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.users_lookup.json",ResolutionFolder=__SOURCE_DIRECTORY__>
-  type FriendshipShow = JsonProvider<"json/friendship_show.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.friendship_show.json",ResolutionFolder=__SOURCE_DIRECTORY__>
-  type MentionsTimeLine = JsonProvider<"json/mentions_timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.mentions_timeline.json",ResolutionFolder=__SOURCE_DIRECTORY__>
-  type TrendsAvailable = JsonProvider<"json/trends_available.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.trends_available.json",ResolutionFolder=__SOURCE_DIRECTORY__>
-  type TrendsPlace = JsonProvider<"json/trends_place.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.trends_place.json",ResolutionFolder=__SOURCE_DIRECTORY__>
-  type TrendsClosest = JsonProvider<"json/trends_closest.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.trends_closest.json",ResolutionFolder=__SOURCE_DIRECTORY__>
-  type PostUpdate = JsonProvider<"json/post_update.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,json.post_update.json",ResolutionFolder=__SOURCE_DIRECTORY__>
+  type Tweet = JsonProvider<"json/stream.json", SampleIsList=true, EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.stream.json">
+  type TimeLine = JsonProvider<"json/timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.timeline.json">
+  type SearchTweets = JsonProvider<"json/search_tweets.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.search_tweets.json">
+  type IdsList = JsonProvider<"json/idslist.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.idslist.json">
+  type UsersLookup = JsonProvider<"json/users_lookup.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.users_lookup.json">
+  type FriendshipShow = JsonProvider<"json/friendship_show.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.friendship_show.json">
+  type MentionsTimeLine = JsonProvider<"json/mentions_timeline.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.mentions_timeline.json">
+  type TrendsAvailable = JsonProvider<"json/trends_available.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.trends_available.json">
+  type TrendsPlace = JsonProvider<"json/trends_place.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.trends_place.json">
+  type TrendsClosest = JsonProvider<"json/trends_closest.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.trends_closest.json">
+  type PostUpdate = JsonProvider<"json/post_update.json", EmbeddedResource="FSharp.Data.Toolbox.Twitter,FSharp.Data.Toolbox.Twitter.json.post_update.json">
 
 type TwitterConnector =
   abstract Connect : string -> Twitter
