@@ -1,10 +1,10 @@
-source https://nuget.org/api/v2
-framework: netstandard20
+frameworks: net5.0
+source https://api.nuget.org/v3/index.json
 
-nuget FSharp.Core  ~> 4.7.2
+nuget FSharp.Core  >= 4.7.2
 nuget FSharp.Formatting
 nuget NUnit
-nuget FsUnit ~> 4.0
+nuget FsUnit
 nuget NUnit.Runners
 nuget Nuget.CommandLine
 nuget FSharp.Data
@@ -15,9 +15,7 @@ github fsprojects/FSharp.TypeProviders.StarterPack src/ProvidedTypes.fs
 group Fake
     source https://api.nuget.org/v3/index.json
     storage: none
-    framework: netstandard20
 
-    nuget FSharp.Core                  ~> 4.7.1
     nuget Fake.Core.Target             ~> 5.20.0
     nuget Fake.Core.ReleaseNotes       ~> 5.20.0
     nuget Fake.DotNet.AssemblyInfoFile ~> 5.20.0
