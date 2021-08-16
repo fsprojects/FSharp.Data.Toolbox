@@ -13,8 +13,17 @@ If you are using F# Interactive, you first need to reference the SAS type
 provider assembly. Assuming you obtain the package from NuGet and the assembly
 is in `packages`, this would look as follows:
 *)
-#r "nuget: FSharp.Data"
-#r "nuget: FSharp.Data.Toolbox.Sas, 0.20.0-beta10"
+(*** condition: prepare ***)
+#r "../bin/netstandard2.0/FSharp.Data.Toolbox.Sas.dll"
+(*** condition: fsx ***)
+#if FSX
+#r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
+#endif // FSX
+(*** condition: ipynb ***)
+#if IPYNB
+#r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
+#endif // IPYNB
+
 open FSharp.Data.Toolbox.Sas
 (**
 

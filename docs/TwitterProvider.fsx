@@ -14,8 +14,16 @@ After registration, Twitter provides API key and API secret
  to authenticate the application.
 *)
 
-#r "nuget: FSharp.Data"
-#r "nuget: FSharp.Data.Toolbox.Twitter, 0.20.0-beta10"
+(*** condition: prepare ***)
+#r "../bin/netstandard2.0/FSharp.Data.Toolbox.Twitter.dll"
+(*** condition: fsx ***)
+#if FSX
+#r "nuget: FSharp.Data.Toolbox.Twitter,{{fsdocs-package-version}}"
+#endif // FSX
+(*** condition: ipynb ***)
+#if IPYNB
+#r "nuget: FSharp.Data.Toolbox.Twitter,{{fsdocs-package-version}}"
+#endif // IPYNB
 
 open FSharp.Data.Toolbox.Twitter
 
