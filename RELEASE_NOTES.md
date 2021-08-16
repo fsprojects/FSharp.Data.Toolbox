@@ -61,7 +61,8 @@
 * Preview of Type Provider for Statistical Data published by Bank for International Settlements (#43)
 * Added parameters to HomeTimeline (#45)
 
-#### 0.20.0.0-beta10 - August 2021
+#### 0.20.0 - August 2021
 * Upgraded to netstandard2.0
 * Upgraded documentation and website to fsdocs version of FSharp.Formatting
 * Added YYMMDDN date format to SAS Provider
+* Removed GUI extensions from the Twitter provider. These used windows forms and as a result prevented the twitter type provider from being cross-platform.
