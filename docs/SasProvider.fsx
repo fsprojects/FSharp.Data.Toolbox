@@ -1,10 +1,3 @@
-(*** hide ***)
-// This block of code is omitted in the generated HTML documentation. Use 
-// it to define helpers that you do not want to show in the documentation.
-#nowarn "211"
-#I "../packages/FSharp.Data/lib/netstandard2.0"
-#I "../bin/netstandard2.0"
-
 (**
 F# Data Toolbox: SAS dataset type provider
 ========================
@@ -20,8 +13,8 @@ If you are using F# Interactive, you first need to reference the SAS type
 provider assembly. Assuming you obtain the package from NuGet and the assembly
 is in `packages`, this would look as follows:
 *)
-#I @"packages/FSharp.Data.Toolbox.Sas.0.3/lib/net40"
-#r "FSharp.Data.Toolbox.Sas.dll"
+#r "nuget: FSharp.Data"
+#r "nuget: FSharp.Data.Toolbox.Sas, 0.20.0-beta10"
 open FSharp.Data.Toolbox.Sas
 (**
 

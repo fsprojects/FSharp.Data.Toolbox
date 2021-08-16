@@ -1,10 +1,3 @@
-(*** hide ***)
-// This block of code is omitted in the generated HTML documentation. Use 
-// it to define helpers that you do not want to show in the documentation.
-#nowarn "211"
-#I "../packages/FSharp.Data/lib/netstandard2.0"
-#I "../bin/netstandard2.0"
-
 (**
 F# Data Toolbox: Twitter type provider
 ========================
@@ -20,43 +13,16 @@ to its API. You have to register your application at
 After registration, Twitter provides API key and API secret
  to authenticate the application.
 *)
-// First, reference the locations where F# Data and 
-// F# Data Toolbox are located (using '#I' is required here!)
-#I @"packages/FSharp.Data.Toolbox.Twitter.0.3/lib/net40"
-#I @"packages/FSharp.Data.2.1.1/lib/net40"
 
-// The Twitter reference needs to come before FSharp.Data.dll
-// (see the big warning box below for more!)
+#r "nuget: FSharp.Data"
+#r "nuget: FSharp.Data.Toolbox.Twitter, 0.20.0-beta10"
 
-#r "FSharp.Data.Toolbox.Twitter.dll"
-#r "FSharp.Data.dll"
 open FSharp.Data.Toolbox.Twitter
 
 let key = "mKQL29XNemjQbLlQ8t0pBg"
 let secret = "T27HLDve1lumQykBUgYAbcEkbDrjBe6gwbu0gqi4saM"
 
 (**
-<div class="well well-small" style="margin:0px 70px 0px 20px;">
-
-**WARNING**: Unfortunately, F# Interactive is quite sensitive to how you
-reference the packages when using F# Data Toolbox. To make the Twitter type provider work 
-correctly in F# Interactive, you need to:
-
- - Use the `#I` directive to reference the path where the two libraries are located
-   (rather than usign `#r` with a full relative path)
-
- - Reference `FSharp.Data.Toolbox.Twitter.dll` *before* referencing `FSharp.Data.dll` 
-   as on the first two lines above. 
-
- - If you are using the Twitter provider in a compiled project, you will also need
-   to add reference to `System.Windows.Forms`.
-   
-This second point is required so that the JSON type provider (used in F# Data Toolbox) can locate 
-sample JSON files from the embedded metadata of the `FSharp.Data.Toolbox.Twitter.dll` assembly. An
-alternative is to copy the [sample JSON files](https://github.com/fsprojects/FSharp.Data.Toolbox/tree/master/src/FSharp.Data.Toolbox.Twitter/json)
-together with the assembly.
-
-</p></div>
 
 There are two types of possible connections to Twitter,
 application-only and full OAuth authentication. They provide 
@@ -92,7 +58,7 @@ allows full access to Twitter APIs.
 let connector = Twitter.Authenticate(key, secret) 
 
 // Run this part after you obtain PIN
-let twitter = connector.Connect("7808652")
+let twitter = connector.Connect("4717159")
 
 (**
 ![Twitter login window](img/OAuthWindow.png)
@@ -174,32 +140,46 @@ web browser window. Then we download timeline for a specific user,
 in this case it's [@fsharporg](https://twitter.com/fsharporg). 
 Finally, we display individual tweets in the web browser.
 *)
-open System.Windows.Forms
-open FSharp.Control
-open FSharp.WebBrowser
-
-// Create a windonw wtih web browser
-let frm = new Form(TopMost = true, Visible = true, Width = 500, Height = 400)
-let btn = new Button(Text = "Pause", Dock = DockStyle.Top)
-let web = new WebBrowser(Dock = DockStyle.Fill)
-frm.Controls.Add(web)
-frm.Controls.Add(btn)
-web.Output.StartList()
 
 // Display timeline
 let timeline = twitter.Timelines.Timeline("fsharporg")
 for tweet in timeline do
-    web.Output.AddItem "<strong>%s</strong>: %s" tweet.User.Name tweet.Text
+    printfn $"{tweet.User.Name}: {tweet.Text}" 
 
+(**
+Output:
+```text
+Hear from F# creator Don S… https://t.co/N8mYEXVPrv
+fsharp.org: Announcing the Winter 2021 round of the #fsharp Mentorship program https://t.co/88zkM9YEgZ Applications being accepted now!
+fsharp.org: Welcome to 2021! #fsharp https://t.co/wYu0MHw8hp
+fsharp.org: @voh_ing We will figure it out for you - sorry for the confusion.
+fsharp.org: Three videos on understanding the F# Compiler are now available on our YouTube channel https://t.co/gK2BTvyL8E #fsharp
+fsharp.org: First free tickets to F# Exchange as part of the Diversity Program have already been allocated. If you are a member… https://t.co/cB4aDi6c4u
+fsharp.org: We have 10 free tickets to F# Exchange available for members of any minority underrepresented in technology! Reach… https://t.co/Jy5qOHe5A0
+fsharp.org: We are excited to see the return of the Applied F# Challenge for 2021! https://t.co/uNaEVZVkYt Call for judges is now open. #fsharp
+fsharp.org: The F# Software Foundation is now accepting applications for the 9th round of the #fsharp mentorship program! https://t.co/ZieMmsL8pl
+fsharp.org: Our Annual Members Meeting is starting now on Slack! All members are welcome to attend, we hope to see you there :) #fsharp
+fsharp.org: With a slight delay, our newly elected Board will be revealed at the Annual Members Meeting, Aug 5th, 
+hope to see y… https://t.co/rUeK7KJRMO
+fsharp.org: Reminder: the annual FSSF Board election is underway!
+If you have someone in mind to represent you and the F# Commu… https://t.co/in6FlHqNxX
+fsharp.org: Our annual Board election is underway!
+2020 being what it is, there are probably bigger things on your mind that th… https://t.co/g1FmcTQjCi
+fsharp.org: Please read our full statement: https://t.co/eSOf6y5air  #fsharp #BlackLivesMatter
+fsharp.org: Again, Black Lives Matter.
+...
+```
+*)
 
 // Access mentions timeline
 // (requires full user authentication)
 let mention = twitter.Timelines.MentionTimeline()
 for tweet in mention do
-    web.Output.AddItem "<strong>%s</strong>: %s" tweet.User.Name tweet.Text
+    printfn $"{tweet.User.Name}: {tweet.Text}" 
+
+
 
 (** 
-![Twitter timeline](img/timeline.png)
 
 Streaming data 
 --------------------------------------
@@ -212,13 +192,13 @@ code sample, we can display a random sample of tweets in the following
 way.
 *)
 // Display stream with live data
-web.Output.StartList()
+
 
 let sample = twitter.Streaming.SampleTweets()
-sample.TweetReceived |> Observable.guiSubscribe (fun status ->
+sample.TweetReceived |> Observable.subscribe (fun status ->
     match status.Text, status.User with
-    | Some text, Some user ->
-        web.Output.AddItem "<strong>%s</strong>: %s" user.Name text
+    | text, user ->
+        printfn $"{user.Name}: {text}"
     | _ -> ()  )
 sample.Start()
 
@@ -230,13 +210,12 @@ The following code will filter all tweets that contain the word "fsharp"
 from the global stream of tweets.
 *)
 // Display live search data 
-web.Output.StartList()
 
 let search = twitter.Streaming.FilterTweets ["fsharp"]
-search.TweetReceived |> Observable.guiSubscribe (fun status ->
+search.TweetReceived |> Observable.subscribe (fun status ->
     match status.Text, status.User with
-    | Some text, Some user ->
-        web.Output.AddItem "<strong>%s</strong>: %s" user.Name text
+    | text, user ->
+        printfn $"{user.Name}: {text}"
     | _ -> ()  )
 search.Start()
 
