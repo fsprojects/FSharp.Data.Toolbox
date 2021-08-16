@@ -1,4 +1,4 @@
-module EmbeddedResources
+module internal EmbeddedResources
 
 let [<Literal>] BearerToken = """
 {"token_type":"bearer","access_token":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%2FAAAAAAAAAAAAAAAAAAAA%3DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}
