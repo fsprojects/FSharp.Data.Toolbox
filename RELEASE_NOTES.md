@@ -66,3 +66,6 @@
 * Upgraded documentation and website to fsdocs version of FSharp.Formatting
 * Added YYMMDDN date format to SAS Provider
 * Removed GUI extensions from the Twitter provider. These used windows forms and as a result prevented the twitter type provider from being cross-platform.
+
+#### 0.20.1 - August 2021
+* Make twitter's EmbeddedResource module internal.
