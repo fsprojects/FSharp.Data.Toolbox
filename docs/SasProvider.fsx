@@ -1,4 +1,13 @@
+(*** hide ***)
+/// example fast binder url: https://mybinder.org/v2/gh/fsprojects/fsharp.formatting/master?urlpath=git-pull?repo=https:/nhirschey.github.com/teaching/gh-pages/fundamentals.ipynb
+
 (**
+
+[![Binder](img/badge-binder.svg)](https://mybinder.org/v2/gh/fsprojects/FSharp.Data.Toolbox/gh-pages?filepath={{fsdocs-source-basename}}.ipynb)&emsp;
+[![Script](img/badge-script.svg)]({{root}}/{{fsdocs-source-basename}}.fsx)&emsp;
+[![Notebook](img/badge-notebook.svg)]({{root}}/{{fsdocs-source-basename}}.ipynb)
+
+
 F# Data Toolbox: SAS dataset type provider
 ========================
 
@@ -24,7 +33,10 @@ is in `packages`, this would look as follows:
 #r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
 #endif // IPYNB
 
+#r "nuget: FSharp.Data"
+
 open FSharp.Data.Toolbox.Sas
+open FSharp.Data
 (**
 
 ### Open SAS dataset by passing file name to SasFileTypeProvider type

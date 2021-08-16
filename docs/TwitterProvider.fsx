@@ -1,4 +1,12 @@
+(*** hide ***)
+/// example fast binder url: https://mybinder.org/v2/gh/fsprojects/fsharp.formatting/master?urlpath=git-pull?repo=https:/nhirschey.github.com/teaching/gh-pages/fundamentals.ipynb
+
 (**
+
+[![Binder](img/badge-binder.svg)](https://mybinder.org/v2/gh/fsprojects/FSharp.Data.Toolbox/gh-pages?filepath={{fsdocs-source-basename}}.ipynb)&emsp;
+[![Script](img/badge-script.svg)]({{root}}/{{fsdocs-source-basename}}.fsx)&emsp;
+[![Notebook](img/badge-notebook.svg)]({{root}}/{{fsdocs-source-basename}}.ipynb)
+
 F# Data Toolbox: Twitter type provider
 ========================
 
@@ -25,7 +33,11 @@ After registration, Twitter provides API key and API secret
 #r "nuget: FSharp.Data.Toolbox.Twitter,{{fsdocs-package-version}}"
 #endif // IPYNB
 
+#r "nuget: FSharp.Data"
+
 open FSharp.Data.Toolbox.Twitter
+open FSharp.Data
+
 
 let key = "mKQL29XNemjQbLlQ8t0pBg"
 let secret = "T27HLDve1lumQykBUgYAbcEkbDrjBe6gwbu0gqi4saM"
@@ -66,7 +78,7 @@ allows full access to Twitter APIs.
 let connector = Twitter.Authenticate(key, secret) 
 
 // Run this part after you obtain PIN
-let twitter = connector.Connect("4717159")
+let twitter = connector.Connect("8779691")
 
 (**
 ![Twitter login window](img/OAuthWindow.png)
@@ -200,14 +212,18 @@ code sample, we can display a random sample of tweets in the following
 way.
 *)
 // Display stream with live data
-
+let subscribe f obs = 
+  let ctx = System.Threading.SynchronizationContext.Current
+  if ctx = null then obs |> Observable.subscribe f
+  else obs |> Observable.subscribe (fun v -> ctx.Post((fun _ -> f v), null))
 
 let sample = twitter.Streaming.SampleTweets()
-sample.TweetReceived |> Observable.subscribe (fun status ->
+sample.TweetReceived |> subscribe (fun status ->
     match status.Text, status.User with
     | text, user ->
         printfn $"{user.Name}: {text}"
     | _ -> ()  )
+
 sample.Start()
 
 sample.Stop()
@@ -220,11 +236,12 @@ from the global stream of tweets.
 // Display live search data 
 
 let search = twitter.Streaming.FilterTweets ["fsharp"]
-search.TweetReceived |> Observable.subscribe (fun status ->
+sample.TweetReceived |> subscribe (fun status ->
     match status.Text, status.User with
     | text, user ->
         printfn $"{user.Name}: {text}"
     | _ -> ()  )
+
 search.Start()
 
 search.Stop()
