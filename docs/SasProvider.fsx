@@ -33,6 +33,9 @@ is in `packages`, this would look as follows:
 #r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
 #endif // IPYNB
 
+(*** do-not-eval ***)
+#r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
+
 #r "nuget: FSharp.Data"
 
 open FSharp.Data.Toolbox.Sas
