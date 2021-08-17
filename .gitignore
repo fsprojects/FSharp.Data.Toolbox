@@ -200,6 +200,3 @@ output/
 tmp/
 .fsdocs/
 build.fsx.lock
-.paket/Paket.Restore.targets
-.paket/Paket.Restore.targets
-*.targets
