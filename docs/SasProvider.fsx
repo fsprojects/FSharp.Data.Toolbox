@@ -1,11 +1,13 @@
 (*** hide ***)
-// This block of code is omitted in the generated HTML documentation. Use 
-// it to define helpers that you do not want to show in the documentation.
-#nowarn "211"
-#I "../packages/FSharp.Data/lib/netstandard2.0"
-#I "../bin/netstandard2.0"
+/// example fast binder url: https://mybinder.org/v2/gh/fsprojects/fsharp.formatting/master?urlpath=git-pull?repo=https:/nhirschey.github.com/teaching/gh-pages/fundamentals.ipynb
 
 (**
+
+[![Binder](img/badge-binder.svg)](https://mybinder.org/v2/gh/fsprojects/FSharp.Data.Toolbox/gh-pages?filepath={{fsdocs-source-basename}}.ipynb)&emsp;
+[![Script](img/badge-script.svg)]({{root}}/{{fsdocs-source-basename}}.fsx)&emsp;
+[![Notebook](img/badge-notebook.svg)]({{root}}/{{fsdocs-source-basename}}.ipynb)
+
+
 F# Data Toolbox: SAS dataset type provider
 ========================
 
@@ -20,9 +22,24 @@ If you are using F# Interactive, you first need to reference the SAS type
 provider assembly. Assuming you obtain the package from NuGet and the assembly
 is in `packages`, this would look as follows:
 *)
-#I @"packages/FSharp.Data.Toolbox.Sas.0.3/lib/net40"
-#r "FSharp.Data.Toolbox.Sas.dll"
+(*** condition: prepare ***)
+#r "../bin/netstandard2.0/FSharp.Data.Toolbox.Sas.dll"
+(*** condition: fsx ***)
+#if FSX
+#r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
+#endif // FSX
+(*** condition: ipynb ***)
+#if IPYNB
+#r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
+#endif // IPYNB
+
+(*** do-not-eval ***)
+#r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
+
+#r "nuget: FSharp.Data"
+
 open FSharp.Data.Toolbox.Sas
+open FSharp.Data
 (**
 
 ### Open SAS dataset by passing file name to SasFileTypeProvider type
