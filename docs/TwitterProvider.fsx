@@ -38,7 +38,7 @@ After registration, Twitter provides API key and API secret to authenticate the 
 You can use FSharp.Data.Toolbox in [dotnet interactive](https://github.com/dotnet/interactive) notebooks in [Visual Studio Code](https://code.visualstudio.com/) or [Jupyter](https://jupyter.org/), or in F# scripts (`.fsx` files), by referencing the package as follows:
 
     // Use one of the following two lines
-    #r "nuget: FSharp.Data.Toolbox.Twitter"                            // Use the latest version
+    #r "nuget: FSharp.Data.Toolbox.Twitter" // Use the latest version
     #r "nuget: FSharp.Data.Toolbox.Twitter,{{fsdocs-package-version}}" // Use a specific version
 
 *)
