@@ -18,8 +18,11 @@ Connecting to Twitter
 Twitter requires developers to register their applications to gain access
 to its API. You have to register your application at
 [Twitter Apps](https://apps.twitter.com/). 
-After registration, Twitter provides API key and API secret
- to authenticate the application.
+After registration, Twitter provides API key and API secret to authenticate the application.
+
+If you are using F# Interactive, you first need to reference the Twitter type
+provider assembly. Assuming you obtain the package from NuGet and the assembly
+is in `packages`, this would look as follows:
 *)
 
 (*** condition: prepare ***)
@@ -32,6 +35,9 @@ After registration, Twitter provides API key and API secret
 #if IPYNB
 #r "nuget: FSharp.Data.Toolbox.Twitter,{{fsdocs-package-version}}"
 #endif // IPYNB
+
+(*** do-not-eval ***)
+#r "nuget: FSharp.Data.Toolbox.Twitter,{{fsdocs-package-version}}"
 
 #r "nuget: FSharp.Data"
 
