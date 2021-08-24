@@ -18,9 +18,6 @@ to SAS datasets. No SAS software or OLE DB providers required.
 Opening a SAS dataset file
 -----------------------------------------
 
-If you are using F# Interactive, you first need to reference the SAS type
-provider assembly. Assuming you obtain the package from NuGet and the assembly
-is in `packages`, this would look as follows:
 *)
 (*** condition: prepare ***)
 #r "../bin/netstandard2.0/FSharp.Data.Toolbox.Sas.dll"
@@ -33,8 +30,12 @@ is in `packages`, this would look as follows:
 #r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
 #endif // IPYNB
 
-(*** do-not-eval ***)
-#r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}"
+(**
+You can use FSharp.Data.Toolbox in [dotnet interactive](https://github.com/dotnet/interactive) notebooks in [Visual Studio Code](https://code.visualstudio.com/) or [Jupyter](https://jupyter.org/), or in F# scripts (`.fsx` files), by referencing the package as follows:
+    // Use one of the following two lines
+    #r "nuget: FSharp.Data.Toolbox.Sas"                            // Use the latest version
+    #r "nuget: FSharp.Data.Toolbox.Sas,{{fsdocs-package-version}}" // Use a specific version
+*)
 
 #r "nuget: FSharp.Data"
 
