@@ -312,12 +312,12 @@ type SasFile (filename : string) =
             |> Seq.toList
 
         match pageType with
-        | PAGE_META_TYPE -> Meta <| readSubHeaders()
+        | PAGE_META_TYPE
+        | PAGE_METC_TYPE -> Meta <| readSubHeaders()
         | PAGE_DATA_TYPE -> Data (blockCount, page)
         | PAGE_MIX_TYPE1
         | PAGE_MIX_TYPE2 -> Mix (readSubHeaders(), blockCount, page)
         | PAGE_AMD_TYPE
-        | PAGE_METC_TYPE
         | PAGE_COMP_TYPE -> EmptyPage
         | _ ->
             dprintfn "Unknown page type: %i" pageType
