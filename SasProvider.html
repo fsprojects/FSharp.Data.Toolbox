@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>F# Data Toolbox: SAS dataset type provider
+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="FSharp.Data.Toolbox.Bis">
+
+    <link rel="stylesheet" id="theme_link" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/materia/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script> -->
+
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/navbar-fixed-left.css" />
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/fsdocs-default.css" />
+    <link type="text/css" rel="stylesheet" href="/FSharp.Data.Toolbox/content/fsdocs-custom.css" />
+    <script type="text/javascript" src="/FSharp.Data.Toolbox/content/fsdocs-tips.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+    <!-- END SEARCH BOX: this adds support for the search box -->
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-secondary fixed-left" id="fsdocs-menu">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <a href="/FSharp.Data.Toolbox/"><img id="fsdocs-logo" src="/FSharp.Data.Toolbox/img/logo.png" /></a>
+          <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+          <div id="header">
+              <div class="searchbox" id="fsdocs-searchbox">
+                  <label for="search-by">
+                      <i class="fas fa-search"></i>
+                  </label>
+                  <input data-search-input="" id="search-by" type="search" placeholder="Search..." />
+                  <span data-search-clear="">
+                      <i class="fas fa-times"></i>
+                  </span>
+              </div>
+          </div>
+
+        <!-- END SEARCH BOX: this adds support for the search box -->
+        <ul class="navbar-nav">
+          <li class="nav-header">Links</li>
+          <li class="nav-item" id="fsdocs-license-link"><a class="nav-link" href="https://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/LICENSE.txt">License</a></li>
+          <li class="nav-item" id="fsdocs-release-notes-link"><a class="nav-link" href="https://github.com/fsprojects/FSharp.Data.Toolbox/blob/master/RELEASE_NOTES.md">Release Notes</a></li>
+          <li class="nav-item" id="fsdocs-repository-link"><a class="nav-link" href="http://github.com/fsprojects/FSharp.Data.Toolbox">Source Repository</a></li>
+          <li class="nav-header">
+  Documentation
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/BisProvider.html">
+    F# Data Toolbox: BIS Type Provider
+
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/SasProvider.html">
+    F# Data Toolbox: SAS dataset type provider
+
+  </a>
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/TwitterProvider.html">
+    F# Data Toolbox: Twitter type provider
+
+  </a>
+</li>
+          <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="/FSharp.Data.Toolbox/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="masthead">
+          <h3 class="muted"><a href="/FSharp.Data.Toolbox/">FSharp.Data.Toolbox</a></h3>
+      </div>
+      <hr />
+      <div class="container" id="fsdocs-content">
+          <p><a href="https://mybinder.org/v2/gh/fsprojects/FSharp.Data.Toolbox/gh-pages?filepath=SasProvider.ipynb"><img src="img/badge-binder.svg" alt="Binder" /></a>&emsp;
+<a href="/FSharp.Data.Toolbox//SasProvider.fsx"><img src="img/badge-script.svg" alt="Script" /></a>&emsp;
+<a href="/FSharp.Data.Toolbox//SasProvider.ipynb"><img src="img/badge-notebook.svg" alt="Notebook" /></a></p>
+<h1><a name="F-Data-Toolbox-SAS-dataset-type-provider" class="anchor" href="#F-Data-Toolbox-SAS-dataset-type-provider">F# Data Toolbox: SAS dataset type provider</a></h1>
+<p>The SAS dataset (sas7bdat) type provider allows exploratory
+programming with SAS files and provides native access
+to SAS datasets. No SAS software or OLE DB providers required.</p>
+<h2><a name="Opening-a-SAS-dataset-file" class="anchor" href="#Opening-a-SAS-dataset-file">Opening a SAS dataset file</a></h2>
+<p>You can use FSharp.Data.Toolbox in <a href="https://github.com/dotnet/interactive">dotnet interactive</a> notebooks in <a href="https://code.visualstudio.com/">Visual Studio Code</a> or <a href="https://jupyter.org/">Jupyter</a>, or in F# scripts (<code>.fsx</code> files), by referencing the package as follows:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// Use one of the following two lines</span>
+<span class="pp">#r</span> <span class="s">&quot;nuget: FSharp.Data.Toolbox.Sas&quot;</span> <span class="c">// Use the latest version</span>
+<span class="pp">#r</span> <span class="s">&quot;nuget: FSharp.Data.Toolbox.Sas,0.20.2&quot;</span> <span class="c">// Use a specific version</span>
+</code></pre>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="pp">#r</span> <span class="s">&quot;nuget: FSharp.Data&quot;</span>
+
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">FSharp</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="id">Data</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="id">Toolbox</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="id">Sas</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 5)" onmouseover="showTip(event, 'fs1', 5)" class="id">FSharp</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs2', 6)" onmouseover="showTip(event, 'fs2', 6)" class="id">Data</span>
+</code></pre>
+<h3><a name="Open-SAS-dataset-by-passing-file-name-to-SasFileTypeProvider-type" class="anchor" href="#Open-SAS-dataset-by-passing-file-name-to-SasFileTypeProvider-type">Open SAS dataset by passing file name to SasFileTypeProvider type</a></h3>
+<p>The library gives you a parameterized type provider <code>SasFileTypeProvider</code> that
+takes the SAS data file as an argument:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs5', 7)" onmouseover="showTip(event, 'fs5', 7)" class="rt">Literal</span><span class="pn">&gt;]</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="prop">sasPath</span> <span class="o">=</span> <span class="s">@&quot;../tests/FSharp.Data.Toolbox.Sas.Tests/files/acadindx.sas7bdat&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 9)" onmouseover="showTip(event, 'fs7', 9)" class="id">sasFile</span> <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs8', 10)" onmouseover="showTip(event, 'fs8', 10)" class="rt">SasFileTypeProvider</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs6', 11)" onmouseover="showTip(event, 'fs6', 11)" class="prop">sasPath</span><span class="pn">&gt;</span><span class="pn">(</span><span class="pn">)</span>
+</code></pre>
+<p>After openning the dataset, you can call methods to access
+SAS metadata and the data itself.</p>
+<h2><a name="Accessing-metadata" class="anchor" href="#Accessing-metadata">Accessing metadata</a></h2>
+<p>The following examples show how to access meta-information about SAS dataset.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 12)" onmouseover="showTip(event, 'fs9', 12)" class="id">datasetName</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 13)" onmouseover="showTip(event, 'fs7', 13)" class="id">sasFile</span><span class="pn">.</span><span class="id">Header</span><span class="pn">.</span><span class="id">DataSet</span><span class="pn">.</span><span class="id">Trim</span><span class="pn">(</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 14)" onmouseover="showTip(event, 'fs10', 14)" class="id">architecture</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 15)" onmouseover="showTip(event, 'fs7', 15)" class="id">sasFile</span><span class="pn">.</span><span class="id">Header</span><span class="pn">.</span><span class="id">Bits</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 16)" onmouseover="showTip(event, 'fs11', 16)" class="id">rowCount</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 17)" onmouseover="showTip(event, 'fs7', 17)" class="id">sasFile</span><span class="pn">.</span><span class="id">MetaData</span><span class="pn">.</span><span class="id">RowCount</span>
+
+<span class="c">// Get a list of dataset columns</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 18)" onmouseover="showTip(event, 'fs12', 18)" class="id">cols</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 19)" onmouseover="showTip(event, 'fs7', 19)" class="id">sasFile</span><span class="pn">.</span><span class="id">MetaData</span><span class="pn">.</span><span class="id">Columns</span>
+<span onmouseout="hideTip(event, 'fs13', 20)" onmouseover="showTip(event, 'fs13', 20)" class="fn">printfn</span> <span class="s">&quot;Number of columns: </span><span class="pf">%d</span><span class="s">&quot;</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 21)" onmouseover="showTip(event, 'fs12', 21)" class="id">cols</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 22)" onmouseover="showTip(event, 'fs14', 22)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 23)" onmouseover="showTip(event, 'fs15', 23)" class="id">length</span><span class="pn">)</span>
+<span onmouseout="hideTip(event, 'fs13', 24)" onmouseover="showTip(event, 'fs13', 24)" class="fn">printfn</span> <span class="s">&quot;Names of columns: </span><span class="pf">%s</span><span class="s">&quot;</span>  <span class="pn">(</span><span onmouseout="hideTip(event, 'fs12', 25)" onmouseover="showTip(event, 'fs12', 25)" class="id">cols</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 26)" onmouseover="showTip(event, 'fs14', 26)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs16', 27)" onmouseover="showTip(event, 'fs16', 27)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs17', 28)" onmouseover="showTip(event, 'fs17', 28)" class="fn">col</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 29)" onmouseover="showTip(event, 'fs17', 29)" class="fn">col</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs18', 30)" onmouseover="showTip(event, 'fs18', 30)" class="id">Name</span><span class="pn">)</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs19', 31)" onmouseover="showTip(event, 'fs19', 31)" class="m">String</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs20', 32)" onmouseover="showTip(event, 'fs20', 32)" class="id">concat</span> <span class="s">&quot;, &quot;</span><span class="pn">)</span>
+</code></pre>
+<h2><a name="Accessing-data-in-a-strongly-typed-fashion" class="anchor" href="#Accessing-data-in-a-strongly-typed-fashion">Accessing data in a strongly-typed fashion</a></h2>
+<p>Good for exploratory programming. IntelliSense access to column names.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// read sixth row of data</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs21', 33)" onmouseover="showTip(event, 'fs21', 33)" class="id">row</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 34)" onmouseover="showTip(event, 'fs7', 34)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 35)" onmouseover="showTip(event, 'fs14', 35)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs22', 36)" onmouseover="showTip(event, 'fs22', 36)" class="id">skip</span> <span class="n">5</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 37)" onmouseover="showTip(event, 'fs14', 37)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs23', 38)" onmouseover="showTip(event, 'fs23', 38)" class="id">head</span>
+<span onmouseout="hideTip(event, 'fs13', 39)" onmouseover="showTip(event, 'fs13', 39)" class="fn">printfn</span> <span class="s">&quot;Column &#39;id&#39; value: </span><span class="pf">%A</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs21', 40)" onmouseover="showTip(event, 'fs21', 40)" class="id">row</span><span class="pn">.</span><span class="id">id</span>
+<span onmouseout="hideTip(event, 'fs13', 41)" onmouseover="showTip(event, 'fs13', 41)" class="fn">printfn</span> <span class="s">&quot;Column &#39;reading&#39; value: </span><span class="pf">%A</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs21', 42)" onmouseover="showTip(event, 'fs21', 42)" class="id">row</span><span class="pn">.</span><span class="id">reading</span>
+</code></pre>
+<p>The following examples show a couple of calculations that you can write
+using the standard F# library functions over the data obtained using the type provider:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// sum first 10 &#39;reading&#39; variable values</span>
+<span onmouseout="hideTip(event, 'fs7', 43)" onmouseover="showTip(event, 'fs7', 43)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 44)" onmouseover="showTip(event, 'fs14', 44)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs24', 45)" onmouseover="showTip(event, 'fs24', 45)" class="id">take</span> <span class="n">10</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 46)" onmouseover="showTip(event, 'fs14', 46)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs25', 47)" onmouseover="showTip(event, 'fs25', 47)" class="id">sumBy</span> <span class="pn">(</span> <span class="k">fun</span> <span onmouseout="hideTip(event, 'fs26', 48)" onmouseover="showTip(event, 'fs26', 48)" class="fn">obs</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 49)" onmouseover="showTip(event, 'fs26', 49)" class="fn">obs</span><span class="pn">.</span><span class="id">reading</span> <span class="pn">)</span>
+
+<span class="c">// calculate mean</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs27', 50)" onmouseover="showTip(event, 'fs27', 50)" class="id">readingMean</span> <span class="o">=</span> 
+  <span onmouseout="hideTip(event, 'fs7', 51)" onmouseover="showTip(event, 'fs7', 51)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 52)" onmouseover="showTip(event, 'fs14', 52)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs28', 53)" onmouseover="showTip(event, 'fs28', 53)" class="id">averageBy</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs26', 54)" onmouseover="showTip(event, 'fs26', 54)" class="fn">obs</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 55)" onmouseover="showTip(event, 'fs26', 55)" class="fn">obs</span><span class="pn">.</span><span class="id">reading</span> <span class="pn">)</span>
+
+<span class="c">// standard deviation </span>
+<span class="k">let</span> <span class="id">readingStdDev</span> <span class="o">=</span>
+  <span class="k">let</span> <span onmouseout="hideTip(event, 'fs29', 56)" onmouseover="showTip(event, 'fs29', 56)" class="fn">sum</span> <span class="o">=</span>
+    <span onmouseout="hideTip(event, 'fs7', 57)" onmouseover="showTip(event, 'fs7', 57)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 58)" onmouseover="showTip(event, 'fs14', 58)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs16', 59)" onmouseover="showTip(event, 'fs16', 59)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs30', 60)" onmouseover="showTip(event, 'fs30', 60)" class="fn">obs</span> <span class="k">-&gt;</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs30', 61)" onmouseover="showTip(event, 'fs30', 61)" class="fn">obs</span><span class="pn">.</span><span class="id">reading</span> <span class="o">-</span> <span onmouseout="hideTip(event, 'fs27', 62)" onmouseover="showTip(event, 'fs27', 62)" class="id">readingMean</span><span class="pn">)</span> <span class="o">**</span> <span class="n">2.0</span><span class="pn">)</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 63)" onmouseover="showTip(event, 'fs14', 63)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 64)" onmouseover="showTip(event, 'fs31', 64)" class="id">sum</span>
+  <span onmouseout="hideTip(event, 'fs32', 65)" onmouseover="showTip(event, 'fs32', 65)" class="fn">sqrt</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs29', 66)" onmouseover="showTip(event, 'fs29', 66)" class="fn">sum</span> <span class="o">/</span> <span onmouseout="hideTip(event, 'fs14', 67)" onmouseover="showTip(event, 'fs14', 67)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 68)" onmouseover="showTip(event, 'fs15', 68)" class="id">length</span> <span onmouseout="hideTip(event, 'fs7', 69)" onmouseover="showTip(event, 'fs7', 69)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span><span class="pn">)</span>
+
+<span class="c">// min</span>
+<span onmouseout="hideTip(event, 'fs7', 70)" onmouseover="showTip(event, 'fs7', 70)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 71)" onmouseover="showTip(event, 'fs14', 71)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs16', 72)" onmouseover="showTip(event, 'fs16', 72)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs26', 73)" onmouseover="showTip(event, 'fs26', 73)" class="fn">obs</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 74)" onmouseover="showTip(event, 'fs26', 74)" class="fn">obs</span><span class="pn">.</span><span class="id">reading</span><span class="pn">)</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 75)" onmouseover="showTip(event, 'fs14', 75)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs33', 76)" onmouseover="showTip(event, 'fs33', 76)" class="id">min</span>
+
+<span class="c">// ...and max</span>
+<span onmouseout="hideTip(event, 'fs7', 77)" onmouseover="showTip(event, 'fs7', 77)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 78)" onmouseover="showTip(event, 'fs14', 78)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs16', 79)" onmouseover="showTip(event, 'fs16', 79)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs26', 80)" onmouseover="showTip(event, 'fs26', 80)" class="fn">obs</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 81)" onmouseover="showTip(event, 'fs26', 81)" class="fn">obs</span><span class="pn">.</span><span class="id">reading</span><span class="pn">)</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 82)" onmouseover="showTip(event, 'fs14', 82)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs34', 83)" onmouseover="showTip(event, 'fs34', 83)" class="id">max</span>
+</code></pre>
+<h2><a name="Accessing-data-with-F-Query-Expressions" class="anchor" href="#Accessing-data-with-F-Query-Expressions">Accessing data with F# Query Expressions</a></h2>
+<p>'query { expression } ' syntax can be used to access SAS dataset</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// multiply &#39;reading&#39; by &#39;writing&#39; and sum</span>
+<span onmouseout="hideTip(event, 'fs35', 84)" onmouseover="showTip(event, 'fs35', 84)" class="k">query</span> <span class="pn">{</span>
+    <span class="k">for</span> <span onmouseout="hideTip(event, 'fs26', 85)" onmouseover="showTip(event, 'fs26', 85)" class="fn">obs</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs7', 86)" onmouseover="showTip(event, 'fs7', 86)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span> <span class="k">do</span>
+    <span onmouseout="hideTip(event, 'fs36', 87)" onmouseover="showTip(event, 'fs36', 87)" class="k">sumBy</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs26', 88)" onmouseover="showTip(event, 'fs26', 88)" class="fn">obs</span><span class="pn">.</span><span class="id">reading</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs26', 89)" onmouseover="showTip(event, 'fs26', 89)" class="fn">obs</span><span class="pn">.</span><span class="id">writing</span><span class="pn">)</span>
+<span class="pn">}</span>
+
+<span class="c">// ..is equivalent to:</span>
+<span onmouseout="hideTip(event, 'fs7', 90)" onmouseover="showTip(event, 'fs7', 90)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 91)" onmouseover="showTip(event, 'fs14', 91)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs16', 92)" onmouseover="showTip(event, 'fs16', 92)" class="id">map</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs26', 93)" onmouseover="showTip(event, 'fs26', 93)" class="fn">obs</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 94)" onmouseover="showTip(event, 'fs26', 94)" class="fn">obs</span><span class="pn">.</span><span class="id">reading</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs26', 95)" onmouseover="showTip(event, 'fs26', 95)" class="fn">obs</span><span class="pn">.</span><span class="id">writing</span><span class="pn">)</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 96)" onmouseover="showTip(event, 'fs14', 96)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 97)" onmouseover="showTip(event, 'fs31', 97)" class="id">sum</span>
+</code></pre>
+<p>You can use other constructs available inside F# query expressions to
+filter the data  or perform aggregations:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// filter data</span>
+<span onmouseout="hideTip(event, 'fs35', 98)" onmouseover="showTip(event, 'fs35', 98)" class="k">query</span> <span class="pn">{</span>
+    <span class="k">for</span> <span onmouseout="hideTip(event, 'fs26', 99)" onmouseover="showTip(event, 'fs26', 99)" class="fn">obs</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs7', 100)" onmouseover="showTip(event, 'fs7', 100)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span> <span class="k">do</span>
+    <span onmouseout="hideTip(event, 'fs37', 101)" onmouseover="showTip(event, 'fs37', 101)" class="k">where</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs26', 102)" onmouseover="showTip(event, 'fs26', 102)" class="fn">obs</span><span class="pn">.</span><span class="id">female</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs38', 103)" onmouseover="showTip(event, 'fs38', 103)" class="uc">Number</span> <span class="n">1.</span> <span class="pn">)</span>
+    <span onmouseout="hideTip(event, 'fs39', 104)" onmouseover="showTip(event, 'fs39', 104)" class="k">select</span> <span onmouseout="hideTip(event, 'fs26', 105)" onmouseover="showTip(event, 'fs26', 105)" class="fn">obs</span><span class="pn">.</span><span class="id">female</span>
+    <span class="pn">}</span>
+
+<span class="c">// aggregate </span>
+<span onmouseout="hideTip(event, 'fs35', 106)" onmouseover="showTip(event, 'fs35', 106)" class="k">query</span> <span class="pn">{</span>
+    <span class="k">for</span> <span onmouseout="hideTip(event, 'fs26', 107)" onmouseover="showTip(event, 'fs26', 107)" class="fn">obs</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs7', 108)" onmouseover="showTip(event, 'fs7', 108)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span> <span class="k">do</span>
+    <span onmouseout="hideTip(event, 'fs37', 109)" onmouseover="showTip(event, 'fs37', 109)" class="k">where</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs26', 110)" onmouseover="showTip(event, 'fs26', 110)" class="fn">obs</span><span class="pn">.</span><span class="id">female</span> <span class="o">&lt;&gt;</span> <span onmouseout="hideTip(event, 'fs38', 111)" onmouseover="showTip(event, 'fs38', 111)" class="uc">Number</span> <span class="n">1.</span> <span class="pn">)</span>
+    <span onmouseout="hideTip(event, 'fs40', 112)" onmouseover="showTip(event, 'fs40', 112)" class="k">count</span>
+    <span class="pn">}</span>
+
+<span onmouseout="hideTip(event, 'fs35', 113)" onmouseover="showTip(event, 'fs35', 113)" class="k">query</span> <span class="pn">{</span>
+    <span class="k">for</span> <span onmouseout="hideTip(event, 'fs26', 114)" onmouseover="showTip(event, 'fs26', 114)" class="fn">obs</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs7', 115)" onmouseover="showTip(event, 'fs7', 115)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span> <span class="k">do</span>
+    <span onmouseout="hideTip(event, 'fs37', 116)" onmouseover="showTip(event, 'fs37', 116)" class="k">where</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs26', 117)" onmouseover="showTip(event, 'fs26', 117)" class="fn">obs</span><span class="pn">.</span><span class="id">female</span> <span class="o">&lt;&gt;</span> <span onmouseout="hideTip(event, 'fs38', 118)" onmouseover="showTip(event, 'fs38', 118)" class="uc">Number</span> <span class="n">1.</span> <span class="pn">)</span>
+    <span onmouseout="hideTip(event, 'fs36', 119)" onmouseover="showTip(event, 'fs36', 119)" class="k">sumBy</span> <span onmouseout="hideTip(event, 'fs26', 120)" onmouseover="showTip(event, 'fs26', 120)" class="fn">obs</span><span class="pn">.</span><span class="id">writing</span>
+    <span class="pn">}</span>
+</code></pre>
+<p>The following is a slightly more interesting example which joins data from two data sets:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// join two datasets</span>
+<span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs5', 121)" onmouseover="showTip(event, 'fs5', 121)" class="rt">Literal</span><span class="pn">&gt;]</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs41', 122)" onmouseover="showTip(event, 'fs41', 122)" class="prop">crimePath</span> <span class="o">=</span> <span class="s">@&quot;../tests/FSharp.Data.Toolbox.Sas.Tests/files/crime.sas7bdat&quot;</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs42', 123)" onmouseover="showTip(event, 'fs42', 123)" class="id">crimeFile</span> <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs8', 124)" onmouseover="showTip(event, 'fs8', 124)" class="rt">SasFileTypeProvider</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs41', 125)" onmouseover="showTip(event, 'fs41', 125)" class="prop">crimePath</span><span class="pn">&gt;</span><span class="pn">(</span><span class="pn">)</span>
+
+<span class="pn">[&lt;</span><span onmouseout="hideTip(event, 'fs5', 126)" onmouseover="showTip(event, 'fs5', 126)" class="rt">Literal</span><span class="pn">&gt;]</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs43', 127)" onmouseover="showTip(event, 'fs43', 127)" class="prop">statesPath</span> <span class="o">=</span> <span class="s">@&quot;../tests/FSharp.Data.Toolbox.Sas.Tests/files/states.sas7bdat&quot;</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs44', 128)" onmouseover="showTip(event, 'fs44', 128)" class="id">statesFile</span> <span class="o">=</span> <span class="k">new</span> <span onmouseout="hideTip(event, 'fs8', 129)" onmouseover="showTip(event, 'fs8', 129)" class="rt">SasFileTypeProvider</span><span class="pn">&lt;</span><span onmouseout="hideTip(event, 'fs43', 130)" onmouseover="showTip(event, 'fs43', 130)" class="prop">statesPath</span><span class="pn">&gt;</span><span class="pn">(</span><span class="pn">)</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs45', 131)" onmouseover="showTip(event, 'fs45', 131)" class="fn">trim</span> <span onmouseout="hideTip(event, 'fs46', 132)" onmouseover="showTip(event, 'fs46', 132)" class="fn">x</span> <span class="o">=</span> 
+  <span class="k">let</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs47', 133)" onmouseover="showTip(event, 'fs47', 133)" class="uc">Character</span> <span onmouseout="hideTip(event, 'fs48', 134)" onmouseover="showTip(event, 'fs48', 134)" class="fn">s</span><span class="pn">)</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs46', 135)" onmouseover="showTip(event, 'fs46', 135)" class="fn">x</span> 
+  <span onmouseout="hideTip(event, 'fs48', 136)" onmouseover="showTip(event, 'fs48', 136)" class="fn">s</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs49', 137)" onmouseover="showTip(event, 'fs49', 137)" class="id">Trim</span><span class="pn">(</span><span class="pn">)</span>
+
+<span onmouseout="hideTip(event, 'fs35', 138)" onmouseover="showTip(event, 'fs35', 138)" class="k">query</span> <span class="pn">{</span>
+  <span class="k">for</span> <span onmouseout="hideTip(event, 'fs50', 139)" onmouseover="showTip(event, 'fs50', 139)" class="fn">crime</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs42', 140)" onmouseover="showTip(event, 'fs42', 140)" class="id">crimeFile</span><span class="pn">.</span><span class="id">Observations</span> <span class="k">do</span>
+  <span onmouseout="hideTip(event, 'fs51', 141)" onmouseover="showTip(event, 'fs51', 141)" class="k">join</span> <span onmouseout="hideTip(event, 'fs52', 142)" onmouseover="showTip(event, 'fs52', 142)" class="fn">state</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs44', 143)" onmouseover="showTip(event, 'fs44', 143)" class="id">statesFile</span><span class="pn">.</span><span class="id">Observations</span> 
+      <span class="k">on</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs45', 144)" onmouseover="showTip(event, 'fs45', 144)" class="fn">trim</span> <span class="fn">crime</span><span class="pn">.</span><span class="id">State</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs45', 145)" onmouseover="showTip(event, 'fs45', 145)" class="fn">trim</span> <span onmouseout="hideTip(event, 'fs52', 146)" onmouseover="showTip(event, 'fs52', 146)" class="fn">state</span><span class="pn">.</span><span class="id">State</span><span class="pn">)</span>
+  <span onmouseout="hideTip(event, 'fs39', 147)" onmouseover="showTip(event, 'fs39', 147)" class="k">select</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs50', 148)" onmouseover="showTip(event, 'fs50', 148)" class="fn">crime</span><span class="pn">.</span><span class="id">murder_rate</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs52', 149)" onmouseover="showTip(event, 'fs52', 149)" class="fn">state</span><span class="pn">.</span><span class="id">State</span><span class="pn">)</span>
+<span class="pn">}</span>
+</code></pre>
+<h2><a name="Accessing-data-in-a-generic-way" class="anchor" href="#Accessing-data-in-a-generic-way">Accessing data in a generic way</a></h2>
+<p>Can be used for bulk data processing or converting SAS files to text files.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs53', 150)" onmouseover="showTip(event, 'fs53', 150)" class="fn">valueToText</span> <span onmouseout="hideTip(event, 'fs54', 151)" onmouseover="showTip(event, 'fs54', 151)" class="fn">value</span> <span class="o">=</span> 
+  <span class="k">match</span> <span onmouseout="hideTip(event, 'fs54', 152)" onmouseover="showTip(event, 'fs54', 152)" class="fn">value</span> <span class="k">with</span>
+  <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs38', 153)" onmouseover="showTip(event, 'fs38', 153)" class="uc">Number</span> <span onmouseout="hideTip(event, 'fs55', 154)" onmouseover="showTip(event, 'fs55', 154)" class="fn">n</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs55', 155)" onmouseover="showTip(event, 'fs55', 155)" class="fn">n</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs56', 156)" onmouseover="showTip(event, 'fs56', 156)" class="id">ToString</span><span class="pn">(</span><span class="pn">)</span>
+  <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs47', 157)" onmouseover="showTip(event, 'fs47', 157)" class="uc">Character</span> <span onmouseout="hideTip(event, 'fs48', 158)" onmouseover="showTip(event, 'fs48', 158)" class="fn">s</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs48', 159)" onmouseover="showTip(event, 'fs48', 159)" class="fn">s</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs49', 160)" onmouseover="showTip(event, 'fs49', 160)" class="id">Trim</span><span class="pn">(</span><span class="pn">)</span>
+  <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs57', 161)" onmouseover="showTip(event, 'fs57', 161)" class="uc">Time</span> <span onmouseout="hideTip(event, 'fs58', 162)" onmouseover="showTip(event, 'fs58', 162)" class="fn">t</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs58', 163)" onmouseover="showTip(event, 'fs58', 163)" class="fn">t</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs59', 164)" onmouseover="showTip(event, 'fs59', 164)" class="id">ToString</span><span class="pn">(</span><span class="s">&quot;HH:mm:ss&quot;</span><span class="pn">)</span>
+  <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs60', 165)" onmouseover="showTip(event, 'fs60', 165)" class="uc">Date</span> <span onmouseout="hideTip(event, 'fs61', 166)" onmouseover="showTip(event, 'fs61', 166)" class="fn">d</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs61', 167)" onmouseover="showTip(event, 'fs61', 167)" class="fn">d</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs59', 168)" onmouseover="showTip(event, 'fs59', 168)" class="id">ToString</span><span class="pn">(</span><span class="s">&quot;yyyy-MM-dd&quot;</span><span class="pn">)</span>
+  <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs62', 169)" onmouseover="showTip(event, 'fs62', 169)" class="uc">DateAndTime</span> <span onmouseout="hideTip(event, 'fs63', 170)" onmouseover="showTip(event, 'fs63', 170)" class="fn">dt</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs63', 171)" onmouseover="showTip(event, 'fs63', 171)" class="fn">dt</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs59', 172)" onmouseover="showTip(event, 'fs59', 172)" class="id">ToString</span><span class="pn">(</span><span class="s">&quot;O&quot;</span><span class="pn">)</span>
+  <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs64', 173)" onmouseover="showTip(event, 'fs64', 173)" class="uc">Empty</span> <span class="k">-&gt;</span> <span class="s">&quot;&quot;</span>
+
+<span onmouseout="hideTip(event, 'fs7', 174)" onmouseover="showTip(event, 'fs7', 174)" class="id">sasFile</span><span class="pn">.</span><span class="id">Rows</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 175)" onmouseover="showTip(event, 'fs14', 175)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs24', 176)" onmouseover="showTip(event, 'fs24', 176)" class="id">take</span> <span class="n">100</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 177)" onmouseover="showTip(event, 'fs14', 177)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs65', 178)" onmouseover="showTip(event, 'fs65', 178)" class="id">iter</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs66', 179)" onmouseover="showTip(event, 'fs66', 179)" class="fn">row</span> <span class="k">-&gt;</span>
+      <span class="k">let</span> <span onmouseout="hideTip(event, 'fs67', 180)" onmouseover="showTip(event, 'fs67', 180)" class="fn">line</span> <span class="o">=</span>
+          <span onmouseout="hideTip(event, 'fs66', 181)" onmouseover="showTip(event, 'fs66', 181)" class="fn">row</span>
+          <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 182)" onmouseover="showTip(event, 'fs14', 182)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs16', 183)" onmouseover="showTip(event, 'fs16', 183)" class="id">map</span> <span onmouseout="hideTip(event, 'fs53', 184)" onmouseover="showTip(event, 'fs53', 184)" class="fn">valueToText</span>
+          <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs19', 185)" onmouseover="showTip(event, 'fs19', 185)" class="m">String</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs20', 186)" onmouseover="showTip(event, 'fs20', 186)" class="id">concat</span> <span class="s">&quot;,&quot;</span> 
+      <span onmouseout="hideTip(event, 'fs13', 187)" onmouseover="showTip(event, 'fs13', 187)" class="fn">printfn</span> <span class="s">&quot;</span><span class="pf">%s</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs67', 188)" onmouseover="showTip(event, 'fs67', 188)" class="fn">line</span> <span class="pn">)</span>
+</code></pre>
+<h2><a name="Displaying-data-in-a-grid" class="anchor" href="#Displaying-data-in-a-grid">Displaying data in a grid</a></h2>
+<p>We can display the data in a grid.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs68', 189)" onmouseover="showTip(event, 'fs68', 189)" class="id">System</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs69', 190)" onmouseover="showTip(event, 'fs69', 190)" class="id">Windows</span><span class="pn">.</span><span class="id">Forms</span>
+
+<span class="c">// Create a window with a grid</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs70', 191)" onmouseover="showTip(event, 'fs70', 191)" class="id">frm</span> <span class="o">=</span> 
+    <span class="k">new</span> <span class="id">Form</span><span class="pn">(</span><span class="id">TopMost</span> <span class="o">=</span> <span class="k">true</span><span class="pn">,</span> <span class="id">Visible</span> <span class="o">=</span> <span class="k">true</span><span class="pn">,</span> 
+        <span onmouseout="hideTip(event, 'fs71', 192)" onmouseover="showTip(event, 'fs71', 192)" class="id">Text</span> <span class="o">=</span> <span class="s">&quot;F# Type Provider for SAS: &quot;</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs68', 193)" onmouseover="showTip(event, 'fs68', 193)" class="id">System</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs72', 194)" onmouseover="showTip(event, 'fs72', 194)" class="id">IO</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs73', 195)" onmouseover="showTip(event, 'fs73', 195)" class="id">Path</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs74', 196)" onmouseover="showTip(event, 'fs74', 196)" class="id">GetFileName</span> <span onmouseout="hideTip(event, 'fs7', 197)" onmouseover="showTip(event, 'fs7', 197)" class="id">sasFile</span><span class="pn">.</span><span class="id">FileName</span><span class="pn">,</span> 
+        <span class="id">Width</span> <span class="o">=</span> <span class="n">600</span><span class="pn">,</span> <span class="id">Height</span> <span class="o">=</span> <span class="n">600</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs75', 198)" onmouseover="showTip(event, 'fs75', 198)" class="id">grid</span> <span class="o">=</span> <span class="k">new</span> <span class="id">DataGridView</span><span class="pn">(</span><span class="id">Dock</span> <span class="o">=</span> <span class="id">DockStyle</span><span class="pn">.</span><span class="id">Fill</span><span class="pn">,</span> <span class="id">ReadOnly</span> <span class="o">=</span> <span class="k">true</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs76', 199)" onmouseover="showTip(event, 'fs76', 199)" class="id">btn</span> <span class="o">=</span> <span class="k">new</span> <span class="id">Button</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs71', 200)" onmouseover="showTip(event, 'fs71', 200)" class="id">Text</span> <span class="o">=</span> <span class="s">&quot;Read next page&quot;</span><span class="pn">,</span> <span class="id">Dock</span> <span class="o">=</span> <span class="id">DockStyle</span><span class="pn">.</span><span class="id">Bottom</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs77', 201)" onmouseover="showTip(event, 'fs77', 201)" class="id">status</span> <span class="o">=</span> <span class="k">new</span> <span class="id">StatusBar</span><span class="pn">(</span><span class="id">ShowPanels</span> <span class="o">=</span> <span class="k">true</span><span class="pn">,</span> <span class="id">Dock</span> <span class="o">=</span> <span class="id">DockStyle</span><span class="pn">.</span><span class="id">Bottom</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs78', 202)" onmouseover="showTip(event, 'fs78', 202)" class="id">pageStatus</span> <span class="o">=</span> <span class="k">new</span> <span class="id">StatusBarPanel</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs71', 203)" onmouseover="showTip(event, 'fs71', 203)" class="id">Text</span> <span class="o">=</span> <span class="s">&quot;Page&quot;</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs79', 204)" onmouseover="showTip(event, 'fs79', 204)" class="id">recordStatus</span> <span class="o">=</span> <span class="k">new</span> <span class="id">StatusBarPanel</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs71', 205)" onmouseover="showTip(event, 'fs71', 205)" class="id">Text</span> <span class="o">=</span> <span class="s">&quot;Records&quot;</span><span class="pn">,</span> <span class="id">Width</span> <span class="o">=</span> <span class="n">300</span> <span class="pn">)</span>
+<span onmouseout="hideTip(event, 'fs77', 206)" onmouseover="showTip(event, 'fs77', 206)" class="id">status</span><span class="pn">.</span><span class="id">Panels</span><span class="pn">.</span><span class="id">Add</span> <span onmouseout="hideTip(event, 'fs78', 207)" onmouseover="showTip(event, 'fs78', 207)" class="id">pageStatus</span>
+<span onmouseout="hideTip(event, 'fs77', 208)" onmouseover="showTip(event, 'fs77', 208)" class="id">status</span><span class="pn">.</span><span class="id">Panels</span><span class="pn">.</span><span class="id">Add</span> <span onmouseout="hideTip(event, 'fs79', 209)" onmouseover="showTip(event, 'fs79', 209)" class="id">recordStatus</span>
+<span onmouseout="hideTip(event, 'fs70', 210)" onmouseover="showTip(event, 'fs70', 210)" class="id">frm</span><span class="pn">.</span><span class="id">Controls</span><span class="pn">.</span><span class="id">Add</span> <span onmouseout="hideTip(event, 'fs75', 211)" onmouseover="showTip(event, 'fs75', 211)" class="id">grid</span>
+<span onmouseout="hideTip(event, 'fs70', 212)" onmouseover="showTip(event, 'fs70', 212)" class="id">frm</span><span class="pn">.</span><span class="id">Controls</span><span class="pn">.</span><span class="id">Add</span> <span onmouseout="hideTip(event, 'fs76', 213)" onmouseover="showTip(event, 'fs76', 213)" class="id">btn</span>
+<span onmouseout="hideTip(event, 'fs70', 214)" onmouseover="showTip(event, 'fs70', 214)" class="id">frm</span><span class="pn">.</span><span class="id">Controls</span><span class="pn">.</span><span class="id">Add</span> <span onmouseout="hideTip(event, 'fs77', 215)" onmouseover="showTip(event, 'fs77', 215)" class="id">status</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs80', 216)" onmouseover="showTip(event, 'fs80', 216)" class="id">pageSize</span> <span class="o">=</span> <span class="n">100</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs81', 217)" onmouseover="showTip(event, 'fs81', 217)" class="fn">read</span> <span onmouseout="hideTip(event, 'fs82', 218)" onmouseover="showTip(event, 'fs82', 218)" class="fn">page</span> <span class="o">=</span> 
+    <span onmouseout="hideTip(event, 'fs7', 219)" onmouseover="showTip(event, 'fs7', 219)" class="id">sasFile</span><span class="pn">.</span><span class="id">Observations</span> 
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 220)" onmouseover="showTip(event, 'fs14', 220)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs22', 221)" onmouseover="showTip(event, 'fs22', 221)" class="id">skip</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs80', 222)" onmouseover="showTip(event, 'fs80', 222)" class="id">pageSize</span><span class="o">*</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs82', 223)" onmouseover="showTip(event, 'fs82', 223)" class="fn">page</span> <span class="o">-</span> <span class="n">1</span><span class="pn">)</span><span class="pn">)</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 224)" onmouseover="showTip(event, 'fs14', 224)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs83', 225)" onmouseover="showTip(event, 'fs83', 225)" class="id">truncate</span> <span onmouseout="hideTip(event, 'fs80', 226)" onmouseover="showTip(event, 'fs80', 226)" class="id">pageSize</span>
+
+<span class="c">// Add columns</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs84', 227)" onmouseover="showTip(event, 'fs84', 227)" class="id">columns</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 228)" onmouseover="showTip(event, 'fs7', 228)" class="id">sasFile</span><span class="pn">.</span><span class="id">MetaData</span><span class="pn">.</span><span class="id">Columns</span>
+<span onmouseout="hideTip(event, 'fs75', 229)" onmouseover="showTip(event, 'fs75', 229)" class="id">grid</span><span class="pn">.</span><span class="id">ColumnCount</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs84', 230)" onmouseover="showTip(event, 'fs84', 230)" class="id">columns</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs85', 231)" onmouseover="showTip(event, 'fs85', 231)" class="id">Length</span>
+<span class="k">for</span> <span onmouseout="hideTip(event, 'fs86', 232)" onmouseover="showTip(event, 'fs86', 232)" class="fn">i</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span onmouseout="hideTip(event, 'fs84', 233)" onmouseover="showTip(event, 'fs84', 233)" class="id">columns</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs85', 234)" onmouseover="showTip(event, 'fs85', 234)" class="id">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+    <span onmouseout="hideTip(event, 'fs75', 235)" onmouseover="showTip(event, 'fs75', 235)" class="id">grid</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs87', 236)" onmouseover="showTip(event, 'fs87', 236)" class="id">Columns</span><span class="id">.</span><span class="pn">[</span><span onmouseout="hideTip(event, 'fs86', 237)" onmouseover="showTip(event, 'fs86', 237)" class="fn">i</span><span class="pn">]</span><span class="pn">.</span><span class="id">HeaderText</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs84', 238)" onmouseover="showTip(event, 'fs84', 238)" class="id">columns</span><span class="pn">.</span><span class="pn">[</span><span onmouseout="hideTip(event, 'fs86', 239)" onmouseover="showTip(event, 'fs86', 239)" class="id">i</span><span class="pn">]</span><span class="pn">.</span><span class="id">Name</span>
+
+<span class="c">// Display data</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs88', 240)" onmouseover="showTip(event, 'fs88', 240)" class="fn">show</span> <span onmouseout="hideTip(event, 'fs82', 241)" onmouseover="showTip(event, 'fs82', 241)" class="fn">page</span> <span class="o">=</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs89', 242)" onmouseover="showTip(event, 'fs89', 242)" class="fn">data</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs81', 243)" onmouseover="showTip(event, 'fs81', 243)" class="fn">read</span> <span onmouseout="hideTip(event, 'fs82', 244)" onmouseover="showTip(event, 'fs82', 244)" class="fn">page</span>
+    <span onmouseout="hideTip(event, 'fs75', 245)" onmouseover="showTip(event, 'fs75', 245)" class="id">grid</span><span class="pn">.</span><span class="id">Rows</span><span class="pn">.</span><span class="id">Clear</span><span class="pn">(</span><span class="pn">)</span>
+    <span onmouseout="hideTip(event, 'fs78', 246)" onmouseover="showTip(event, 'fs78', 246)" class="id">pageStatus</span><span class="pn">.</span><span class="id">Text</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs90', 247)" onmouseover="showTip(event, 'fs90', 247)" class="id">sprintf</span> <span class="s">&quot;Page %i&quot;</span> <span onmouseout="hideTip(event, 'fs82', 248)" onmouseover="showTip(event, 'fs82', 248)" class="id">page</span>
+    <span onmouseout="hideTip(event, 'fs79', 249)" onmouseover="showTip(event, 'fs79', 249)" class="id">recordStatus</span><span class="pn">.</span><span class="id">Text</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs90', 250)" onmouseover="showTip(event, 'fs90', 250)" class="id">sprintf</span> <span class="s">&quot;Records %i-%i of %i&quot;</span> 
+        <span class="o">&lt;|</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs82', 251)" onmouseover="showTip(event, 'fs82', 251)" class="id">page</span><span class="o">-</span><span class="n">1</span><span class="pn">)</span><span class="pn">*</span><span onmouseout="hideTip(event, 'fs80', 252)" onmouseover="showTip(event, 'fs80', 252)" class="id">pageSize</span> <span class="o">+</span> <span class="n">1</span> 
+        <span class="o">&lt;|</span> <span onmouseout="hideTip(event, 'fs91', 253)" onmouseover="showTip(event, 'fs91', 253)" class="id">min</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs82', 254)" onmouseover="showTip(event, 'fs82', 254)" class="id">page</span><span class="pn">*</span><span onmouseout="hideTip(event, 'fs80', 255)" onmouseover="showTip(event, 'fs80', 255)" class="id">pageSize</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs7', 256)" onmouseover="showTip(event, 'fs7', 256)" class="id">sasFile</span><span class="pn">.</span><span class="id">MetaData</span><span class="pn">.</span><span class="id">RowCount</span> 
+        <span class="o">&lt;|</span> <span onmouseout="hideTip(event, 'fs7', 257)" onmouseover="showTip(event, 'fs7', 257)" class="id">sasFile</span><span class="pn">.</span><span class="id">MetaData</span><span class="pn">.</span><span class="id">RowCount</span>
+    <span class="k">for</span> <span onmouseout="hideTip(event, 'fs66', 258)" onmouseover="showTip(event, 'fs66', 258)" class="fn">row</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs89', 259)" onmouseover="showTip(event, 'fs89', 259)" class="fn">data</span> <span class="k">do</span>
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs92', 260)" onmouseover="showTip(event, 'fs92', 260)" class="fn">values</span> <span class="o">=</span> <span class="pn">[|</span> <span class="k">for</span> <span onmouseout="hideTip(event, 'fs54', 261)" onmouseover="showTip(event, 'fs54', 261)" class="fn">value</span> <span class="k">in</span> <span onmouseout="hideTip(event, 'fs66', 262)" onmouseover="showTip(event, 'fs66', 262)" class="fn">row</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs53', 263)" onmouseover="showTip(event, 'fs53', 263)" class="fn">valueToText</span> <span onmouseout="hideTip(event, 'fs54', 264)" onmouseover="showTip(event, 'fs54', 264)" class="fn">value</span> <span class="pn">|]</span>
+
+        <span class="k">let</span> <span onmouseout="hideTip(event, 'fs93', 265)" onmouseover="showTip(event, 'fs93', 265)" class="fn">gridRow</span> <span class="o">=</span> <span class="k">new</span> <span class="id">DataGridViewRow</span><span class="pn">(</span><span class="pn">)</span>
+        <span onmouseout="hideTip(event, 'fs93', 266)" onmouseover="showTip(event, 'fs93', 266)" class="fn">gridRow</span><span class="pn">.</span><span class="id">CreateCells</span> <span onmouseout="hideTip(event, 'fs75', 267)" onmouseover="showTip(event, 'fs75', 267)" class="id">grid</span>
+
+        <span class="k">for</span> <span onmouseout="hideTip(event, 'fs94', 268)" onmouseover="showTip(event, 'fs94', 268)" class="fn">col</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span onmouseout="hideTip(event, 'fs84', 269)" onmouseover="showTip(event, 'fs84', 269)" class="id">columns</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs85', 270)" onmouseover="showTip(event, 'fs85', 270)" class="id">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+            <span onmouseout="hideTip(event, 'fs93', 271)" onmouseover="showTip(event, 'fs93', 271)" class="fn">gridRow</span><span class="pn">.</span><span class="id">Cells</span><span class="pn">.</span><span class="pn">[</span><span onmouseout="hideTip(event, 'fs94', 272)" onmouseover="showTip(event, 'fs94', 272)" class="id">col</span><span class="pn">]</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs95', 273)" onmouseover="showTip(event, 'fs95', 273)" class="id">Value</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs92', 274)" onmouseover="showTip(event, 'fs92', 274)" class="id">values</span><span class="pn">.</span><span class="pn">[</span><span onmouseout="hideTip(event, 'fs94', 275)" onmouseover="showTip(event, 'fs94', 275)" class="id">col</span><span class="pn">]</span>
+
+        <span onmouseout="hideTip(event, 'fs75', 276)" onmouseover="showTip(event, 'fs75', 276)" class="id">grid</span><span class="pn">.</span><span class="id">Rows</span><span class="pn">.</span><span class="id">Add</span> <span onmouseout="hideTip(event, 'fs93', 277)" onmouseover="showTip(event, 'fs93', 277)" class="id">gridRow</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs96', 278)" onmouseover="showTip(event, 'fs96', 278)" class="fn">ignore</span>
+    
+<span class="k">let</span> <span class="k">mutable</span> <span onmouseout="hideTip(event, 'fs97', 279)" onmouseover="showTip(event, 'fs97', 279)" class="mv">page</span> <span class="o">=</span> <span class="n">1</span>
+<span onmouseout="hideTip(event, 'fs76', 280)" onmouseover="showTip(event, 'fs76', 280)" class="id">btn</span><span class="pn">.</span><span class="id">Click</span><span class="pn">.</span><span class="id">Add</span><span class="pn">(</span><span class="k">fun</span> <span class="id">_</span> <span class="k">-&gt;</span> 
+    <span class="k">if</span> <span onmouseout="hideTip(event, 'fs97', 281)" onmouseover="showTip(event, 'fs97', 281)" class="id">page</span><span class="pn">*</span><span onmouseout="hideTip(event, 'fs80', 282)" onmouseover="showTip(event, 'fs80', 282)" class="id">pageSize</span> <span class="pn">&lt;</span> <span onmouseout="hideTip(event, 'fs7', 283)" onmouseover="showTip(event, 'fs7', 283)" class="id">sasFile</span><span class="pn">.</span><span class="id">MetaData</span><span class="pn">.</span><span class="id">RowCount</span> <span class="k">then</span>
+        <span onmouseout="hideTip(event, 'fs97', 284)" onmouseover="showTip(event, 'fs97', 284)" class="id">page</span> <span class="k">&lt;-</span> <span onmouseout="hideTip(event, 'fs97', 285)" onmouseover="showTip(event, 'fs97', 285)" class="id">page</span> <span class="o">+</span> <span class="n">1</span>
+    <span class="k">else</span> 
+        <span onmouseout="hideTip(event, 'fs97', 286)" onmouseover="showTip(event, 'fs97', 286)" class="id">page</span> <span class="k">&lt;-</span> <span class="n">1</span>
+    <span onmouseout="hideTip(event, 'fs88', 287)" onmouseover="showTip(event, 'fs88', 287)" class="id">show</span> <span onmouseout="hideTip(event, 'fs97', 288)" onmouseover="showTip(event, 'fs97', 288)" class="id">page</span> 
+    <span class="pn">)</span>
+
+<span onmouseout="hideTip(event, 'fs88', 289)" onmouseover="showTip(event, 'fs88', 289)" class="fn">show</span> <span onmouseout="hideTip(event, 'fs97', 290)" onmouseover="showTip(event, 'fs97', 290)" class="mv">page</span>
+</code></pre>
+<p><img src="img/SasViewer.png" alt="SAS dataset viewer" /></p>
+
+          <div class="fsdocs-tip" id="fs1">Multiple items<br />namespace FSharp<br /><br />--------------------<br />namespace Microsoft.FSharp</div>
+<div class="fsdocs-tip" id="fs2">Multiple items<br />namespace FSharp.Data<br /><br />--------------------<br />namespace Microsoft.FSharp.Data</div>
+<div class="fsdocs-tip" id="fs3">namespace FSharp.Data.Toolbox</div>
+<div class="fsdocs-tip" id="fs4">namespace FSharp.Data.Toolbox.Sas</div>
+<div class="fsdocs-tip" id="fs5">Multiple items<br />type LiteralAttribute =
+  inherit Attribute
+  new : unit -&gt; LiteralAttribute<br /><em>&lt;summary&gt;Adding this attribute to a value causes it to be compiled as a CLI constant literal.&lt;/summary&gt;<br />&lt;category&gt;Attributes&lt;/category&gt;</em><br /><br />--------------------<br />new : unit -&gt; LiteralAttribute</div>
+<div class="fsdocs-tip" id="fs6">val sasPath : string = &quot;../tests/FSharp.Data.Toolbox.Sas.Tests/files/acadindx.sas7bdat&quot;<br /><em>&#160;example fast binder url: https://mybinder.org/v2/gh/fsprojects/fsharp.formatting/master?urlpath=git-pull?repo=https:/nhirschey.github.com/teaching/gh-pages/fundamentals.ipynb</em></div>
+<div class="fsdocs-tip" id="fs7">val sasFile : obj</div>
+<div class="fsdocs-tip" id="fs8">type SasFileTypeProvider =</div>
+<div class="fsdocs-tip" id="fs9">val datasetName : obj</div>
+<div class="fsdocs-tip" id="fs10">val architecture : obj</div>
+<div class="fsdocs-tip" id="fs11">val rowCount : obj</div>
+<div class="fsdocs-tip" id="fs12">val cols : seq&lt;Column&gt;</div>
+<div class="fsdocs-tip" id="fs13">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><em>&lt;summary&gt;Print to &lt;c&gt;stdout&lt;/c&gt; using the given format, and add a newline.&lt;/summary&gt;<br />&lt;param name=&quot;format&quot;&gt;The formatter.&lt;/param&gt;<br />&lt;returns&gt;The formatted result.&lt;/returns&gt;</em></div>
+<div class="fsdocs-tip" id="fs14">module Seq
+
+from Microsoft.FSharp.Collections<br /><em>&lt;summary&gt;Contains operations for working with values of type &lt;see cref=&quot;T:Microsoft.FSharp.Collections.seq`1&quot; /&gt;.&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs15">val length : source:seq&lt;&#39;T&gt; -&gt; int<br /><em>&lt;summary&gt;Returns the length of the sequence&lt;/summary&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The length of the sequence.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs16">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;U&gt;<br /><em>&lt;summary&gt;Builds a new collection whose elements are the results of applying the given function
+ to each of the elements of the collection.  The given function will be applied
+ as elements are demanded using the &lt;c&gt;MoveNext&lt;/c&gt; method on enumerators retrieved from the
+ object.&lt;/summary&gt;<br />&lt;remarks&gt;The returned sequence may be passed between threads safely. However, 
+ individual IEnumerator values generated from the returned sequence should not be accessed concurrently.&lt;/remarks&gt;<br />&lt;param name=&quot;mapping&quot;&gt;A function to transform items from the input sequence.&lt;/param&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The result sequence.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs17">val col : Column</div>
+<div class="fsdocs-tip" id="fs18">Column.Name: string</div>
+<div class="fsdocs-tip" id="fs19">module String
+
+from Microsoft.FSharp.Core<br /><em>&lt;summary&gt;Functional programming operators for string processing.  Further string operations
+ are available via the member functions on strings and other functionality in
+  &lt;a href=&quot;http://msdn2.microsoft.com/en-us/library/system.string.aspx&quot;&gt;System.String&lt;/a&gt; 
+ and &lt;a href=&quot;http://msdn2.microsoft.com/library/system.text.regularexpressions.aspx&quot;&gt;System.Text.RegularExpressions&lt;/a&gt; types.
+ &lt;/summary&gt;<br />&lt;category&gt;Strings and Text&lt;/category&gt;</em></div>
+<div class="fsdocs-tip" id="fs20">val concat : sep:string -&gt; strings:seq&lt;string&gt; -&gt; string<br /><em>&lt;summary&gt;Returns a new string made by concatenating the given strings
+ with separator &lt;c&gt;sep&lt;/c&gt;, that is &lt;c&gt;a1 + sep + ... + sep + aN&lt;/c&gt;.&lt;/summary&gt;<br />&lt;param name=&quot;sep&quot;&gt;The separator string to be inserted between the strings
+ of the input sequence.&lt;/param&gt;<br />&lt;param name=&quot;strings&quot;&gt;The sequence of strings to be concatenated.&lt;/param&gt;<br />&lt;returns&gt;A new string consisting of the concatenated strings separated by
+ the separation string.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when &lt;c&gt;strings&lt;/c&gt; is null.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs21">val row : obj</div>
+<div class="fsdocs-tip" id="fs22">val skip : count:int -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;<br /><em>&lt;summary&gt;Returns a sequence that skips N elements of the underlying sequence and then yields the
+ remaining elements of the sequence.&lt;/summary&gt;<br />&lt;param name=&quot;count&quot;&gt;The number of items to skip.&lt;/param&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The result sequence.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;<br />&lt;exception cref=&quot;T:System.InvalidOperationException&quot;&gt;Thrown when count exceeds the number of elements
+ in the sequence.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs23">val head : source:seq&lt;&#39;T&gt; -&gt; &#39;T<br /><em>&lt;summary&gt;Returns the first element of the sequence.&lt;/summary&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The first element of the sequence.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;<br />&lt;exception cref=&quot;T:System.ArgumentException&quot;&gt;Thrown when the input does not have any elements.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs24">val take : count:int -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;<br /><em>&lt;summary&gt;Returns the first N elements of the sequence.&lt;/summary&gt;<br />&lt;remarks&gt;Throws &lt;c&gt;InvalidOperationException&lt;/c&gt;
+ if the count exceeds the number of elements in the sequence. &lt;c&gt;Seq.truncate&lt;/c&gt;
+ returns as many items as the sequence contains instead of throwing an exception.&lt;/remarks&gt;<br />&lt;param name=&quot;count&quot;&gt;The number of items to take.&lt;/param&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The result sequence.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;<br />&lt;exception cref=&quot;T:System.ArgumentException&quot;&gt;Thrown when the input sequence is empty.&lt;/exception&gt;<br />&lt;exception cref=&quot;T:System.InvalidOperationException&quot;&gt;Thrown when count exceeds the number of elements
+ in the sequence.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs25">val sumBy : projection:(&#39;T -&gt; &#39;U) -&gt; source:seq&lt;&#39;T&gt; -&gt; &#39;U (requires member ( + ) and member get_Zero)<br /><em>&lt;summary&gt;Returns the sum of the results generated by applying the function to each element of the sequence.&lt;/summary&gt;<br />&lt;remarks&gt;The generated elements are summed using the &lt;c&gt;+&lt;/c&gt; operator and &lt;c&gt;Zero&lt;/c&gt; property associated with the generated type.&lt;/remarks&gt;<br />&lt;param name=&quot;projection&quot;&gt;A function to transform items from the input sequence into the type that will be summed.&lt;/param&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The computed sum.&lt;/returns&gt;</em></div>
+<div class="fsdocs-tip" id="fs26">val obs : obj</div>
+<div class="fsdocs-tip" id="fs27">val readingMean : int</div>
+<div class="fsdocs-tip" id="fs28">val averageBy : projection:(&#39;T -&gt; &#39;U) -&gt; source:seq&lt;&#39;T&gt; -&gt; &#39;U (requires member ( + ) and member DivideByInt and member get_Zero)<br /><em>&lt;summary&gt;Returns the average of the results generated by applying the function to each element 
+ of the sequence.&lt;/summary&gt;<br />&lt;remarks&gt;The elements are averaged using the &lt;c&gt;+&lt;/c&gt; operator, &lt;c&gt;DivideByInt&lt;/c&gt; method and &lt;c&gt;Zero&lt;/c&gt; property 
+ associated with the generated type.&lt;/remarks&gt;<br />&lt;param name=&quot;projection&quot;&gt;A function applied to transform each element of the sequence.&lt;/param&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The average.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;<br />&lt;exception cref=&quot;T:System.ArgumentException&quot;&gt;Thrown when the input sequence has zero elements.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs29">val sum : int</div>
+<div class="fsdocs-tip" id="fs30">val obs : &#39;a</div>
+<div class="fsdocs-tip" id="fs31">val sum : source:seq&lt;&#39;T&gt; -&gt; &#39;T (requires member ( + ) and member get_Zero)<br /><em>&lt;summary&gt;Returns the sum of the elements in the sequence.&lt;/summary&gt;<br />&lt;remarks&gt;The elements are summed using the &lt;c&gt;+&lt;/c&gt; operator and &lt;c&gt;Zero&lt;/c&gt; property associated with the generated type.&lt;/remarks&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The computed sum.&lt;/returns&gt;</em></div>
+<div class="fsdocs-tip" id="fs32">val sqrt : value:&#39;T -&gt; &#39;U (requires member Sqrt)<br /><em>&lt;summary&gt;Square root of the given number&lt;/summary&gt;<br />&lt;param name=&quot;value&quot;&gt;The input value.&lt;/param&gt;<br />&lt;returns&gt;The square root of the input.&lt;/returns&gt;</em></div>
+<div class="fsdocs-tip" id="fs33">val min : source:seq&lt;&#39;T&gt; -&gt; &#39;T (requires comparison)<br /><em>&lt;summary&gt;Returns the lowest of all elements of the sequence, compared via &lt;c&gt;Operators.min&lt;/c&gt;.&lt;/summary&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The smallest element of the sequence.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;<br />&lt;exception cref=&quot;T:System.ArgumentException&quot;&gt;Thrown when the input sequence is empty.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs34">val max : source:seq&lt;&#39;T&gt; -&gt; &#39;T (requires comparison)<br /><em>&lt;summary&gt;Returns the greatest of all elements of the sequence, compared via Operators.max&lt;/summary&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;<br />&lt;exception cref=&quot;T:System.ArgumentException&quot;&gt;Thrown when the input sequence is empty.&lt;/exception&gt;<br />&lt;returns&gt;The largest element of the sequence.&lt;/returns&gt;</em></div>
+<div class="fsdocs-tip" id="fs35">val query : Linq.QueryBuilder<br /><em>&lt;summary&gt;Builds a query using query syntax and operators.&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs36">custom operation: sumBy (&#39;Value)
+
+Calls Linq.QueryBuilder.SumBy<br /><em>&lt;summary&gt;A query operator that selects a value for each element selected so far and returns the sum of these values. 
+ &lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs37">custom operation: where (bool)
+
+Calls Linq.QueryBuilder.Where<br /><em>&lt;summary&gt;A query operator that selects those elements based on a specified predicate. 
+ &lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs38">union case Value.Number: float -&gt; Value</div>
+<div class="fsdocs-tip" id="fs39">custom operation: select (&#39;Result)
+
+Calls Linq.QueryBuilder.Select<br /><em>&lt;summary&gt;A query operator that projects each of the elements selected so far.
+ &lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs40">custom operation: count
+
+Calls Linq.QueryBuilder.Count<br /><em>&lt;summary&gt;A query operator that returns the number of selected elements.
+ &lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs41">val crimePath : string = &quot;../tests/FSharp.Data.Toolbox.Sas.Tests/files/crime.sas7bdat&quot;</div>
+<div class="fsdocs-tip" id="fs42">val crimeFile : obj</div>
+<div class="fsdocs-tip" id="fs43">val statesPath : string = &quot;../tests/FSharp.Data.Toolbox.Sas.Tests/files/states.sas7bdat&quot;</div>
+<div class="fsdocs-tip" id="fs44">val statesFile : obj</div>
+<div class="fsdocs-tip" id="fs45">val trim : x:Value -&gt; string</div>
+<div class="fsdocs-tip" id="fs46">val x : Value</div>
+<div class="fsdocs-tip" id="fs47">union case Value.Character: string -&gt; Value</div>
+<div class="fsdocs-tip" id="fs48">val s : string</div>
+<div class="fsdocs-tip" id="fs49">System.String.Trim() : string<br />System.String.Trim([&lt;System.ParamArray&gt;] trimChars: char []) : string<br />System.String.Trim(trimChar: char) : string</div>
+<div class="fsdocs-tip" id="fs50">val crime : obj</div>
+<div class="fsdocs-tip" id="fs51">custom operation: join var in collection on (outerKey = innerKey). Note that parentheses are required after &#39;on&#39;
+
+Calls Linq.QueryBuilder.Join<br /><em>&lt;summary&gt;A query operator that correlates two sets of selected values based on matching keys. 
+ Normal usage is &#39;join y in elements2 on (key1 = key2)&#39;. 
+ &lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs52">val state : obj</div>
+<div class="fsdocs-tip" id="fs53">val valueToText : value:Value -&gt; string</div>
+<div class="fsdocs-tip" id="fs54">val value : Value</div>
+<div class="fsdocs-tip" id="fs55">val n : float</div>
+<div class="fsdocs-tip" id="fs56">System.Double.ToString() : string<br />System.Double.ToString(format: string) : string<br />System.Double.ToString(provider: System.IFormatProvider) : string<br />System.Double.ToString(format: string, provider: System.IFormatProvider) : string</div>
+<div class="fsdocs-tip" id="fs57">union case Value.Time: System.DateTime -&gt; Value</div>
+<div class="fsdocs-tip" id="fs58">val t : System.DateTime</div>
+<div class="fsdocs-tip" id="fs59">System.DateTime.ToString() : string<br />System.DateTime.ToString(format: string) : string<br />System.DateTime.ToString(provider: System.IFormatProvider) : string<br />System.DateTime.ToString(format: string, provider: System.IFormatProvider) : string</div>
+<div class="fsdocs-tip" id="fs60">union case Value.Date: System.DateTime -&gt; Value</div>
+<div class="fsdocs-tip" id="fs61">val d : System.DateTime</div>
+<div class="fsdocs-tip" id="fs62">union case Value.DateAndTime: System.DateTime -&gt; Value</div>
+<div class="fsdocs-tip" id="fs63">val dt : System.DateTime</div>
+<div class="fsdocs-tip" id="fs64">union case Value.Empty: Value</div>
+<div class="fsdocs-tip" id="fs65">val iter : action:(&#39;T -&gt; unit) -&gt; source:seq&lt;&#39;T&gt; -&gt; unit<br /><em>&lt;summary&gt;Applies the given function to each element of the collection.&lt;/summary&gt;<br />&lt;param name=&quot;action&quot;&gt;A function to apply to each element of the sequence.&lt;/param&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs66">val row : seq&lt;Value&gt;</div>
+<div class="fsdocs-tip" id="fs67">val line : string</div>
+<div class="fsdocs-tip" id="fs68">namespace System</div>
+<div class="fsdocs-tip" id="fs69">namespace System.Windows</div>
+<div class="fsdocs-tip" id="fs70">val frm : obj</div>
+<div class="fsdocs-tip" id="fs71">union case HttpResponseBody.Text: string -&gt; HttpResponseBody</div>
+<div class="fsdocs-tip" id="fs72">namespace System.IO</div>
+<div class="fsdocs-tip" id="fs73">type Path =
+  static member ChangeExtension : path: string * extension: string -&gt; string
+  static member Combine : path1: string * path2: string -&gt; string + 3 overloads
+  static member EndsInDirectorySeparator : path: ReadOnlySpan&lt;char&gt; -&gt; bool + 1 overload
+  static member GetDirectoryName : path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetExtension : path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetFileName : path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetFileNameWithoutExtension : path: ReadOnlySpan&lt;char&gt; -&gt; ReadOnlySpan&lt;char&gt; + 1 overload
+  static member GetFullPath : path: string -&gt; string + 1 overload
+  static member GetInvalidFileNameChars : unit -&gt; char []
+  static member GetInvalidPathChars : unit -&gt; char []
+  ...<br /><em>&lt;summary&gt;Performs operations on &lt;see cref=&quot;T:System.String&quot; /&gt; instances that contain file or directory path information. These operations are performed in a cross-platform manner.&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs74">System.IO.Path.GetFileName(path: string) : string<br />System.IO.Path.GetFileName(path: System.ReadOnlySpan&lt;char&gt;) : System.ReadOnlySpan&lt;char&gt;</div>
+<div class="fsdocs-tip" id="fs75">val grid : MetaData</div>
+<div class="fsdocs-tip" id="fs76">val btn : obj</div>
+<div class="fsdocs-tip" id="fs77">val status : obj</div>
+<div class="fsdocs-tip" id="fs78">val pageStatus : obj</div>
+<div class="fsdocs-tip" id="fs79">val recordStatus : obj</div>
+<div class="fsdocs-tip" id="fs80">val pageSize : int</div>
+<div class="fsdocs-tip" id="fs81">val read : page:int -&gt; seq&lt;&#39;a&gt;</div>
+<div class="fsdocs-tip" id="fs82">val page : int</div>
+<div class="fsdocs-tip" id="fs83">val truncate : count:int -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;<br /><em>&lt;summary&gt;Returns a sequence that when enumerated returns at most N elements.&lt;/summary&gt;<br />&lt;param name=&quot;count&quot;&gt;The maximum number of items to enumerate.&lt;/param&gt;<br />&lt;param name=&quot;source&quot;&gt;The input sequence.&lt;/param&gt;<br />&lt;returns&gt;The result sequence.&lt;/returns&gt;<br />&lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;Thrown when the input sequence is null.&lt;/exception&gt;</em></div>
+<div class="fsdocs-tip" id="fs84">val columns : Column</div>
+<div class="fsdocs-tip" id="fs85">Column.Length: int</div>
+<div class="fsdocs-tip" id="fs86">val i : int</div>
+<div class="fsdocs-tip" id="fs87">MetaData.Columns: Column array</div>
+<div class="fsdocs-tip" id="fs88">val show : page:int -&gt; unit</div>
+<div class="fsdocs-tip" id="fs89">val data : seq&lt;seq&lt;Value&gt;&gt;</div>
+<div class="fsdocs-tip" id="fs90">val sprintf : format:Printf.StringFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><em>&lt;summary&gt;Print to a string using the given format.&lt;/summary&gt;<br />&lt;param name=&quot;format&quot;&gt;The formatter.&lt;/param&gt;<br />&lt;returns&gt;The formatted result.&lt;/returns&gt;</em></div>
+<div class="fsdocs-tip" id="fs91">val min : e1:&#39;T -&gt; e2:&#39;T -&gt; &#39;T (requires comparison)<br /><em>&lt;summary&gt;Minimum based on generic comparison&lt;/summary&gt;<br />&lt;param name=&quot;e1&quot;&gt;The first value.&lt;/param&gt;<br />&lt;param name=&quot;e2&quot;&gt;The second value.&lt;/param&gt;<br />&lt;returns&gt;The minimum value.&lt;/returns&gt;</em></div>
+<div class="fsdocs-tip" id="fs92">val values : string []</div>
+<div class="fsdocs-tip" id="fs93">val gridRow : obj</div>
+<div class="fsdocs-tip" id="fs94">val col : int</div>
+<div class="fsdocs-tip" id="fs95">type Value =
+  | Number of float
+  | DateAndTime of DateTime
+  | Date of DateTime
+  | Time of DateTime
+  | Character of string
+  | Empty
+    static member ( * ) : value1:Value * value2:Value -&gt; Value + 2 overloads
+    static member ( + ) : value1:Value * value2:Value -&gt; Value + 2 overloads
+    static member ( - ) : value1:Value * value2:Value -&gt; Value + 2 overloads
+    static member ( / ) : value1:Value * value2:Value -&gt; Value + 2 overloads
+    static member DivideByInt : value:Value * n:int -&gt; Value
+    static member Pow : value:Value * n:&#39;a0 -&gt; Value (requires member op_Explicit)
+    static member Sqrt : value:Value -&gt; Value
+    static member Zero : Value</div>
+<div class="fsdocs-tip" id="fs96">val ignore : value:&#39;T -&gt; unit<br /><em>&lt;summary&gt;Ignore the passed value. This is often used to throw away results of a computation.&lt;/summary&gt;<br />&lt;param name=&quot;value&quot;&gt;The value to ignore.&lt;/param&gt;</em></div>
+<div class="fsdocs-tip" id="fs97">val mutable page : int</div>
+
+      </div>
+
+      <!-- BEGIN SEARCH BOX: this adds support for the search box -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.css" />
+      <script type="text/javascript">var fsdocs_search_baseurl = '/FSharp.Data.Toolbox/';</script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.8/lunr.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min.js"></script>
+      <script type="text/javascript" src="/FSharp.Data.Toolbox/content/fsdocs-search.js"></script>
+      <!-- END SEARCH BOX: this adds support for the search box -->
+  </div>
+</body>
+
+</html>
