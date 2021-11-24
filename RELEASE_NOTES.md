@@ -1,7 +1,5 @@
-#### 0.20.2 - November 24 2021
+## 0.20.2 - November 24 2021
 * Add support for the PAGE_METC_TYPE page type [#75](https://github.com/fsprojects/FSharp.Data.Toolbox/pull/75)
-
-#### Older releases below
 
 #### 0.1 - April 28 2014
 * Initial release
